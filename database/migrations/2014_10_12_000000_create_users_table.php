@@ -17,11 +17,24 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('avatar');
             $table->string('password');
+            $table->string('phone');
+            $table->integer('level');
+            $table->string('user_type');
+            $table->text('bio');
+            $table->boolean('status');
+            $table->string('pay_name_1');
+            $table->string('pay_number_1');
+            $table->string('pay_name_2');
+            $table->string('pay_number_2');
+            $table->string('pay_name_3');
+            $table->string('pay_number_3');
             $table->rememberToken();
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
