@@ -22,6 +22,7 @@ Route::group(['prefix' => '/auth', ['middleware' => 'throttle:20,5']], function(
 });
 
 Route::group(['middleware' => 'jwt.auth'], function() {
+    Route::get('user/list', 'UserController@list');
     Route::get('/me', 'MeController@index');
     Route::get('post/list', 'PostController@list');
     Route::get('post/detail/{id}', 'PostController@detail');

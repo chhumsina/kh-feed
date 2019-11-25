@@ -45,7 +45,19 @@ class SocialLoginController extends Controller
             $user = User::create([
                 'name' => $serviceUser->getName(),
                 'email' => $email,
-                'password' => ''
+                'password' => '',
+                'avatar'=>'',
+                'user_type'=>'user',
+                'level'=>1,
+                'status'=>true,
+                'phone'=>'',
+                'pay_name_1'=>'',
+                'pay_number_1'=>'',
+                'pay_name_2'=>'',
+                'pay_number_2'=>'',
+                'pay_name_3'=>'',
+                'pay_number_3'=>'',
+                'bio'=>''
             ]);
         }
 
