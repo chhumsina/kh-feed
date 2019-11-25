@@ -50,11 +50,14 @@ module.exports = {
   plugins: [
     './plugins/mixins/validation',
     './plugins/mixins/user',
-    './plugins/axios'
+    './plugins/axios',
+    {
+      src: '~plugins/infiniteloading', ssr: false },{ src: '~plugins/tinytabs', ssr: false
+    }
   ],
 
   env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:8000/api/'
+    baseUrl: process.env.BASE_URL || 'http://localhost:8000/api/',
   },
 
   auth: {
@@ -75,7 +78,7 @@ module.exports = {
       }
     },
     redirect: {
-      login: '/auth/login',
+      login: '/',
       home: '/'
     },
     plugins: [

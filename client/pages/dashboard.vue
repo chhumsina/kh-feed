@@ -1,11 +1,22 @@
 <template>
-    <div class="container">
-        <h1>Welcome to your dashboard {{user.name}}</h1>
-    </div>
+  <div>
+    <p>das</p>
+  </div>
 </template>
 
 <script>
 export default {
-    middleware: 'auth'
-};
+  middleware: 'auth',
+  data() {
+    return {
+      strategy: this.$auth.$storage.getUniversal('strategy')
+    }
+  },
+  mounted() {},
+  methods: {
+    async logout() {
+      await this.$auth.logout()
+    }
+  }
+}
 </script>
