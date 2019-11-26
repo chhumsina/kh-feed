@@ -1,5 +1,5 @@
 <template>
-  <div class="account container">
+  <div class="post-id container">
     <p class="go-back">
       <a href="javascript:history.back()">
         <i class="fa fa-arrow-left" aria-hidden="true"></i>
@@ -15,8 +15,7 @@
           <h4 class="font-weight-bold my-4">Mike Greene</h4>
 
           <div class="text-muted mb-4">
-            Lorem ipsum dolor sit amet, nibh suavitate qualisque ut nam. Ad
-            harum primis electram duo, porro principes ei has.
+            {{dataModal.caption}}
           </div>
         </div>
       </div>
@@ -32,7 +31,6 @@ export default {
     return {
       strategy: this.$auth.$storage.getUniversal('strategy'),
       page: 1,
-      feeds: [],
       dataModal: '',
       loadingModal: true
     }
@@ -54,23 +52,6 @@ export default {
   methods: {
     async logout() {
       await this.$auth.logout()
-    },
-    async onInfinite($state) {
-      this.$axios
-        .get('post/list', {
-          params: {
-            page: this.page
-          }
-        })
-        .then(({ data }) => {
-          if (data.length) {
-            this.page += 1
-            this.feeds.push(...data)
-            $state.loaded()
-          } else {
-            $state.complete()
-          }
-        })
     },
     async showPostModal(id) {
       this.loadingModal = true
@@ -108,18 +89,18 @@ export default {
 </script>
 
 <style>
-.account {
+.post-id {
   margin-top: 15px;
 }
-.account .ui-w-100 {
+.post-id .ui-w-100 {
   width: 100px !important;
   height: auto;
 }
-.account .font-weight-bold {
+.post-id .font-weight-bold {
   font-weight: 700 !important;
 }
 
-.account .tinytabs .tabs {
+.post-id .tinytabs .tabs {
   width: 100%;
   text-align: center;
   border-top: 1px solid #ddd;
@@ -128,122 +109,122 @@ export default {
   z-index: 1;
 }
 
-.account .tinytabs .tabs .tab .close {
+.post-id .tinytabs .tabs .tab .close {
   padding-left: 5px;
 }
-.account .tinytabs .tabs .tab {
+.post-id .tinytabs .tabs .tab {
   margin: 0 3px 0 0;
   padding: 6px 15px;
   text-decoration: none;
   font-weight: bold;
 }
-.account .tinytabs .section {
+.post-id .tinytabs .section {
   overflow: hidden;
   clear: both;
   width: 100%;
   th: 100%;
   margin-top: -25px;
 }
-.account .tinytabs .tab.sel {
+.post-id .tinytabs .tab.sel {
   color: #000;
   text-shadow: none;
 }
-.account .nav-tabs {
+.post-id .nav-tabs {
   border-bottom: 0;
   margin-bottom: 50px;
 }
 
-.account .posts-content {
+.post-id .posts-content {
   margin-top: 20px;
 }
-.account .ui-w-40 {
+.post-id .ui-w-40 {
   width: 40px !important;
   height: auto;
 }
-.account .default-style .ui-bordered {
+.post-id .default-style .ui-bordered {
   border: 1px solid rgba(24, 28, 33, 0.06);
 }
-.account .ui-bg-cover {
+.post-id .ui-bg-cover {
   background-color: transparent;
   background-position: center center;
   background-size: cover;
 }
-.account .ui-rect {
+.post-id .ui-rect {
   padding-top: 50% !important;
 }
-.account .ui-rect,
-.account .ui-rect-30,
-.account .ui-rect-60,
-.account .ui-rect-67,
-.account .ui-rect-75 {
+.post-id .ui-rect,
+.post-id .ui-rect-30,
+.post-id .ui-rect-60,
+.post-id .ui-rect-67,
+.post-id .ui-rect-75 {
   position: relative !important;
   display: block !important;
   padding-top: 100% !important;
   width: 100% !important;
 }
-.account .card-footer,
-.account .card hr {
+.post-id .card-footer,
+.post-id .card hr {
   border-color: rgba(24, 28, 33, 0.06);
 }
-.account .ui-rect-content {
+.post-id .ui-rect-content {
   position: absolute !important;
   top: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
   left: 0 !important;
 }
-.account .default-style .ui-bordered {
+.post-id .default-style .ui-bordered {
   border: 1px solid rgba(24, 28, 33, 0.06);
 }
 
-.account .card-body {
+.post-id .card-body {
   padding: 0;
 }
-.account .post-desc {
+.post-id .post-desc {
   padding: 10px;
   padding-bottom: 0px;
   font-size: 13px;
   line-height: 14px;
   margin-bottom: 9px;
 }
-.account .media {
+.post-id .media {
   padding: 10px;
   padding-bottom: 0;
   margin-bottom: -5px !important;
 }
-.account .media-body {
+.post-id .media-body {
   font-size: 13px;
   margin-left: 10px !important;
 }
-.account img.d-block.ui-w-40.rounded-circle {
+.post-id img.d-block.ui-w-40.rounded-circle {
   width: 33px !important;
 }
-.account .post-item {
+.post-id .post-item {
   margin-top: 2px;
   margin-bottom: 10px;
 }
-.account .posts {
+.post-id .posts {
   margin-right: -15px;
   margin-left: -15px;
   margin-top: 65px;
 }
-.account ul.follower-list {
+.post-id ul.follower-list {
   list-style: none;
   background: #fff;
   border-bottom: 1px solid #ccc;
   padding: 5px;
   margin-top: 2px;
 }
-.account ul.follower-list li {
+.post-id ul.follower-list li {
   display: contents;
   margin: 15px;
 }
-.account ul.follower-list li img {
+.post-id ul.follower-list li img {
   width: 23.9%;
   border: 3px solid #f7f9fb;
 }
 
-.account .profile {
+.post-id .profile {
   margin-bottom: 1px;
   margin-top: 0px;
   background: #fff;
@@ -251,7 +232,7 @@ export default {
   margin-right: -15px;
   padding: 25px;
 }
-.account .rounded-circle {
+.post-id .rounded-circle {
   border-radius: 50% !important;
   border: 1px solid #dee2e6;
   padding: 2px;

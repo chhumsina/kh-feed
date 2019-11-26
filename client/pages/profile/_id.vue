@@ -1,12 +1,12 @@
 <template>
-  <div class="profile container">
+  <div class="profile-id container">
     <p class="go-back">
       <a href="javascript:history.back()">
         <i class="fa fa-arrow-left" aria-hidden="true"></i>
       </a>
     </p>
     <div class="container">
-      <div class="text-center profile">
+      <div class="text-center profile-id">
         <img
           src="https://bootdey.com/img/Content/avatar/avatar6.png"
           alt
@@ -23,7 +23,7 @@
         </div>
       </div>
     </div>
-    <div class="account-tabs">
+    <div class="profile-id-tabs">
       <tiny-tabs
         class="nav nav-tabs tabs-alt justify-content-center"
         id="mytabs"
@@ -368,18 +368,18 @@ export default {
 </script>
 
 <style>
-.account {
+.profile-id {
   margin-top: 15px;
 }
-.account .ui-w-100 {
+.profile-id .ui-w-100 {
   width: 100px !important;
   height: auto;
 }
-.account .font-weight-bold {
+.profile-id .font-weight-bold {
   font-weight: 700 !important;
 }
 
-.account .tinytabs .tabs {
+.profile-id .tinytabs .tabs {
   width: 100%;
   text-align: center;
   border-top: 1px solid #ddd;
@@ -388,126 +388,126 @@ export default {
   z-index: 1;
 }
 
-.account .tinytabs .tabs .tab .close {
+.profile-id .tinytabs .tabs .tab .close {
   padding-left: 5px;
 }
-.account .tinytabs .tabs .tab {
+.profile-id .tinytabs .tabs .tab {
   margin: 0 3px 0 0;
   padding: 6px 15px;
   text-decoration: none;
   font-weight: bold;
 }
-.account .tinytabs .section {
+.profile-id .tinytabs .section {
   overflow: hidden;
   clear: both;
   width: 100%;
   th: 100%;
   margin-top: -25px;
 }
-.account .tinytabs .tab.sel {
+.profile-id .tinytabs .tab.sel {
   color: #000;
   text-shadow: none;
 }
-.account .nav-tabs {
+.profile-id .nav-tabs {
   border-bottom: 0;
   margin-bottom: 50px;
 }
 
-.account .posts-content {
+.profile-id .posts-content {
   margin-top: 20px;
 }
-.account .ui-w-40 {
+.profile-id .ui-w-40 {
   width: 40px !important;
   height: auto;
 }
-.account .default-style .ui-bordered {
+.profile-id .default-style .ui-bordered {
   border: 1px solid rgba(24, 28, 33, 0.06);
 }
-.account .ui-bg-cover {
+.profile-id .ui-bg-cover {
   background-color: transparent;
   background-position: center center;
   background-size: cover;
 }
-.account .ui-rect {
+.profile-id .ui-rect {
   padding-top: 50% !important;
 }
-.account .ui-rect,
-.account .ui-rect-30,
-.account .ui-rect-60,
-.account .ui-rect-67,
-.account .ui-rect-75 {
+.profile-id .ui-rect,
+.profile-id .ui-rect-30,
+.profile-id .ui-rect-60,
+.profile-id .ui-rect-67,
+.profile-id .ui-rect-75 {
   position: relative !important;
   display: block !important;
   padding-top: 100% !important;
   width: 100% !important;
 }
-.account .card-footer,
-.account .card hr {
+.profile-id .card-footer,
+.profile-id .card hr {
   border-color: rgba(24, 28, 33, 0.06);
 }
-.account .ui-rect-content {
+.profile-id .ui-rect-content {
   position: absolute !important;
   top: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
   left: 0 !important;
 }
-.account .default-style .ui-bordered {
+.profile-id .default-style .ui-bordered {
   border: 1px solid rgba(24, 28, 33, 0.06);
 }
 
-.account .card-body {
+.profile-id .card-body {
   padding: 0;
 }
-.account .post-desc {
+.profile-id .post-desc {
   padding: 10px;
   padding-bottom: 0px;
   font-size: 13px;
   line-height: 14px;
   margin-bottom: 9px;
 }
-.account .media {
+.profile-id .media {
   padding: 10px;
   padding-bottom: 0;
   margin-bottom: -5px !important;
 }
-.account .media-body {
+.profile-id .media-body {
   font-size: 13px;
   margin-left: 10px !important;
 }
-.account img.d-block.ui-w-40.rounded-circle {
+.profile-id img.d-block.ui-w-40.rounded-circle {
   width: 33px !important;
 }
-.account .post-item {
+.profile-id .post-item {
   margin-top: 2px;
   margin-bottom: 10px;
 }
-.account .posts {
+.profile-id .posts {
   margin-right: -15px;
   margin-left: -15px;
   margin-top: 65px;
 }
-.account ul.follower-list {
+.profile-id ul.follower-list {
   list-style: none;
   background: #fff;
   border-bottom: 1px solid #ccc;
   padding: 5px;
   margin-top: 2px;
 }
-.account ul.follower-list li {
+.profile-id ul.follower-list li {
   display: contents;
   margin: 15px;
 }
-.account ul.follower-list li img {
+.profile-id ul.follower-list li img {
   width: 23.9%;
   border: 3px solid #f7f9fb;
 }
-.profile .overview-list {
+.profile-id .overview-list {
   padding: 0;
   margin-top: 2px;
 }
 
-.profile .profile {
+.profile-id .profile-id {
   margin-bottom: 1px;
   margin-top: 0px;
   background: #fff;
@@ -515,7 +515,7 @@ export default {
   margin-right: -15px;
   padding: 25px;
 }
-.profile .rounded-circle {
+.profile-id .rounded-circle {
   border-radius: 50% !important;
   border: 1px solid #dee2e6;
   padding: 2px;

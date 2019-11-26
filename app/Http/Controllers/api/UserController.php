@@ -28,7 +28,7 @@ class UserController extends Controller
         if($list_type == 'recommend'){
             $data = User::take(6)->get();
         }else{
-            $data = User::take(1)->get();
+            $data = User::get();
         }
 
         return response()->json($data);

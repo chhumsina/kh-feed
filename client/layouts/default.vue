@@ -46,6 +46,10 @@
     box-shadow: 0 0px 3px;
   }
 
+  .loading-inline {
+    height: 40px;
+  }
+
   .loading {
     position: fixed;
     top: 0;

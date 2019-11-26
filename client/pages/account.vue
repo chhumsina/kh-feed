@@ -3,14 +3,9 @@
     <div class="container">
       <div class="d-flex justify-content-between align-items-center py-4">
         <div>
-          <a href="#" class="d-inline-block text-dark">
-            <strong>234</strong>
-            <span class="text-muted">followers</span>
-          </a>
-          <a href="#" class="d-inline-block text-dark ml-3">
-            <strong>111</strong>
-            <span class="text-muted">following</span>
-          </a>
+          <nuxt-link to="create-post">
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Create Post
+          </nuxt-link>
         </div>
         <div>
           <a href="#" @click.prevent="logout">
@@ -24,7 +19,7 @@
 
     <div class="container">
       <div class="text-center profile">
-        <img :src="getImgUrl(user.avatar)" class="ui-w-100 rounded-circle"
+        <img :src="getImgUrl('avatar',user.avatar)" class="ui-w-100 rounded-circle"
         />
 
         <div class="col-md-8 col-lg-6 col-xl-5 p-0 mx-auto">
@@ -307,8 +302,8 @@
                     return;
                 }
             },
-            getImgUrl(avatar) {
-                return `${process.env.baseUrl}avatar/${avatar}`;
+            getImgUrl(type,image) {
+                return `${process.env.baseUrl}image/${type}/${image}`;
             },
             async logout() {
                 await this.$auth.logout()

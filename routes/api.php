@@ -21,9 +21,9 @@ Route::group(['prefix' => '/auth', ['middleware' => 'throttle:20,5']], function(
     Route::get('/login/{service}/callback', 'Auth\SocialLoginController@callback');
 });
 
-Route::get('avatar/{id}', function($id)
+Route::get('image/{type}/{id}', function($type,$id)
 {
-    return Image::make(public_path('/avatar/'.$id))->response('png');
+    return Image::make(public_path('/'.$type.'/'.$id))->response('png');
 });
 
 Route::group(['middleware' => 'jwt.auth'], function() {
@@ -36,6 +36,7 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::get('post/detail/{id}', 'PostController@detail');
 
     Route::post('update-overview', 'UserController@updateOverview');
+    Route::post('create-post', 'PostController@createPost');
 
 
 
