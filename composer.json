@@ -11,6 +11,7 @@
         "laravel/framework": "5.7.*",
         "laravel/socialite": "^4.0",
         "laravel/tinker": "^1.0",
+        "laravolt/avatar": "^3.0",
         "tymon/jwt-auth": "dev-develop"
     },
     "require-dev": {

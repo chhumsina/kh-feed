@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -49,5 +50,27 @@ class User extends Authenticatable implements JWTSubject
     public function hasSocialLinked($service)
     {
         return (bool) $this->social->where('service', $service)->count();
+    }
+
+    public static function updateOverView($input){
+        $userId = Auth::user()->id;
+
+        $data['name'] = $input['name'];
+        $data['email'] = $input['email'];
+        $data['phone'] = $input['phone'];
+        $data['bio'] = $input['bio'];
+        $data = array_filter($data);
+
+        $update = User::where('id',$userId)
+            ->update($data);
+
+        return $update;
+
+    }
+
+    public static function getUser($id){
+        $data = User::where('id', $id)->first();
+
+        return $data;
     }
 }

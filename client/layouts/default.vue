@@ -26,6 +26,9 @@
   body {
     background-color: #eeeeee;
   }
+  .form-control{
+    border-radius: 0!important;
+  }
   .btn-primary {
     background-color: #652828f2;
     border-color: #3e0b0b;
@@ -41,6 +44,42 @@
     text-align: center;
     padding-top: 8px;
     box-shadow: 0 0px 3px;
+  }
+
+  .loading {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+  }
+  .loader {
+    left: 50%;
+    margin-left: -2em;
+    font-size: 7px;
+    border: 0.5em solid rgba(218, 219, 223, 1);
+    border-left: 0.5em solid #000;
+    animation: spin 1.1s infinite linear;
+  }
+  .loader,
+  .loader:after {
+    border-radius: 50%;
+    width: 5em;
+    height: 5em;
+    display: block;
+    position: absolute;
+    top: 50%;
+    margin-top: -4.05em;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(360deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
   }
 </style>
 <style scopped>

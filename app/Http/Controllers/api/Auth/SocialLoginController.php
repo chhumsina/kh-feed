@@ -4,9 +4,11 @@ namespace App\Http\Controllers\api\Auth;
 
 use App\Models\User;
 use App\Models\UserSocial;
+use Illuminate\Support\Facades\Config;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Controller;
 use Laravel\Socialite\Two\InvalidStateException;
+use Laravolt\Avatar\Avatar;
 use Tymon\JWTAuth\JWTAuth;
 
 class SocialLoginController extends Controller
@@ -41,24 +43,36 @@ class SocialLoginController extends Controller
         $user = $this->getExistingUser($serviceUser, $email, $service);
         $newUser = false;
         if (!$user) {
-            $newUser = true;
-            $user = User::create([
-                'name' => $serviceUser->getName(),
-                'email' => $email,
-                'password' => '',
-                'avatar'=>'',
-                'user_type'=>'user',
-                'level'=>1,
-                'status'=>true,
-                'phone'=>'',
-                'pay_name_1'=>'',
-                'pay_number_1'=>'',
-                'pay_name_2'=>'',
-                'pay_number_2'=>'',
-                'pay_name_3'=>'',
-                'pay_number_3'=>'',
-                'bio'=>''
-            ]);
+
+            try {
+
+                $avatar = new Avatar();
+                $colorRandom = rand(1,15);
+                $backgroundRandom = Config::get('laravolt.avatar.backgrounds');
+                $avatar->create($serviceUser->getName())->setBackground($backgroundRandom[$colorRandom])->save(public_path('/avatar/'.$serviceUser->getId().'.png'), 100);
+                $newUser = true;
+                $user = User::create([
+                    'name' => $serviceUser->getName(),
+                    'email' => $email,
+                    'password' => '',
+                    'avatar'=>$serviceUser->getId().'.png',
+                    'user_type'=>'user',
+                    'level'=>1,
+                    'status'=>true,
+                    'phone'=>'',
+                    'pay_name_1'=>'',
+                    'pay_number_1'=>'',
+                    'pay_name_2'=>'',
+                    'pay_number_2'=>'',
+                    'pay_name_3'=>'',
+                    'pay_number_3'=>'',
+                    'bio'=>''
+                ]);
+
+            } catch (\Exception $e) {
+                return redirect(env('CLIENT_BASE_URL') . '/auth/social-callback?error=Unable to login using ' . $service . '. Please try again' . '&origin=login');
+            }
+
         }
 
         if ($this->needsToCreateSocial($user, $service)) {

@@ -85,12 +85,17 @@
           </h2>
         </div>
         <div class="body">
+
+          <div v-show="loadingUser" class="loading">
+            <div class="loader"></div>
+          </div>
+
           <ul class="new_friend_list list-unstyled row">
             <li v-for="(item, $index) in users"
                 :key="$index" class="col-lg-4 col-md-2 col-sm-6 col-4">
               <nuxt-link :to="`/profile/1`">
                 <img
-                  src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                  :src="getImgUrl(item.avatar)"
                   class="img-thumbnail"
                   alt="User Image"
                 />
@@ -110,17 +115,22 @@
         data() {
             return {
                 strategy: this.$auth.$storage.getUniversal('strategy'),
-                users: []
+                users: [],
+                loadingUser: true
             }
         },
         mounted() {
             this.listUser();
         },
         methods: {
+            getImgUrl(avatar) {
+                return `${process.env.baseUrl}avatar/${avatar}`;
+            },
             async logout() {
                 await this.$auth.logout()
             },
             async listUser($state) {
+                this.loadingUser = true
                 this.$axios
                     .get('user/list', {
                         params: {
@@ -131,6 +141,7 @@
                         if (data.length) {
                             this.users = data;
                         }
+                        this.loadingUser = false
                     })
             },
         }

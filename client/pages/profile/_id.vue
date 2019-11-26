@@ -1,5 +1,5 @@
 <template>
-  <div class="account container">
+  <div class="profile container">
     <p class="go-back">
       <a href="javascript:history.back()">
         <i class="fa fa-arrow-left" aria-hidden="true"></i>
@@ -502,12 +502,12 @@ export default {
   width: 23.9%;
   border: 3px solid #f7f9fb;
 }
-.account .overview-list {
+.profile .overview-list {
   padding: 0;
   margin-top: 2px;
 }
 
-.account .profile {
+.profile .profile {
   margin-bottom: 1px;
   margin-top: 0px;
   background: #fff;
@@ -515,7 +515,7 @@ export default {
   margin-right: -15px;
   padding: 25px;
 }
-.account .rounded-circle {
+.profile .rounded-circle {
   border-radius: 50% !important;
   border: 1px solid #dee2e6;
   padding: 2px;

@@ -242,10 +242,6 @@ export default {
   width: 23.9%;
   border: 3px solid #f7f9fb;
 }
-.account .overview-list {
-  padding: 0;
-  margin-top: 2px;
-}
 
 .account .profile {
   margin-bottom: 1px;
