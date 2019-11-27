@@ -19,7 +19,7 @@
 
     <div class="container">
       <div class="text-center profile">
-        <img :src="getImgUrl('avatar',user.avatar)" class="ui-w-100 rounded-circle"
+        <img :src="user.avatar | getImgUrl('avatar','m_avatar')" class="ui-w-100 rounded-circle"
         />
 
         <div class="col-md-8 col-lg-6 col-xl-5 p-0 mx-auto">
@@ -370,6 +370,16 @@
     font-weight: 700 !important;
   }
 
+  .account .box {
+    position: relative;
+    border-radius: 2px;
+    background: #ffffff;
+    border-top: 3px solid #ffffff;
+    margin-bottom: 10px;
+    width: 100%;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  }
+
   .account .tinytabs .tabs {
     width: 100%;
     text-align: center;
@@ -536,4 +546,112 @@
     border: 1px solid #dee2e6;
     padding: 2px;
   }
+
+
+  .account .box-header.with-border {
+    border-bottom: 1px solid #f4f4f4;
+  }
+
+  .account .box-header {
+    color: #444;
+    display: block;
+    padding: 10px;
+    position: relative;
+  }
+
+  .account .user-block img {
+    width: 40px;
+    height: 40px;
+    float: left;
+  }
+
+  .account .user-block .username {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .account .user-block .description {
+    color: #999;
+    font-size: 13px;
+  }
+
+  .account .user-block .username,
+  .user-block .description,
+  .user-block .comment {
+    display: block;
+    margin-left: 50px;
+  }
+
+  .account .box-header > .box-tools {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+  }
+
+  .account .btn-box-tool {
+    padding: 5px;
+    font-size: 12px;
+    background: transparent;
+    color: #97a0b3;
+  }
+
+  .account .box-body {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    padding: 10px;
+  }
+
+  .account .pad {
+    padding: 10px;
+  }
+
+  .account .box .btn-default {
+    background-color: #f4f4f4;
+    color: #444;
+    border-color: #ddd;
+  }
+
+  .account .img-sm + .img-push {
+    margin-left: 40px;
+  }
+
+  .account .box .form-control {
+    border-radius: 0;
+    box-shadow: none;
+    border-color: #d2d6de;
+  }
+
+  .account .attachment-block {
+    border: 1px solid #f4f4f4;
+    padding: 5px;
+    margin-bottom: 10px;
+    background: #f7f7f7;
+  }
+
+  .account .attachment-block .attachment-img {
+    max-width: 100px;
+    max-height: 100px;
+    height: auto;
+    float: left;
+  }
+
+  .account .attachment-block .attachment-pushed {
+    margin-left: 110px;
+  }
+
+  .account .attachment-block .attachment-heading {
+    margin: 0;
+  }
+
+  .account  .attachment-block .attachment-heading .h4,
+  .account .attachment-block .attachment-heading h4 {
+    font-size: 18px;
+  }
+
+  .account .attachment-block .attachment-text {
+    color: #555;
+  }
+
 </style>

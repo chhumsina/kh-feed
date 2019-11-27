@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,6 +16,37 @@ class Posts extends Model
     protected $fillable = [
         'caption','title','photo','status','user_id'
     ];
+
+    public static function listPost($input){
+
+        $list_type = $input['list_type'];
+
+        if($list_type == 'recommend'){
+            $data = Posts::take(6)->get();
+        }else{
+            $search = null;
+            if(isset($input['search'])){
+                $search = " WHERE p.title LIKE '%".$input['search']."%' ";
+            }
+
+            $take = 10;
+            $page = ($input['page']-1)*$take;
+
+            $sql = "
+               select GROUP_CONCAT(pf.file ORDER BY pf.id ASC SEPARATOR ', ') as files, count(pf.id) as num_download_file, p.created_at, p.title, p.photo, p.caption, p.status, u.id, u.avatar, u.name from posts as p
+                join users as u on u.id=p.user_id 
+                left join post_files as pf on pf.post_id=p.id
+                $search
+                group by  p.title, p.photo, p.caption, p.status, u.id, u.avatar, u.name, p.created_at
+                order by p.id desc
+                limit $page,$take
+            ";
+            $data = DB::select($sql);
+        }
+
+        return $data;
+
+    }
 
     public static function createPost($input)
     {
@@ -46,9 +78,9 @@ class Posts extends Model
             $data['user_id'] = $userId;
             $data['status'] = true;
             $data = array_filter($data);
-            Posts::insert($data);
-            $post_id = Posts::latest()->first()->id;
-//dd($post_id);
+            Posts::create($data);
+            $post_id = Posts::orderby('id','desc')->first()->id;
+
             $post_file = PostFiles::createFiles($post_id, $input);
             if(!$post_file['status']){
                 throw new \Exception('Could not create, Please try again! '.$post_file['msg']);

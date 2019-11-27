@@ -51,6 +51,7 @@ module.exports = {
     './plugins/mixins/validation',
     './plugins/mixins/user',
     './plugins/axios',
+    '~/plugins/myfilter.js',
     {
       src: '~plugins/infiniteloading', ssr: false },{ src: '~plugins/tinytabs', ssr: false
     }

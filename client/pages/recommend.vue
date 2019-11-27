@@ -16,11 +16,13 @@
                 :key="$index" class="col-lg-4 col-md-2 col-sm-6 col-4">
               <nuxt-link :to="`/post/1`">
                 <img
-                  :src="getImgUrl('photo',item.photo)"
+                  :src="item.photo | getImgUrl('photo','sm_post')"
                   class="img-thumbnail"
                   alt="User Image"
                 />
-                <h6 class="users_name">{{item.title}}</h6>
+                <h6 class="post_title">
+                  {{item.title | truncate(25, '...')}}
+                </h6>
 <!--                <small class="join_date">Today</small>-->
               </nuxt-link>
             </li>
@@ -46,7 +48,7 @@
                 :key="$index" class="col-lg-4 col-md-2 col-sm-6 col-4">
               <nuxt-link :to="`/profile/1`">
                 <img
-                  :src="getImgUrl('avatar',item.avatar)"
+                  :src="item.avatar  | getImgUrl('avatar','sm_avatar')"
                   class="img-thumbnail"
                   alt="User Image"
                 />
@@ -77,9 +79,6 @@
             this.listPost();
         },
         methods: {
-            getImgUrl(type,image) {
-                return `${process.env.baseUrl}image/${type}/${image}`;
-            },
             async logout() {
                 await this.$auth.logout()
             },
@@ -121,6 +120,9 @@
   .recommend {
     margin-top: 67px;
     margin-bottom: 50px;
+  }
+  .recommend h6.post_title {
+    text-align: left;
   }
 
   .recommend .card {

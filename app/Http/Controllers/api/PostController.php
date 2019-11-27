@@ -15,15 +15,8 @@ class PostController extends Controller
 {
     public function list(Request $input)
     {
-        $list_type = $input['list_type'];
 
-        if($list_type == 'recommend'){
-            $data = Posts::take(6)->get();
-        }else{
-            $sql = "select p.*, u.id, u.avatar, u.name from posts as p
-                    join users as u on u.id=p.user_id order by p.id desc";
-            $data = DB::select($sql);
-        }
+        $data = Posts::listPost($input);
 
         return response()->json($data);
     }

@@ -21,9 +21,20 @@ Route::group(['prefix' => '/auth', ['middleware' => 'throttle:20,5']], function(
     Route::get('/login/{service}/callback', 'Auth\SocialLoginController@callback');
 });
 
-Route::get('image/{type}/{id}', function($type,$id)
+Route::get('image/{type}/{size}/{img}', function($type,$size,$img)
 {
-    return Image::make(public_path('/'.$type.'/'.$id))->response('png');
+    $img  = Image::make(public_path('/'.$type.'/'.$img));
+    if($size == 'sm_post'){
+        $resize = $img->resize(100, 70);
+    }elseif($size == 'm_post'){
+        $resize = $img->resize(200, 140);
+    }elseif($size == 'sm_avatar'){
+        $resize = $img->resize(80, 80);
+    }elseif($size == 'm_avatar'){
+        $resize = $img->resize(150, 150);
+    }
+
+    return $resize->response('png');
 });
 
 Route::group(['middleware' => 'jwt.auth'], function() {

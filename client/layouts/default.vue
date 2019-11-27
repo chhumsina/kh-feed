@@ -1,18 +1,16 @@
 <template>
   <div>
-    <TopNav v-if="$auth.user && showTopNav.includes(this.$route.name)" />
+<!--    <TopNav v-if="$auth.user && showTopNav.includes(this.$route.name)" />-->
     <nuxt />
     <Menu v-if="$auth.user && !showMenu.includes(this.$route.name)" />
   </div>
 </template>
 <script>
     import Menu from '~/components/Menu'
-    import TopNav from '~/components/TopNav'
 
     export default {
         components: {
-            Menu,
-            TopNav
+            Menu
         },
         data() {
             return {
@@ -32,6 +30,10 @@
   .btn-primary {
     background-color: #652828f2;
     border-color: #3e0b0b;
+  }
+  .hr-divider{
+    margin-top: -9px;
+    margin-bottom: 9px;
   }
   .go-back{
     position: fixed;
