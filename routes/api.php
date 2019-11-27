@@ -37,6 +37,15 @@ Route::get('image/{type}/{size}/{img}', function($type,$size,$img)
     return $resize->response('png');
 });
 
+Route::get('file/{id}', function($file)
+{
+    $file = public_path().'/file/'.$file;
+
+    return response()->download($file);
+});
+
+
+
 Route::group(['middleware' => 'jwt.auth'], function() {
     Route::get('account/{id}', 'UserController@account');
     Route::get('user/list', 'UserController@list');

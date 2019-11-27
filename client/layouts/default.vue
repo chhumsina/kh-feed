@@ -59,6 +59,26 @@
     padding: 10px;
   }
 
+  .post-modal-content .loader, .post-modal-content .loader:after {
+    border-radius: 50%;
+    width: 5em;
+    height: 5em;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: inherit;
+    top: 0;
+    margin: 0 auto;
+  }
+  .post-modal-content .loading {
+    position: relative;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+  }
+
   .post-modal-content .photo-content {
     background: #ddd;
     height: 224px;
@@ -84,10 +104,11 @@
 
   .post-modal .download-files {
     text-align: right;
+    margin-bottom: -10px;
   }
 
   .post-modal .download-files ul .file-item {
-    display: inline;
+    display: flex;
   }
 
   .post-modal .download-files ul .file-item i {

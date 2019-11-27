@@ -17,7 +17,7 @@
     <b-modal id="post-modal" scrollable>
       <template v-slot:modal-title>
         <div class="post-modal">
-          <div class="user-block">
+          <div class="user-block" v-show="loadingModal == false">
             <img
               class="img-circle"
               :src="dataModal.avatar  | getImgUrl('avatar','sm_avatar')"
@@ -29,44 +29,53 @@
           </div>
         </div>
       </template>
-     <div class="post-modal post-modal-content">
-       <div v-show="loadingModal" class="loading">
-         <div class="loader"></div>
-       </div>
-       <div v-show="loadingModal == false">
-         <h5 class="title">
-           {{dataModal.title}}
-         </h5>
-         <div class="photo-content">
-           <img
-             class="photo"
-             :src="dataModal.photo  | getImgUrl('photo','m_post')"
-           />
-         </div>
-         <p class="caption">
-           {{dataModal.caption}}
-         </p>
-       </div>
-     </div>
+      <div class="post-modal post-modal-content">
+        <div v-show="loadingModal" class="loading">
+          <div class="loader"></div>
+        </div>
+        <div v-show="loadingModal == false">
+          <h5 class="title">
+            {{dataModal.title}}
+          </h5>
+          <div class="photo-content">
+            <img
+              class="photo"
+              :src="dataModal.photo  | getImgUrl('photo','m_post')"
+            />
+          </div>
+          <p class="caption">
+            {{dataModal.caption}}
+          </p>
+        </div>
+      </div>
       <template v-slot:modal-footer>
-        <div class="post-modal">
+        <div class="post-modal" v-show="loadingModal == false">
           <div class="download-files" v-if="dataModal.num_download_file > 0">
+            <p style="
+    float: left;
+    left: 12px;
+    position: absolute;
+    text-align: center;
+    font-size: 13px;
+    ">Download <br><span style="font-size: 18px;color: #ad0140d1;font-weight: bold;">Free</span></p>
             <ul>
-              <li class="file-item">Download:</li>
               <li class="file-item" v-for="file in (dataModal.files.split(','))">
-                <i v-if="itemsContains(file,'.pdf')" class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                <i v-if="itemsContains(file,'.doc') || itemsContains(file,'.docx')" class="fa fa-file-word-o" aria-hidden="true"></i>
+                <i v-on:click="downloadFile(file)" v-if="itemsContains(file,'.pdf')" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                <i v-on:click="downloadFile(file)"  v-if="itemsContains(file,'.doc') || itemsContains(file,'.docx')" class="fa fa-file-word-o"
+                   aria-hidden="true"></i>
+                &nbsp;
+                <span v-on:click="downloadFile(file)">{{file | truncate(45, '...')}}</span>
               </li>
             </ul>
           </div>
         </div>
 
-<!--        <nuxt-link :to="`/post/${dataModal.id}`">-->
-<!--          <button class="nav-item">-->
-<!--            <i class="fa fa-gift" aria-hidden="true"></i> Download files <small class="text-muted">and</small> Donate-->
-<!--            creator-->
-<!--          </button>-->
-<!--        </nuxt-link>-->
+        <!--        <nuxt-link :to="`/post/${dataModal.id}`">-->
+        <!--          <button class="nav-item">-->
+        <!--            <i class="fa fa-gift" aria-hidden="true"></i> Download files <small class="text-muted">and</small> Donate-->
+        <!--            creator-->
+        <!--          </button>-->
+        <!--        </nuxt-link>-->
       </template>
     </b-modal>
 
@@ -114,19 +123,20 @@
             <ul>
               <li class="file-item">Download:</li>
               <li class="file-item" v-for="file in (item.files.split(','))">
+                <i v-if="itemsContains(file,'.doc') || itemsContains(file,'.docx')" class="fa fa-file-word-o"
+                   aria-hidden="true"></i>
                 <i v-if="itemsContains(file,'.pdf')" class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                <i v-if="itemsContains(file,'.doc') || itemsContains(file,'.docx')" class="fa fa-file-word-o" aria-hidden="true"></i>
               </li>
             </ul>
           </div>
-<!--          not yet -->
-<!--          <hr class="hr-divider"/>-->
-<!--          <button type="button" class="btn btn-default btn-xs">-->
-<!--            <i class="fa fa-thumbs-o-up"></i> Like-->
-<!--          </button>-->
-<!--          <button type="button" class="btn btn-default btn-xs">-->
-<!--            <i class="fa fa-thumbs-o-down"></i> Unlike-->
-<!--          </button>-->
+          <!--          not yet -->
+          <!--          <hr class="hr-divider"/>-->
+          <!--          <button type="button" class="btn btn-default btn-xs">-->
+          <!--            <i class="fa fa-thumbs-o-up"></i> Like-->
+          <!--          </button>-->
+          <!--          <button type="button" class="btn btn-default btn-xs">-->
+          <!--            <i class="fa fa-thumbs-o-down"></i> Unlike-->
+          <!--          </button>-->
         </div>
       </div>
       <infinite-loading
@@ -172,6 +182,18 @@
         mounted() {
         },
         methods: {
+            downloadFile($file){
+                this.$axios
+                    .get('file/'+$file,{responseType: 'arraybuffer'})
+                    .then((response) => {
+                        const url = window.URL.createObjectURL(new Blob([response.data]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', $file);
+                        document.body.appendChild(link);
+                        link.click();
+                    })
+            },
             itemsContains(text, word) {
                 return text.includes(word);
             },
@@ -182,14 +204,14 @@
                 await this.$auth.logout()
             },
             searchFeed() {
-                if(this.search.length >= 5){
+                if (this.search.length >= 5) {
                     this.page = 1;
                     this.feeds = [];
                     this.infiniteId += 1;
                     this.onInfinite();
                 }
             },
-            async onInfinite($state) {
+            async onInfinite() {
                 this.$axios
                     .get('post/list', {
                         params: {
@@ -201,9 +223,6 @@
                         if (data.length) {
                             this.page += 1
                             this.feeds.push(...data)
-                            $state.loaded()
-                        } else {
-                            $state.complete()
                         }
                     })
             },
@@ -233,13 +252,20 @@
     list-style: none;
     padding: 0;
   }
-  .feed .download-files{
+
+  .feed .download-files {
     text-align: right;
   }
-  .feed .download-files ul .file-item {display: inline;}
+
+  .feed .download-files ul .file-item {
+    display: inline-block;
+    padding: 0px 3px;
+  }
+
   .feed .download-files ul .file-item i {
     color: brown;
   }
+
   .feed .top-nav {
     font-weight: 600;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
@@ -248,6 +274,7 @@
     z-index: 2;
     top: 0;
   }
+
   .feed .has-search .form-control {
     background: #fafafa;
     padding-left: 2.375rem;

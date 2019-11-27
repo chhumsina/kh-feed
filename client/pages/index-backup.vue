@@ -2,7 +2,9 @@
   <div class="splash">
     <div class="page-header clear-filter" filter-color="orange">
       <div
-        class="page-header-image"></div>
+        class="page-header-image"
+        style="background-image:url('https://images.unsplash.com/photo-1438783122414-75b2c084bd44?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=2378&amp;q=80 2378w')"
+      ></div>
       <div class="content">
         <div class="card-login card-plain">
           <div class="text-center">
@@ -73,6 +75,18 @@
   .card-plain {
     background: transparent;
     box-shadow: none;
+  }
+
+  .splash .page-header:before {
+    position: absolute;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    left: 0;
+    top: 0;
+    content: '';
+    background-color: rgba(0, 0, 0, 0.5);
   }
 
   .splash .card-login {
