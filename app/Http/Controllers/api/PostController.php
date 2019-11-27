@@ -24,7 +24,7 @@ class PostController extends Controller
     public function detail(Request $input)
     {
         $id = $input['id'];
-        $data = Posts::where('id',$id)->first();
+        $data = Posts::detail($id);
         return response()->json($data);
     }
 

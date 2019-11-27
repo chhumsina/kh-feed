@@ -33,11 +33,11 @@ class Posts extends Model
             $page = ($input['page']-1)*$take;
 
             $sql = "
-               select GROUP_CONCAT(pf.file ORDER BY pf.id ASC SEPARATOR ', ') as files, count(pf.id) as num_download_file, p.created_at, p.title, p.photo, p.caption, p.status, u.id, u.avatar, u.name from posts as p
+               select GROUP_CONCAT(pf.file ORDER BY pf.id ASC SEPARATOR ', ') as files, count(pf.id) as num_download_file, p.id as post_id, p.created_at, p.title, p.photo, p.caption, p.status, u.id, u.avatar, u.name from posts as p
                 join users as u on u.id=p.user_id 
                 left join post_files as pf on pf.post_id=p.id
                 $search
-                group by  p.title, p.photo, p.caption, p.status, u.id, u.avatar, u.name, p.created_at
+                group by  p.title, p.photo, p.id, p.caption, p.status, u.id, u.avatar, u.name, p.created_at
                 order by p.id desc
                 limit $page,$take
             ";
@@ -46,6 +46,22 @@ class Posts extends Model
 
         return $data;
 
+    }
+
+    public static function detail($id){
+
+        $sql = "
+               select GROUP_CONCAT(pf.file ORDER BY pf.id ASC SEPARATOR ', ') as files, count(pf.id) as num_download_file, p.created_at, p.title, p.photo, p.caption, p.status, p.id, u.id as user_id, u.avatar, u.name from posts as p
+                join users as u on u.id=p.user_id 
+                left join post_files as pf on pf.post_id=p.id
+                where p.id = $id
+                group by  p.title, p.id, p.photo, p.caption, p.status, u.id, u.avatar, u.name, p.created_at
+                order by p.id desc
+                limit 1
+            ";
+        $data = DB::select($sql);
+
+        return $data;
     }
 
     public static function createPost($input)

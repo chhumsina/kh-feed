@@ -14,63 +14,69 @@
       </div>
     </nav>
 
-    <div class="container">
-      <b-modal id="post-modal" scrollable>
-        <template v-slot:modal-title>
+    <b-modal id="post-modal" scrollable>
+      <template v-slot:modal-title>
+        <div class="post-modal">
           <div class="user-block">
             <img
               class="img-circle"
-              src="https://bootdey.com/img/Content/avatar/avatar1.png"
-              alt="User Image"
+              :src="dataModal.avatar  | getImgUrl('avatar','sm_avatar')"
             />
-            <span class="username"><a href="#">Jonathan Burke Jr</a></span>
-            <span class="description">Shared publicly - 7:30 PM Today</span>
-          </div>
-        </template>
-        <div v-show="loadingModal" class="loading">
-          <div class="loader"></div>
-        </div>
-        <div class="box box-widget" v-show="loadingModal == false">
-          <div class="box-body">
-            <p>
-              Far far away, behind the word mountains, far from the countries
-              Vokalia and Consonantia, there live the blind texts. Separated they
-              live in Bookmarksgrove right at
-            </p>
-            <div class="attachment-pushed">
-              <h5 class="attachment-heading">
-                <a href="http://www.lipsum.com/">Lorem ipsum text generator</a>
-              </h5>
-            </div>
-            <div class="attachment-block clearfix">
-              <img
-                class="attachment-img"
-                src="https://lorempixel.com/400/300/nature/4/"
-                alt="Attachment Image"
-              />
-            </div>
-            <button type="button" class="btn btn-default btn-xs">
-              <i class="fa fa-thumbs-o-up"></i> Like
-            </button>
+            <span class="username">
+              {{dataModal.name}}
+            </span>
+            <span class="description">{{dataModal.created_at}}</span>
           </div>
         </div>
-        <template v-slot:modal-footer>
-          <nuxt-link :to="`/post/${dataModal.id}`">
-            <button class="nav-item">
-              <i class="fa fa-gift" aria-hidden="true"></i> Download files <small class="text-muted">and</small> Donate
-              creator
-            </button>
-          </nuxt-link
-          >
-        </template>
-      </b-modal>
+      </template>
+     <div class="post-modal post-modal-content">
+       <div v-show="loadingModal" class="loading">
+         <div class="loader"></div>
+       </div>
+       <div v-show="loadingModal == false">
+         <h5 class="title">
+           {{dataModal.title}}
+         </h5>
+         <div class="photo-content">
+           <img
+             class="photo"
+             :src="dataModal.photo  | getImgUrl('photo','m_post')"
+           />
+         </div>
+         <p class="caption">
+           {{dataModal.caption}}
+         </p>
+       </div>
+     </div>
+      <template v-slot:modal-footer>
+        <div class="post-modal">
+          <div class="download-files" v-if="dataModal.num_download_file > 0">
+            <ul>
+              <li class="file-item">Download:</li>
+              <li class="file-item" v-for="file in (dataModal.files.split(','))">
+                <i v-if="itemsContains(file,'.pdf')" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                <i v-if="itemsContains(file,'.doc') || itemsContains(file,'.docx')" class="fa fa-file-word-o" aria-hidden="true"></i>
+              </li>
+            </ul>
+          </div>
+        </div>
 
+<!--        <nuxt-link :to="`/post/${dataModal.id}`">-->
+<!--          <button class="nav-item">-->
+<!--            <i class="fa fa-gift" aria-hidden="true"></i> Download files <small class="text-muted">and</small> Donate-->
+<!--            creator-->
+<!--          </button>-->
+<!--        </nuxt-link>-->
+      </template>
+    </b-modal>
+
+    <div class="container">
       <div
         v-for="(item, $index) in feeds"
         :key="$index"
         :data-num="$index + 1"
         class="box box-widget"
-        @click="showPostModal(item.id)"
+        @click="showPostModal(item.post_id)"
       >
         <div class="box-header with-border">
           <div class="user-block">
@@ -202,12 +208,13 @@
                     })
             },
             async showPostModal(id) {
-                this.loadingModal = true
+                this.loadingModal = true;
+                this.dataModal = '';
                 // this.$router.push({ name: 'feed', hash: '#post' });
                 this.$root.$emit('bv::show::modal', 'post-modal')
                 this.$axios.get('post/detail/' + id).then(({data}) => {
                     if (data) {
-                        this.dataModal = data
+                        this.dataModal = data[0]
                         this.loadingModal = false
                     }
                 })

@@ -27,7 +27,7 @@ Route::get('image/{type}/{size}/{img}', function($type,$size,$img)
     if($size == 'sm_post'){
         $resize = $img->resize(100, 70);
     }elseif($size == 'm_post'){
-        $resize = $img->resize(200, 140);
+        $resize = $img->resize(350, 200);
     }elseif($size == 'sm_avatar'){
         $resize = $img->resize(80, 80);
     }elseif($size == 'm_avatar'){
