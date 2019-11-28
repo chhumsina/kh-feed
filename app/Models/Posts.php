@@ -80,6 +80,7 @@ class Posts extends Model
             }
 
             $input_data = json_decode($input->data);
+
 //            $post = new Posts();
 //            $post->caption = $input_data->caption;
 //            $post->title = $input_data->title;
@@ -94,9 +95,8 @@ class Posts extends Model
             $data['user_id'] = $userId;
             $data['status'] = true;
             $data = array_filter($data);
-            Posts::create($data);
-            $post_id = Posts::orderby('id','desc')->first()->id;
-
+            $create_post = Posts::create($data);
+            $post_id = $create_post->id;
             $post_file = PostFiles::createFiles($post_id, $input);
             if(!$post_file['status']){
                 throw new \Exception('Could not create, Please try again! '.$post_file['msg']);
@@ -104,7 +104,7 @@ class Posts extends Model
 
             $msg['status'] = true;
 
-        }catch (\Exception $e){
+        }catch (\Exception $e){dd(222);
             $msg['msg'] = $e->getMessage();
             $msg['status'] = false;
         }

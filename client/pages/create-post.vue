@@ -26,8 +26,9 @@
         <label>Download files (.pdf, .doc, .xlsx)</label>
         <div class="file-downloads">
           <input @change="addFile('file1', $event)" class="form-control file" type="file" name="UploadedFile"/>
-          <input @change="addFile('file2', $event)" class="form-control file" type="file" name="UploadedFile"/>
-          <input @change="addFile('file3', $event)" class="form-control file" type="file" name="UploadedFile"/>
+<!--          not yet-->
+<!--          <input @change="addFile('file2', $event)" class="form-control file" type="file" name="UploadedFile"/>-->
+<!--          <input @change="addFile('file3', $event)" class="form-control file" type="file" name="UploadedFile"/>-->
         </div>
         <span class="Error"></span>
       </div>

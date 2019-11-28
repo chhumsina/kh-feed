@@ -183,8 +183,9 @@
         },
         methods: {
             downloadFile($file){
+                $file = $file.trim();
                 this.$axios
-                    .get('file/'+$file,{responseType: 'arraybuffer'})
+                    .get('file/'+$file)
                     .then((response) => {
                         const url = window.URL.createObjectURL(new Blob([response.data]));
                         const link = document.createElement('a');

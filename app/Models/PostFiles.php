@@ -25,7 +25,8 @@ class PostFiles extends Model
                     return false;
                 }
 
-                array_push($data,['file'=>$file1_name,'post_id'=>$post_id,'status'=>true]);
+                $data = ['file'=>$file1_name,'post_id'=>$post_id,'status'=>true];
+//                array_push($data,['file'=>$file1_name,'post_id'=>$post_id,'status'=>true]);
             }
             $file2_name = null;
             if ($input->hasFile('file2')) {
@@ -48,7 +49,7 @@ class PostFiles extends Model
                 array_push($data,['file'=>$file3_name,'post_id'=>$post_id,'status'=>true]);
             }
 
-            PostFiles::insert($data);
+            $postFile = PostFiles::create($data);
 
             $msg['status'] = true;
 

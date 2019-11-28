@@ -100,6 +100,7 @@
   .post-modal .download-files ul {
     list-style: none;
     padding: 0;
+    padding-top: 12px;
   }
 
   .post-modal .download-files {
@@ -113,6 +114,7 @@
 
   .post-modal .download-files ul .file-item i {
     color: brown;
+    padding-top: 2px;
   }
 
   .form-control {

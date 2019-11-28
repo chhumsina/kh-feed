@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Models\PostFileDownload;
 use App\Models\Posts;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -45,11 +46,32 @@ class PostController extends Controller
             $msg['status'] = true;
             return response()->json($msg);
 
-        }catch (\Exception $e){
+        }catch (\Exception $e){dd(33);
             DB::rollBack();
             $msg['msg'] = $e->getMessage();
             $msg['status'] = false;
             return response()->json($msg);
+        }
+    }
+
+    public function downloadFile(Request $input){
+        try{
+            DB::beginTransaction();
+            $file_id = $input['id'];
+            $file = public_path().'/file/'.$file_id;
+
+            $down = PostFileDownload::createFileDownload($file_id);
+            if($down['status'] == false){
+                throw new \Exception($down['msg']);
+            }
+
+            DB::commit();
+
+            return response()->download($file);
+
+        }catch (\Exception $e){dd($e->getMessage());
+            DB::rollBack();
+            return false;
         }
     }
 

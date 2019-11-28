@@ -37,14 +37,6 @@ Route::get('image/{type}/{size}/{img}', function($type,$size,$img)
     return $resize->response('png');
 });
 
-Route::get('file/{id}', function($file)
-{
-    $file = public_path().'/file/'.$file;
-
-    return response()->download($file);
-});
-
-
 
 Route::group(['middleware' => 'jwt.auth'], function() {
     Route::get('account/{id}', 'UserController@account');
@@ -58,7 +50,7 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::post('update-overview', 'UserController@updateOverview');
     Route::post('create-post', 'PostController@createPost');
 
-
+    Route::get('file/{id}', 'PostController@downloadFile');
 
     Route::get('/auth/logout', 'MeController@logout');
 
