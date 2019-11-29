@@ -20,8 +20,8 @@ export default {
         this.$auth.setStrategy('local');
 
         this.$auth.fetchUser().then( () => {
-            // return this.$router.push('/recommend');
-            window.location.href =  '/recommend';
+            // return this.$router.push('/feed');
+            window.location.href =  '/feed';
         }).catch( (e) => {
             this.$auth.logout();
             return this.$router.push(`/auth/${this.$route.query.origin ? this.$route.query.origin : 'register'}?error=1`);

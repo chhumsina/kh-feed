@@ -1,6 +1,10 @@
 <template>
   <div style="margin-top: 67px;">
-    <post-item/>
+
+    <no-ssr>
+      <post-item/>
+    </no-ssr>
+
   </div>
 </template>
 

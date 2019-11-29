@@ -24,7 +24,7 @@
   body {
     background-color: #eeeeee;
   }
-  .c_post, .recommend {
+  .c_post, .recommend, .messages {
     padding-left: 0;
     padding-right: 0;
   }

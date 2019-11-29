@@ -22,16 +22,18 @@
       <b-modal id="post-modal" scrollable>
         <template v-slot:modal-title>
           <div class="post-modal">
-            <div class="user-block" v-show="loadingModal == false">
-              <img
-                class="img-circle"
-                :src="dataModal.avatar  | getImgUrl('avatar','sm_avatar')"
-              />
-              <span class="username">
+            <nuxt-link :to="`/profile/${dataModal.user_id}`">
+              <div class="user-block" v-show="loadingModal == false">
+                <img
+                  class="img-circle"
+                  :src="dataModal.avatar  | getImgUrl('avatar','sm_avatar')"
+                />
+                <span class="username">
               {{dataModal.name}}
             </span>
-              <span class="description">{{dataModal.created_at}}</span>
-            </div>
+                <span class="description">{{dataModal.created_at}}</span>
+              </div>
+            </nuxt-link>
           </div>
         </template>
         <div class="post-modal post-modal-content">

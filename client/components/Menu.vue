@@ -9,7 +9,7 @@
       </nuxt-link>
       <nuxt-link to="/feed">
         <li class="nav-item">
-          <i class="fa fa-user-circle" aria-hidden="true"></i>
+          <i class="fa fa-rss" aria-hidden="true"></i>
           <p>Feed</p>
         </li>
       </nuxt-link>
