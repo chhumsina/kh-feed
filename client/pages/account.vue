@@ -46,147 +46,7 @@
         <div class="section" id="posts">
           <h3 class="title">Posts</h3>
           <span style="visibility: hidden">Posts</span>
-          <div>
-            <b-modal id="post-modal" scrollable>
-              <template v-slot:modal-title>
-                <div class="user-block">
-                  <img
-                    class="img-circle"
-                    src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                    alt="User Image"
-                  />
-                  <span class="username"
-                  ><a href="#">Jonathan Burke Jr</a></span
-                  >
-                  <span class="description"
-                  >Shared publicly - 7:30 PM Today</span
-                  >
-                </div>
-              </template>
-              <div v-show="loadingModal" class="loading">
-                <div class="loader"></div>
-              </div>
-              <div class="box box-widget" v-show="loadingModal == false">
-                <div class="box-body">
-                  <p>
-                    Far far away, behind the word mountains, far from the
-                    countries Vokalia and Consonantia, there live the blind
-                    texts. Separated they live in Bookmarksgrove right at
-                  </p>
-                  <div class="attachment-pushed">
-                    <h5 class="attachment-heading">
-                      <a href="http://www.lipsum.com/"
-                      >Lorem ipsum text generator</a
-                      >
-                    </h5>
-                  </div>
-                  <div class="attachment-block clearfix">
-                    <img
-                      class="attachment-img"
-                      src="https://lorempixel.com/400/300/nature/4/"
-                      alt="Attachment Image"
-                    />
-                  </div>
-                  <button type="button" class="btn btn-default btn-xs">
-                    <i class="fa fa-thumbs-o-up"></i> Like
-                  </button>
-                </div>
-              </div>
-              <template v-slot:modal-footer>
-                <nuxt-link :to="`/post/${dataModal.id}`">
-                  <button class="nav-item">
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i> Buy
-                    now
-                  </button>
-                </nuxt-link
-                >
-              </template>
-            </b-modal>
-
-            <div
-              v-for="(item, $index) in feeds"
-              :key="$index"
-              :data-num="$index + 1"
-              class="box box-widget"
-              @click="showPostModal(item.id)"
-            >
-              <div class="box-header with-border">
-                <div class="user-block">
-                  <img
-                    class="img-circle"
-                    src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                    alt="User Image"
-                  />
-                  <span class="username"
-                  ><a href="#">Jonathan Burke Jr {{ $index }}.</a></span
-                  >
-                  <span class="description"
-                  >Shared publicly - 7:30 PM Today</span
-                  >
-                </div>
-                <div class="box-tools">
-                  <button
-                    type="button"
-                    class="btn btn-box-tool"
-                    data-toggle="tooltip"
-                    title=""
-                    data-original-title="Mark as read"
-                  >
-                    <i class="fa fa-circle-o"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-box-tool"
-                    data-widget="collapse"
-                  >
-                    <i class="fa fa-minus"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-box-tool"
-                    data-widget="remove"
-                  >
-                    <i class="fa fa-times"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="box-body">
-                <p>
-                  Far far away, behind the word mountains, far from the
-                  countries Vokalia and Consonantia, there live the blind texts.
-                  Separated they live in Bookmarksgrove right at
-                </p>
-
-                <div class="attachment-block clearfix">
-                  <img
-                    class="attachment-img"
-                    src="https://lorempixel.com/400/300/nature/4/"
-                    alt="Attachment Image"
-                  />
-                  <div class="attachment-pushed">
-                    <h5 class="attachment-heading">
-                      <a href="http://www.lipsum.com/"
-                      >Lorem ipsum text generator</a
-                      >
-                    </h5>
-                  </div>
-                </div>
-                <button type="button" class="btn btn-default btn-xs">
-                  <i class="fa fa-share"></i> Share
-                </button>
-                <button type="button" class="btn btn-default btn-xs">
-                  <i class="fa fa-thumbs-o-up"></i> Like
-                </button>
-              </div>
-            </div>
-            <infinite-loading
-              @infinite="onInfinite"
-              spinner="bubbles"
-              ref="infiniteLoading"
-            ></infinite-loading>
-            <br/>
-            <br/>
-          </div>
+          <post-item/>
         </div>
         <div class="section" id="Overview">
           <h3 class="title">Overview</h3>
@@ -249,15 +109,13 @@
 </template>
 
 <script>
+    import PostItem from '~/components/post-item'
+
     export default {
         middleware: 'auth',
         data() {
             return {
                 strategy: this.$auth.$storage.getUniversal('strategy'),
-                page: 1,
-                feeds: [],
-                dataModal: '',
-                loadingModal: true,
                 form: {
                     name: '',
                     email: '',
@@ -267,18 +125,12 @@
                 error: this.$route.query.error
             }
         },
+        components: {
+            PostItem
+        },
         computed: {
-            postModal: function () {
-                return this.dataModal
-            }
         },
         watch: {
-            $route(to, from) {
-                // if the current history index isn't at the last position, use 'back' transition
-                if (to.hash == '') {
-                    this.$modal.hide('post-modal')
-                }
-            }
         },
         mounted() {
         },
@@ -307,34 +159,6 @@
             },
             async logout() {
                 await this.$auth.logout()
-            },
-            async onInfinite($state) {
-                this.$axios
-                    .get('post/list', {
-                        params: {
-                            page: this.page
-                        }
-                    })
-                    .then(({data}) => {
-                        if (data.length) {
-                            this.page += 1
-                            this.feeds.push(...data)
-                            $state.loaded()
-                        } else {
-                            $state.complete()
-                        }
-                    })
-            },
-            async showPostModal(id) {
-                this.loadingModal = true
-                // this.$router.push({ name: 'feed', hash: '#post' });
-                this.$root.$emit('bv::show::modal', 'post-modal')
-                this.$axios.get('post/detail/' + id).then(({data}) => {
-                    if (data) {
-                        this.dataModal = data
-                        this.loadingModal = false
-                    }
-                })
             },
             onClose(id) {
                 console.log(
@@ -366,25 +190,10 @@
     height: auto;
   }
 
-  .account .font-weight-bold {
-    font-weight: 700 !important;
-  }
-
-  .account .box {
-    position: relative;
-    border-radius: 2px;
-    background: #ffffff;
-    border-top: 3px solid #ffffff;
-    margin-bottom: 10px;
-    width: 100%;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  }
-
   .account .tinytabs .tabs {
     width: 100%;
     text-align: center;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ccc;
     padding: 10px 0px;
     z-index: 1;
   }
@@ -418,95 +227,6 @@
     margin-bottom: 50px;
   }
 
-  .account .posts-content {
-    margin-top: 20px;
-  }
-
-  .account .ui-w-40 {
-    width: 40px !important;
-    height: auto;
-  }
-
-  .account .default-style .ui-bordered {
-    border: 1px solid rgba(24, 28, 33, 0.06);
-  }
-
-  .account .ui-bg-cover {
-    background-color: transparent;
-    background-position: center center;
-    background-size: cover;
-  }
-
-  .account .ui-rect {
-    padding-top: 50% !important;
-  }
-
-  .account .ui-rect,
-  .account .ui-rect-30,
-  .account .ui-rect-60,
-  .account .ui-rect-67,
-  .account .ui-rect-75 {
-    position: relative !important;
-    display: block !important;
-    padding-top: 100% !important;
-    width: 100% !important;
-  }
-
-  .account .card-footer,
-  .account .card hr {
-    border-color: rgba(24, 28, 33, 0.06);
-  }
-
-  .account .ui-rect-content {
-    position: absolute !important;
-    top: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    left: 0 !important;
-  }
-
-  .account .default-style .ui-bordered {
-    border: 1px solid rgba(24, 28, 33, 0.06);
-  }
-
-  .account .card-body {
-    padding: 0;
-  }
-
-  .account .post-desc {
-    padding: 10px;
-    padding-bottom: 0px;
-    font-size: 13px;
-    line-height: 14px;
-    margin-bottom: 9px;
-  }
-
-  .account .media {
-    padding: 10px;
-    padding-bottom: 0;
-    margin-bottom: -5px !important;
-  }
-
-  .account .media-body {
-    font-size: 13px;
-    margin-left: 10px !important;
-  }
-
-  .account img.d-block.ui-w-40.rounded-circle {
-    width: 33px !important;
-  }
-
-  .account .post-item {
-    margin-top: 2px;
-    margin-bottom: 10px;
-  }
-
-  .account .posts {
-    margin-right: -15px;
-    margin-left: -15px;
-    margin-top: 65px;
-  }
-
   .account ul.follower-list {
     list-style: none;
     background: #fff;
@@ -527,9 +247,11 @@
 
   .account .overview-list {
     padding: 0;
-    margin-top: 2px;
     background: #fff;
     padding: 29px 22px;
+    border-top: 1px solid #aaa;
+    border-radius: 2px;
+    border-bottom: 1px solid #aaa;
   }
 
   .account .profile {
@@ -548,110 +270,5 @@
   }
 
 
-  .account .box-header.with-border {
-    border-bottom: 1px solid #f4f4f4;
-  }
-
-  .account .box-header {
-    color: #444;
-    display: block;
-    padding: 10px;
-    position: relative;
-  }
-
-  .account .user-block img {
-    width: 40px;
-    height: 40px;
-    float: left;
-  }
-
-  .account .user-block .username {
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  .account .user-block .description {
-    color: #999;
-    font-size: 13px;
-  }
-
-  .account .user-block .username,
-  .user-block .description,
-  .user-block .comment {
-    display: block;
-    margin-left: 50px;
-  }
-
-  .account .box-header > .box-tools {
-    position: absolute;
-    right: 10px;
-    top: 5px;
-  }
-
-  .account .btn-box-tool {
-    padding: 5px;
-    font-size: 12px;
-    background: transparent;
-    color: #97a0b3;
-  }
-
-  .account .box-body {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 3px;
-    border-bottom-left-radius: 3px;
-    padding: 10px;
-  }
-
-  .account .pad {
-    padding: 10px;
-  }
-
-  .account .box .btn-default {
-    background-color: #f4f4f4;
-    color: #444;
-    border-color: #ddd;
-  }
-
-  .account .img-sm + .img-push {
-    margin-left: 40px;
-  }
-
-  .account .box .form-control {
-    border-radius: 0;
-    box-shadow: none;
-    border-color: #d2d6de;
-  }
-
-  .account .attachment-block {
-    border: 1px solid #f4f4f4;
-    padding: 5px;
-    margin-bottom: 10px;
-    background: #f7f7f7;
-  }
-
-  .account .attachment-block .attachment-img {
-    max-width: 100px;
-    max-height: 100px;
-    height: auto;
-    float: left;
-  }
-
-  .account .attachment-block .attachment-pushed {
-    margin-left: 110px;
-  }
-
-  .account .attachment-block .attachment-heading {
-    margin: 0;
-  }
-
-  .account  .attachment-block .attachment-heading .h4,
-  .account .attachment-block .attachment-heading h4 {
-    font-size: 18px;
-  }
-
-  .account .attachment-block .attachment-text {
-    color: #555;
-  }
 
 </style>

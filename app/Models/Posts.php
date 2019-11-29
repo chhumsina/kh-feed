@@ -26,17 +26,24 @@ class Posts extends Model
         }else{
             $search = null;
             if(isset($input['search'])){
-                $search = " WHERE p.title LIKE '%".$input['search']."%' ";
+                $search = " and p.title LIKE '%".$input['search']."%' ";
             }
 
             $take = 10;
             $page = ($input['page']-1)*$take;
 
+            $post_by = null;
+            if($input['id']){
+                $post_by = " and p.user_id = ".$input['id'];
+            }
+
             $sql = "
-               select GROUP_CONCAT(pf.file ORDER BY pf.id ASC SEPARATOR ', ') as files, count(pf.id) as num_download_file, p.id as post_id, p.created_at, p.title, p.photo, p.caption, p.status, u.id, u.avatar, u.name from posts as p
+               select GROUP_CONCAT(pf.file ORDER BY pf.id ASC SEPARATOR ', ') as files, count(pf.id) as num_download_file, p.id as post_id, p.created_at, p.title, p.photo, p.caption, p.status, u.id as user_id, u.avatar, u.name from posts as p
                 join users as u on u.id=p.user_id 
                 left join post_files as pf on pf.post_id=p.id
+                where p.status = true
                 $search
+                $post_by
                 group by  p.title, p.photo, p.id, p.caption, p.status, u.id, u.avatar, u.name, p.created_at
                 order by p.id desc
                 limit $page,$take

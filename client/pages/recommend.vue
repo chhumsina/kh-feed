@@ -14,14 +14,14 @@
           <ul v-show="loadingPost==false" class="new_friend_list list-unstyled row">
             <li v-for="(item, $index) in posts"
                 :key="$index" class="col-lg-4 col-md-2 col-sm-6 col-4">
-              <nuxt-link :to="`/post/1`">
+              <nuxt-link :to="`/post/${item.id}`">
                 <img
                   :src="item.photo | getImgUrl('photo','sm_post')"
                   class="img-thumbnail"
                   alt="User Image"
                 />
-                <h6 class="post_title">
-                  {{item.title | truncate(25, '...')}}
+                <h6 class="users_name">
+                  {{item.title | truncate(20, '...')}}
                 </h6>
 <!--                <small class="join_date">Today</small>-->
               </nuxt-link>
@@ -46,13 +46,13 @@
           <ul v-show="loadingUser==false" class="new_friend_list list-unstyled row">
             <li v-for="(item, $index) in users"
                 :key="$index" class="col-lg-4 col-md-2 col-sm-6 col-4">
-              <nuxt-link :to="`/profile/1`">
+              <nuxt-link :to="`/profile/${item.id}`">
                 <img
                   :src="item.avatar  | getImgUrl('avatar','sm_avatar')"
                   class="img-thumbnail"
                   alt="User Image"
                 />
-                <h6 class="users_name">{{item.name}}</h6>
+                <h6 class="users_name">{{item.name | truncate(20, '...')}}</h6>
               </nuxt-link>
             </li>
           </ul>

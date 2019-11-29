@@ -15,7 +15,7 @@
         data() {
             return {
                 showTopNav: ['recommend', 'feed', 'messages'],
-                showMenu: ['post-id', 'profile-id']
+                showMenu: ['post-id']
             }
         }
     }
@@ -24,7 +24,10 @@
   body {
     background-color: #eeeeee;
   }
-
+  .c_post, .recommend {
+    padding-left: 0;
+    padding-right: 0;
+  }
   .post-modal .user-block img {
     width: 40px;
     height: 40px;
@@ -55,6 +58,7 @@
     margin: 0 auto;
     height: 100%;
   }
+
   .post-modal-content .title, .post-modal-content .caption {
     padding: 10px;
   }
@@ -70,6 +74,7 @@
     top: 0;
     margin: 0 auto;
   }
+
   .post-modal-content .loading {
     position: relative;
     top: 0;
@@ -185,6 +190,121 @@
       transform: rotate(0deg);
     }
   }
+
+  /*  post*/
+  .c_post .download-files ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .c_post .download-files {
+    text-align: right;
+  }
+
+  .c_post .download-files ul .file-item {
+    display: inline-block;
+    padding: 0px 3px;
+  }
+
+  .c_post .download-files ul .file-item i {
+    color: brown;
+  }
+  .c_post .box {
+    position: relative;
+    border-radius: 2px;
+    background: #ffffff;
+    border-top: 3px solid #ffffff;
+    margin-bottom: 10px;
+    width: 100%;
+    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.1);
+  }
+
+  .c_post .box-header.with-border {
+    border-bottom: 1px solid #eee;
+  }
+
+  .c_post .box-header {
+    color: #444;
+    display: block;
+    padding: 10px;
+    position: relative;
+  }
+
+  .c_post .user-block img {
+    width: 40px;
+    height: 40px;
+    float: left;
+  }
+
+  .c_post .user-block .username {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .c_post .user-block .description {
+    color: #999;
+    font-size: 13px;
+  }
+
+  .c_post .user-block .username,
+  .c_post .user-block .description,
+  .c_post .user-block .comment {
+    display: block;
+    margin-left: 50px;
+  }
+
+  .c_post .box-header > .box-tools {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+  }
+
+  .c_post .btn-box-tool {
+    padding: 5px;
+    font-size: 12px;
+    background: transparent;
+    color: #97a0b3;
+  }
+
+  .c_post .box-body {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    padding: 10px;
+  }
+
+  .c_post .attachment-block {
+    border: 1px solid #f4f4f4;
+    padding: 5px;
+    margin-bottom: 20px;
+    background: #fbfbfb;
+  }
+
+  .c_post .attachment-block .attachment-img {
+    max-width: 100px;
+    max-height: 100px;
+    height: auto;
+    float: left;
+  }
+
+  .c_post .attachment-block .attachment-pushed {
+    margin-left: 110px;
+  }
+
+  .c_post .attachment-block .attachment-heading {
+    margin: 0;
+  }
+
+  .c_post .attachment-block .attachment-heading .h4,
+  .c_post .attachment-block .attachment-heading h4 {
+    font-size: 18px;
+  }
+
+  .c_post .attachment-block .attachment-text {
+    color: #555;
+  }
+  /*  post*/
 </style>
 <style scopped>
   .easy-bottom-bar {
