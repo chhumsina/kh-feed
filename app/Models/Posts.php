@@ -14,7 +14,7 @@ class Posts extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'caption','title','photo','status','user_id'
+        'caption','photo','status','user_id'
     ];
 
     public static function listPost($input){
@@ -26,7 +26,7 @@ class Posts extends Model
         }else{
             $search = null;
             if(isset($input['search'])){
-                $search = " and p.title LIKE '%".$input['search']."%' ";
+                $search = " and p.caption LIKE '%".$input['search']."%' ";
             }
 
             $take = 10;
@@ -38,13 +38,12 @@ class Posts extends Model
             }
 
             $sql = "
-               select GROUP_CONCAT(pf.file ORDER BY pf.id ASC SEPARATOR ', ') as files, count(pf.id) as num_download_file, p.id as post_id, p.created_at, p.title, p.photo, p.caption, p.status, u.id as user_id, u.avatar, u.name from posts as p
-                join users as u on u.id=p.user_id 
-                left join post_files as pf on pf.post_id=p.id
+               select p.id as post_id, p.created_at, p.photo, p.caption, p.status, u.id as user_id, u.avatar, u.name from posts as p
+                join users as u on u.id=p.user_id
                 where p.status = true
                 $search
                 $post_by
-                group by  p.title, p.photo, p.id, p.caption, p.status, u.id, u.avatar, u.name, p.created_at
+                group by p.photo, p.id, p.caption, p.status, u.id, u.avatar, u.name, p.created_at
                 order by p.id desc
                 limit $page,$take
             ";
@@ -58,11 +57,10 @@ class Posts extends Model
     public static function detail($id){
 
         $sql = "
-               select GROUP_CONCAT(pf.file ORDER BY pf.id ASC SEPARATOR ', ') as files, count(pf.id) as num_download_file, p.created_at, p.title, p.photo, p.caption, p.status, p.id, u.id as user_id, u.avatar, u.name from posts as p
+               select p.created_at, p.photo, p.caption, p.status, p.id, u.id as user_id, u.avatar, u.name from posts as p
                 join users as u on u.id=p.user_id 
-                left join post_files as pf on pf.post_id=p.id
                 where p.id = $id
-                group by  p.title, p.id, p.photo, p.caption, p.status, u.id, u.avatar, u.name, p.created_at
+                group by  p.id, p.photo, p.caption, p.status, u.id, u.avatar, u.name, p.created_at
                 order by p.id desc
                 limit 1
             ";
@@ -87,28 +85,13 @@ class Posts extends Model
             }
 
             $input_data = json_decode($input->data);
-
-//            $post = new Posts();
-//            $post->caption = $input_data->caption;
-//            $post->title = $input_data->title;
-//            $post->photo = $photo_name;
-//            $post->user_id = $userId;
-//            $post->status = true;
-//            $post = $post->save();
-//            $post_id = $post->id;
             $data['caption'] = $input_data->caption;
-            $data['title'] = $input_data->title;
             $data['photo'] = $photo_name;
             $data['user_id'] = $userId;
             $data['status'] = true;
             $data = array_filter($data);
             $create_post = Posts::create($data);
             $post_id = $create_post->id;
-            $post_file = PostFiles::createFiles($post_id, $input);
-            if(!$post_file['status']){
-                throw new \Exception('Could not create, Please try again! '.$post_file['msg']);
-            }
-
             $msg['status'] = true;
 
         }catch (\Exception $e){dd(222);

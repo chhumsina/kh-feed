@@ -21,7 +21,7 @@
                   alt="User Image"
                 />
                 <h6 class="users_name">
-                  {{item.title | truncate(20, '...')}}
+                  {{item.caption | truncate(20, '...')}}
                 </h6>
 <!--                <small class="join_date">Today</small>-->
               </nuxt-link>

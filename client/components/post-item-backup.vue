@@ -41,6 +41,9 @@
             <div class="loader"></div>
           </div>
           <div v-show="loadingModal == false">
+            <h5 class="title">
+              {{dataModal.title}}
+            </h5>
             <div class="photo-content">
               <img
                 class="photo"
@@ -99,49 +102,37 @@
             {{item.caption | truncate(150, '...')}}
           </p>
 
-          <div class="post-img">
+          <div class="attachment-block clearfix">
             <img
               class="attachment-img"
-              :src="item.photo | getImgUrl('photo','m_post')"
+              :src="item.photo | getImgUrl('photo','sm_post')"
               alt="Attachment Image"
             />
-          </div>
-
-        </div>
-        <div class="box-footer box-comments" style="display: block;">
-          <div class="box-comment">
-            <img class="img-circle img-sm" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="User Image">
-            <div class="comment-text">
-          <span class="username">
-          Maria Gonzales
-          <span class="text-muted pull-right">8:03 PM Today</span>
-          </span>
-              It is a long established fact that a reader will be distracted
-              by the readable content of a page when looking at its layout.
+            <div class="attachment-pushed">
+              <p class="attachment-heading">
+                {{item.title | truncate(60, '...')}}
+              </p>
             </div>
           </div>
-
-          <div class="box-comment">
-            <img class="img-circle img-sm" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="User Image">
-            <div class="comment-text">
-          <span class="username">
-          Luna Stark
-          <span class="text-muted pull-right">8:03 PM Today</span>
-          </span>
-              It is a long established fact that a reader will be distracted
-              by the readable content of a page when looking at its layout.
-            </div>
+          <div class="download-files" v-if="item.num_download_file > 0">
+            <ul>
+              <li class="file-item">Download:</li>
+              <li class="file-item" v-for="file in (item.files.split(','))">
+                <i v-if="itemsContains(file,'.doc') || itemsContains(file,'.docx')" class="fa fa-file-word-o"
+                   aria-hidden="true"></i>
+                <i v-if="itemsContains(file,'.pdf')" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+              </li>
+            </ul>
           </div>
+          <!--          not yet -->
+          <!--          <hr class="hr-divider"/>-->
+          <!--          <button type="button" class="btn btn-default btn-xs">-->
+          <!--            <i class="fa fa-thumbs-o-up"></i> Like-->
+          <!--          </button>-->
+          <!--          <button type="button" class="btn btn-default btn-xs">-->
+          <!--            <i class="fa fa-thumbs-o-down"></i> Unlike-->
+          <!--          </button>-->
         </div>
-        <div class="box-footer" style="display: block;">
-          <form action="#" method="post">
-            <img class="img-responsive img-circle img-sm" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Alt Text">
-            <div class="img-push">
-              <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
-            </div>
-          </form>
-        </div>
-      </div>
       </div>
       <infinite-loading
         @infinite="onInfinite"

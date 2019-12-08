@@ -49,6 +49,16 @@
     margin-right: -1rem;
   }
 
+  .modal-dialog {
+    max-width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    display: flex;
+  }
+
   .post-modal-content .photo-content .photo {
     position: absolute;
     left: 0;
@@ -304,6 +314,65 @@
   .c_post .attachment-block .attachment-text {
     color: #555;
   }
+
+  .c_post .box-comments {
+    background: #f7f7f7 !important;
+  }
+  .c_post .box-footer {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top: 1px solid #f4f4f4;
+    padding: 10px;
+    background-color: #fff;
+  }
+  .c_post .box-comments .box-comment:first-of-type {
+    padding-top: 0;
+  }
+  .c_post .box-comments .box-comment {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+  .c_post .img-sm,
+  .c_post .box-comments .box-comment img,
+  .c_post .user-block.user-block-sm img {
+    width: 30px !important;
+    height: 30px !important;
+  }
+  .c_post .img-sm, .c_post .img-md,
+  .c_post .img-lg, .c_post .box-comments .box-comment img,
+  .c_post .user-block.user-block-sm img {
+    float: left;
+  }
+  .c_post .box-comments .comment-text {
+    margin-left: 40px;
+    color: #555;
+  }
+  .c_post .box-comments .username {
+    color: #444;
+    display: block;
+    font-weight: 600;
+  }
+  .c_post .box-comments .text-muted {
+    font-weight: 400;
+    font-size: 12px;
+  }
+  .c_post .img-sm+.img-push {
+    margin-left: 40px;
+  }
+  .c_post .box .form-control {
+    border-radius: 0;
+    box-shadow: none;
+    border-color: #d2d6de;
+  }
+  .c_post .post-img{
+    background: #f1f1f1;
+    margin-left: -10px;
+    margin-right: -10px;
+    text-align: center;
+  }
+
   /*  post*/
 </style>
 <style scopped>

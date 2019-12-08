@@ -4,8 +4,14 @@
     <form @submit.prevent="createPost"
           enctype="multipart/form-data">
       <div class="form-group">
+        <label>Creator caption</label>
         <textarea v-model="caption" class="form-control" style="height: 150px" name="caption" required
-                  placeholder="Enter Caption"/>
+                  placeholder="Enter Your Full Name"/>
+        <span class="Error"></span>
+      </div>
+      <div class="form-group">
+        <label>Post title</label>
+        <input v-model="title" class="form-control" type="text" name="tile" required placeholder="Post title"/>
         <span class="Error"></span>
       </div>
       <div class="preview text-center">
@@ -13,6 +19,16 @@
         <div class="browse-button">
           <input @change="addFile('photo', $event)" class="browse-input" type="file" required name="photo"
                  id="UploadedFile"/>
+        </div>
+        <span class="Error"></span>
+      </div>
+      <div class="form-group">
+        <label>Download files (.pdf, .doc, .xlsx)</label>
+        <div class="file-downloads">
+          <input @change="addFile('file1', $event)" class="form-control file" type="file" name="UploadedFile"/>
+<!--          not yet-->
+<!--          <input @change="addFile('file2', $event)" class="form-control file" type="file" name="UploadedFile"/>-->
+<!--          <input @change="addFile('file3', $event)" class="form-control file" type="file" name="UploadedFile"/>-->
         </div>
         <span class="Error"></span>
       </div>
@@ -32,7 +48,11 @@
                 strategy: this.$auth.$storage.getUniversal('strategy'),
 
                 caption: '',
+                title: '',
                 photo: '',
+                file1: '',
+                file2: '',
+                file3: '',
                 error: this.$route.query.error
             }
         },
@@ -44,10 +64,20 @@
             },
             async createPost() {
                 let rawData = {
-                    caption: this.caption
+                    caption: this.caption,
+                    title: this.title,
                 }
                 rawData = JSON.stringify(rawData)
                 let formData = new FormData();
+                if (typeof (this.file1.name) !== "undefined" && this.file2 !== null) {
+                    formData.append('file1', this.file1, this.file1.name)
+                }
+                if (typeof (this.file2.name) != "undefined" && this.file2 !== null) {
+                    formData.append('file2', this.file1, this.file2.name)
+                }
+                if (typeof (this.file3.name) != "undefined" && this.file3 !== null) {
+                    formData.append('file3', this.file3, this.file3.name)
+                }
                 formData.append('photo', this.photo, this.photo.name)
                 formData.append('data', rawData);
                 try {
