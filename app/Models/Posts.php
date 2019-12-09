@@ -68,6 +68,8 @@ class Posts extends Model
             ";
         $data = DB::select($sql);
 
+        $view = PostView::createPostView($id);
+
         return $data;
     }
 

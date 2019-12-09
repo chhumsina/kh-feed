@@ -16,8 +16,18 @@
       </div>
     </nav>
 
+
     <div class="container c_post">
 
+      <nuxt-link to="/create-post" v-if=" this.$route.params.id == undefined && this.$route.name == 'feed' ">
+        <div class="box-footer" style="display: block; margin-bottom: 10px; border-top: 1px solid #ccc; border-bottom: 1px solid #aaa;" >
+          <img style="margin-top: 0px; height: 35px !important; width: 35px !important;" class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
+               alt="Alt Text">
+          <div class="img-push">
+            <input style="border-radius: 25px !important;background: #fafafa;" type="text" class="form-control input-sm" placeholder="What's you want to share?">
+          </div>
+        </div>
+      </nuxt-link>
 
       <b-modal id="post-modal" scrollable>
         <template v-slot:modal-title>
@@ -31,7 +41,9 @@
                 <span class="username">
               {{dataModal.name}}
             </span>
-                <span class="description">{{dataModal.created_at}}</span>
+                <span class="description">
+                  <timeago :datetime="dataModal.created_at" :auto-update="10"></timeago>
+                </span>
               </div>
             </nuxt-link>
           </div>
@@ -47,21 +59,30 @@
                 :src="dataModal.photo  | getImgUrl('photo','m_post')"
               />
             </div>
+            <div class="post_property">
+              <span class="post_view_num text-muted">{{numView.num_view}} views · {{lastRead}} last read</span>
+              <span class="post_view_num"></span>
+              <a href="#comment"><span style="float: right;" class="post_view_num">{{numComment.num_comment}} comments</span></a>
+            </div>
             <p style="white-space: pre-line;" class="caption">
               <span v-html="dataModal.caption"></span>
             </p>
 
             <div class="c_post">
-              <div class="box-footer box-comments" style="display: block;">
-                <p style="border-bottom: 1px solid #ddd;padding-bottom: 9px;"><i class="fa fa-comments-o" aria-hidden="true"></i> Comments</p>
+              <div id="comment" class="box-footer box-comments" style="display: block;">
+                <p style="border-bottom: 1px solid #ddd;padding-bottom: 9px;"><i class="fa fa-comments-o"
+                                                                                 aria-hidden="true"></i> Comments</p>
+                <p class="text-center" v-if="loadingModalComment==true">Loading...</p>
                 <div v-for="(item, $index) in dataModalComment" :key="$index" class="box-comment">
                   <img class="img-circle img-sm" :src="item.avatar  | getImgUrl('avatar','sm_avatar')">
                   <div class="comment-text">
           <span class="username">
           {{item.name}}
-          <span class="text-muted pull-right">{{item.created_at}}</span>
+          <span class="text-muted pull-right">
+            <timeago :datetime="item.created_at" :auto-update="10"></timeago>
           </span>
-                   {{item.comments}}
+          </span>
+                    {{item.comments}}
                   </div>
                 </div>
               </div>
@@ -72,9 +93,11 @@
           <div class="post-modal c_post" v-show="loadingModal == false">
             <div class="box-footer" style="display: block;">
               <form @submit.prevent="createComment">
-                <img class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')" alt="Alt Text">
+                <img class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
+                     alt="Alt Text">
                 <div class="img-push">
-                  <input v-model="comment" type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+                  <input required v-model="comment" type="text" class="form-control input-sm"
+                         placeholder="Press enter to post comment">
                   <input type="hidden" v-model="postId"/>
                 </div>
               </form>
@@ -94,7 +117,7 @@
               />
               <span class="username">{{item.name}}</span>
               <span class="description">
-              {{item.created_at}}
+              <timeago :datetime="item.created_at" :auto-update="10"></timeago>
             </span>
             </div>
           </div>
@@ -115,23 +138,24 @@
         </div>
         <div class="box-footer" style="display: block;" @click="showPostModal(item.post_id)">
 
-            <img class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')" alt="Alt Text">
-            <div class="img-push">
-              <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
-            </div>
+          <img class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
+               alt="Alt Text">
+          <div class="img-push">
+            <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+          </div>
 
         </div>
       </div>
-      </div>
-      <infinite-loading
-        @infinite="onInfinite"
-        spinner="bubbles"
-        ref="infiniteLoading"
-      ></infinite-loading>
-      <br/>
-      <br/>
-      <br/>
     </div>
+    <infinite-loading
+      @infinite="onInfinite"
+      spinner="bubbles"
+      ref="infiniteLoading"
+    ></infinite-loading>
+    <br/>
+    <br/>
+    <br/>
+  </div>
 </template>
 
 <script>
@@ -145,8 +169,11 @@
                 dataModalComment: '',
                 loadingModal: true,
                 loadingModalComment: true,
-                comment:'',
-                postId: null
+                comment: '',
+                postId: null,
+                numView: 0,
+                numComment: 0,
+                lastRead: null
             }
         },
         watch: {
@@ -164,6 +191,7 @@
         },
         methods: {
             async createComment() {
+                this.loadingModalComment = true
                 let rawData = {
                     comment: this.comment,
                     id: this.postId
@@ -172,18 +200,20 @@
                 let formData = new FormData();
                 formData.append('data', rawData);
                 try {
+                    this.comment = '';
                     let response = await this.$axios.post('create-comment', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }
                     }).then(({data}) => {
-                        if(data.status){
-                          this.comment = '';
-                          this.dataModalComment.unshift(data.data[0]);
+                        if (data.status) {
+                            this.dataModalComment.unshift(data.data[0]);
+                            this.loadingModalComment = false
                         }
                     })
                 } catch (e) {
                     console.log(e);
+                    this.loadingModalComment = false
                     return;
                 }
             },
@@ -235,7 +265,10 @@
                 this.$root.$emit('bv::show::modal', 'post-modal')
                 this.$axios.get('post/detail/' + id).then(({data}) => {
                     if (data) {
-                        this.dataModal = data[0]
+                        this.dataModal = data['detail'][0]
+                        this.numView = data['num_view'][0]
+                        this.numComment = data['num_comment'][0]
+                        this.lastRead = data['last_read']
                         this.loadingModal = false
                     }
                 });

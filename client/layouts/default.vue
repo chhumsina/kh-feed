@@ -81,7 +81,7 @@
     right: 0;
     bottom: 0;
     position: inherit;
-    top: 0;
+    top: 15px;
     margin: 0 auto;
   }
 
@@ -202,6 +202,15 @@
   }
 
   /*  post*/
+  .post_property {
+    margin: 10px;
+    margin-top: 7px;
+    border-bottom: 1px solid #e4dede;
+    padding-bottom: 6px;
+  }
+  .post_view_num{
+    padding: 0px 10px;
+  }
   .c_post .download-files ul {
     list-style: none;
     padding: 0;
@@ -451,6 +460,14 @@
     border-top: 1px solid #dee2e6;
     border-bottom-right-radius: 0.3rem;
     border-bottom-left-radius: 0.3rem;
+  }
+
+  .modal-body {
+    position: relative;
+    -webkit-box-flex: 1;
+    flex: 1 1 auto;
+    padding: 1rem;
+    padding-top: 0;
   }
 
 </style>

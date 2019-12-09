@@ -53,7 +53,8 @@ module.exports = {
     './plugins/axios',
     '~/plugins/myfilter.js',
     {
-      src: '~plugins/infiniteloading', ssr: false },{ src: '~plugins/tinytabs', ssr: false
+      src: '~plugins/infiniteloading', ssr: false },{
+      src: '~plugins/timeago', ssr: false },{ src: '~plugins/tinytabs', ssr: false
     }
   ],
 

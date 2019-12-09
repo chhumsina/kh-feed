@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Models\Comments;
 use App\Models\PostFileDownload;
 use App\Models\Posts;
+use App\Models\PostView;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -26,7 +27,10 @@ class PostController extends Controller
     public function detail(Request $input)
     {
         $id = $input['id'];
-        $data = Posts::detail($id);
+        $data['detail'] = Posts::detail($id);
+        $data['num_view'] = PostView::numView($id);
+        $data['num_comment'] = Comments::numComment($id);
+        $data['last_read'] = PostView::lastRead($id);
         return response()->json($data);
     }
 

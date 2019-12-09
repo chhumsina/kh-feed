@@ -54,6 +54,15 @@ class Comments extends Model
         return $data;
     }
 
+    public static function numComment($id){
+        $sql = "
+               select count(id)as num_comment from post_comments
+               where post_id=$id
+            ";
+        $data = DB::select($sql);
+
+        return $data;
+    }
     public static function getLastComment(){
         $sql = "
                select co.created_at, co.description as comments, u.id as user_id, u.avatar, u.name from post_comments as pc
