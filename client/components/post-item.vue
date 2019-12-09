@@ -23,7 +23,7 @@
         <template v-slot:modal-title>
           <div class="post-modal">
             <nuxt-link :to="`/profile/${dataModal.user_id}`">
-              <div class="user-block" v-show="loadingModal == false">
+              <div class="user-block" v-if="loadingModal == false">
                 <img
                   class="img-circle"
                   :src="dataModal.avatar  | getImgUrl('avatar','sm_avatar')"
@@ -37,42 +37,47 @@
           </div>
         </template>
         <div class="post-modal post-modal-content">
-          <div v-show="loadingModal" class="loading">
+          <div v-if="loadingModal" class="loading">
             <div class="loader"></div>
           </div>
-          <div v-show="loadingModal == false">
+          <div v-if="loadingModal == false">
             <div class="photo-content">
               <img
                 class="photo"
                 :src="dataModal.photo  | getImgUrl('photo','m_post')"
               />
             </div>
-            <p class="caption">
-              {{dataModal.caption}}
+            <p style="white-space: pre-line;" class="caption">
+              <span v-html="dataModal.caption"></span>
             </p>
+
+            <div class="c_post">
+              <div class="box-footer box-comments" style="display: block;">
+                <p style="border-bottom: 1px solid #ddd;padding-bottom: 9px;"><i class="fa fa-comments-o" aria-hidden="true"></i> Comments</p>
+                <div v-for="(item, $index) in dataModalComment" :key="$index" class="box-comment">
+                  <img class="img-circle img-sm" :src="item.avatar  | getImgUrl('avatar','sm_avatar')">
+                  <div class="comment-text">
+          <span class="username">
+          {{item.name}}
+          <span class="text-muted pull-right">{{item.created_at}}</span>
+          </span>
+                   {{item.comments}}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <template v-slot:modal-footer>
-          <div class="post-modal" v-show="loadingModal == false">
-            <div class="download-files" v-if="dataModal.num_download_file > 0">
-              <p style="
-    float: left;
-    left: 12px;
-    position: absolute;
-    text-align: center;
-    font-size: 13px;
-    ">Download <br><span style="font-size: 18px;color: #ad0140d1;font-weight: bold;">Free</span></p>
-              <ul>
-                <li class="file-item" v-for="file in (dataModal.files.split(','))">
-                  <i v-on:click="downloadFile(file)" v-if="itemsContains(file,'.pdf')" class="fa fa-file-pdf-o"
-                     aria-hidden="true"></i>
-                  <i v-on:click="downloadFile(file)" v-if="itemsContains(file,'.doc') || itemsContains(file,'.docx')"
-                     class="fa fa-file-word-o"
-                     aria-hidden="true"></i>
-                  &nbsp;
-                  <span v-on:click="downloadFile(file)">{{file | truncate(45, '...')}}</span>
-                </li>
-              </ul>
+          <div class="post-modal c_post" v-show="loadingModal == false">
+            <div class="box-footer" style="display: block;">
+              <form @submit.prevent="createComment">
+                <img class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')" alt="Alt Text">
+                <div class="img-push">
+                  <input v-model="comment" type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+                  <input type="hidden" v-model="postId"/>
+                </div>
+              </form>
             </div>
           </div>
         </template>
@@ -95,7 +100,7 @@
           </div>
         </nuxt-link>
         <div class="box-body" @click="showPostModal(item.post_id)">
-          <p>
+          <p style="margin-bottom: 5px; white-space: pre-line;" class="caption">
             {{item.caption | truncate(150, '...')}}
           </p>
 
@@ -108,38 +113,13 @@
           </div>
 
         </div>
-        <div class="box-footer box-comments" style="display: block;">
-          <div class="box-comment">
-            <img class="img-circle img-sm" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="User Image">
-            <div class="comment-text">
-          <span class="username">
-          Maria Gonzales
-          <span class="text-muted pull-right">8:03 PM Today</span>
-          </span>
-              It is a long established fact that a reader will be distracted
-              by the readable content of a page when looking at its layout.
-            </div>
-          </div>
+        <div class="box-footer" style="display: block;" @click="showPostModal(item.post_id)">
 
-          <div class="box-comment">
-            <img class="img-circle img-sm" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="User Image">
-            <div class="comment-text">
-          <span class="username">
-          Luna Stark
-          <span class="text-muted pull-right">8:03 PM Today</span>
-          </span>
-              It is a long established fact that a reader will be distracted
-              by the readable content of a page when looking at its layout.
-            </div>
-          </div>
-        </div>
-        <div class="box-footer" style="display: block;">
-          <form action="#" method="post">
-            <img class="img-responsive img-circle img-sm" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Alt Text">
+            <img class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')" alt="Alt Text">
             <div class="img-push">
               <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
             </div>
-          </form>
+
         </div>
       </div>
       </div>
@@ -152,7 +132,6 @@
       <br/>
       <br/>
     </div>
-  </div>
 </template>
 
 <script>
@@ -163,7 +142,11 @@
                 feeds: [],
                 search: null,
                 dataModal: '',
-                loadingModal: true
+                dataModalComment: '',
+                loadingModal: true,
+                loadingModalComment: true,
+                comment:'',
+                postId: null
             }
         },
         watch: {
@@ -180,18 +163,29 @@
             }
         },
         methods: {
-            downloadFile($file) {
-                $file = $file.trim();
-                this.$axios
-                    .get('file/' + $file)
-                    .then((response) => {
-                        const url = window.URL.createObjectURL(new Blob([response.data]));
-                        const link = document.createElement('a');
-                        link.href = url;
-                        link.setAttribute('download', $file);
-                        document.body.appendChild(link);
-                        link.click();
+            async createComment() {
+                let rawData = {
+                    comment: this.comment,
+                    id: this.postId
+                }
+                rawData = JSON.stringify(rawData)
+                let formData = new FormData();
+                formData.append('data', rawData);
+                try {
+                    let response = await this.$axios.post('create-comment', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }).then(({data}) => {
+                        if(data.status){
+                          this.comment = '';
+                          this.dataModalComment.unshift(data.data[0]);
+                        }
                     })
+                } catch (e) {
+                    console.log(e);
+                    return;
+                }
             },
             itemsContains(text, word) {
                 return text.includes(word);
@@ -232,14 +226,23 @@
                 }
             },
             async showPostModal(id) {
+                this.postId = id;
                 this.loadingModal = true;
+                this.loadingModalComment = true;
                 this.dataModal = '';
+                this.dataModalComment = '';
                 // this.$router.push({ name: 'feed', hash: '#post' });
                 this.$root.$emit('bv::show::modal', 'post-modal')
                 this.$axios.get('post/detail/' + id).then(({data}) => {
                     if (data) {
                         this.dataModal = data[0]
                         this.loadingModal = false
+                    }
+                });
+                this.$axios.get('post/detail-comment/' + id).then(({data}) => {
+                    if (data) {
+                        this.dataModalComment = data;
+                        this.loadingModalComment = false
                     }
                 })
             }

@@ -30,7 +30,6 @@
         data() {
             return {
                 strategy: this.$auth.$storage.getUniversal('strategy'),
-
                 caption: '',
                 photo: '',
                 error: this.$route.query.error

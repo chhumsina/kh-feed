@@ -46,9 +46,11 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::get('post/detail/{id}', 'PostController@detail');
 
     Route::get('post/detail/{id}', 'PostController@detail');
+    Route::get('post/detail-comment/{id}', 'PostController@detailComment');
 
     Route::post('update-overview', 'UserController@updateOverview');
     Route::post('create-post', 'PostController@createPost');
+    Route::post('create-comment', 'PostController@createComment');
 
     Route::get('file/{id}', 'PostController@downloadFile');
 

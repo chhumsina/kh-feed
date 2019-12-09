@@ -14,27 +14,28 @@ class Posts extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'caption','photo','status','user_id'
+        'caption', 'photo', 'status', 'user_id'
     ];
 
-    public static function listPost($input){
+    public static function listPost($input)
+    {
 
         $list_type = $input['list_type'];
 
-        if($list_type == 'recommend'){
+        if ($list_type == 'recommend') {
             $data = Posts::take(6)->get();
-        }else{
+        } else {
             $search = null;
-            if(isset($input['search'])){
-                $search = " and p.caption LIKE '%".$input['search']."%' ";
+            if (isset($input['search'])) {
+                $search = " and p.caption LIKE '%" . $input['search'] . "%' ";
             }
 
             $take = 10;
-            $page = ($input['page']-1)*$take;
+            $page = ($input['page'] - 1) * $take;
 
             $post_by = null;
-            if($input['id']){
-                $post_by = " and p.user_id = ".$input['id'];
+            if ($input['id']) {
+                $post_by = " and p.user_id = " . $input['id'];
             }
 
             $sql = "
@@ -54,7 +55,8 @@ class Posts extends Model
 
     }
 
-    public static function detail($id){
+    public static function detail($id)
+    {
 
         $sql = "
                select p.created_at, p.photo, p.caption, p.status, p.id, u.id as user_id, u.avatar, u.name from posts as p
@@ -71,7 +73,7 @@ class Posts extends Model
 
     public static function createPost($input)
     {
-        try{
+        try {
             $userId = Auth::user()->id;
 
             $photo_name = null;
@@ -85,7 +87,7 @@ class Posts extends Model
             }
 
             $input_data = json_decode($input->data);
-            $data['caption'] = $input_data->caption;
+            $data['caption'] = Self::generateCaption($input_data->caption);
             $data['photo'] = $photo_name;
             $data['user_id'] = $userId;
             $data['status'] = true;
@@ -94,7 +96,7 @@ class Posts extends Model
             $post_id = $create_post->id;
             $msg['status'] = true;
 
-        }catch (\Exception $e){dd(222);
+        } catch (\Exception $e) {
             $msg['msg'] = $e->getMessage();
             $msg['status'] = false;
         }
@@ -102,4 +104,12 @@ class Posts extends Model
         return $msg;
 
     }
+
+    public static function generateCaption($string)
+    {
+        $url = '~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i';
+        $string = preg_replace($url, '<a href="$0" target="_blank" title="$0">$0</a>', $string);
+        return $string;
+    }
+
 }

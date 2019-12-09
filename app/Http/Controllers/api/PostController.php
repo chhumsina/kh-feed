@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Models\Comments;
 use App\Models\PostFileDownload;
 use App\Models\Posts;
 use App\Models\User;
@@ -29,6 +30,13 @@ class PostController extends Controller
         return response()->json($data);
     }
 
+    public function detailComment(Request $input)
+    {
+        $id = $input['id'];
+        $data = Comments::detail($id);
+        return response()->json($data);
+    }
+
 
     public function createPost(Request $input){
         try{
@@ -46,7 +54,7 @@ class PostController extends Controller
             $msg['status'] = true;
             return response()->json($msg);
 
-        }catch (\Exception $e){dd(33);
+        }catch (\Exception $e){
             DB::rollBack();
             $msg['msg'] = $e->getMessage();
             $msg['status'] = false;
@@ -54,24 +62,29 @@ class PostController extends Controller
         }
     }
 
-    public function downloadFile(Request $input){
+    public function createComment(Request $input){
         try{
             DB::beginTransaction();
-            $file_id = $input['id'];
-            $file = public_path().'/file/'.$file_id;
 
-            $down = PostFileDownload::createFileDownload($file_id);
-            if($down['status'] == false){
-                throw new \Exception($down['msg']);
+            $create = Comments::createComment($input);
+
+            if(!$create['status']){
+                throw new \Exception('Could not create, Please try again! '.$create['msg']);
             }
 
             DB::commit();
 
-            return response()->download($file);
+            $data = Comments::getLastComment();
+            $msg['msg'] = 'Created successfully.';
+            $msg['status'] = true;
+            $msg['data'] = $data;
+            return response()->json($msg);
 
-        }catch (\Exception $e){dd($e->getMessage());
+        }catch (\Exception $e){
             DB::rollBack();
-            return false;
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+            return response()->json($msg);
         }
     }
 

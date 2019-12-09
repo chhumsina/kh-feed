@@ -366,13 +366,16 @@
     box-shadow: none;
     border-color: #d2d6de;
   }
-  .c_post .post-img{
-    background: #f1f1f1;
+  .c_post .post-img {
     margin-left: -10px;
     margin-right: -10px;
     text-align: center;
+    border-top: 1px solid #f7eaea;
+    padding-top: 7px;
   }
-
+  .c_post .post-img img{
+    width: 100%;
+  }
   /*  post*/
 </style>
 <style scopped>
@@ -437,4 +440,17 @@
     color: #fff;
     background-color: #35495e;
   }
+
+  .modal-footer {
+     display: initial;
+     -webkit-box-align: center;
+     align-items: center;
+     -webkit-box-pack: initial;
+     justify-content: initial;
+     padding: 0rem;
+    border-top: 1px solid #dee2e6;
+    border-bottom-right-radius: 0.3rem;
+    border-bottom-left-radius: 0.3rem;
+  }
+
 </style>
