@@ -13,10 +13,10 @@
           <p>Feed</p>
         </li>
       </nuxt-link>
-      <nuxt-link to="/messages">
+      <nuxt-link to="/save">
         <li class="nav-item">
-          <i class="fa fa-envelope-o" aria-hidden="true"></i>
-          <p>Messages</p>
+          <i class="fa fa-download" aria-hidden="true"></i>
+          <p>Save</p>
         </li>
       </nuxt-link>
       <nuxt-link to="/dashboard">

@@ -10,7 +10,7 @@
             type="text"
             class="form-control"
             placeholder="Search Post"
-            @input="searchFeed" v-model="search"
+            v-on:keyup.enter="searchFeed" v-model="search"
           />
         </div>
       </div>
@@ -20,11 +20,14 @@
     <div class="container c_post">
 
       <nuxt-link to="/create-post" v-if=" this.$route.params.id == undefined && this.$route.name == 'feed' ">
-        <div class="box-footer" style="display: block; margin-bottom: 10px; border-top: 1px solid #ccc; border-bottom: 1px solid #aaa;" >
-          <img style="margin-top: 0px; height: 35px !important; width: 35px !important;" class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
+        <div class="box-footer"
+             style="padding: 25px 10px;display: block; margin-bottom: 10px; border-top: 1px solid #ccc; border-bottom: 1px solid #aaa;">
+          <img style="margin-top: 0px; height: 35px !important; width: 35px !important;"
+               class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
                alt="Alt Text">
           <div class="img-push">
-            <input style="border-radius: 25px !important;background: #fafafa;" type="text" class="form-control input-sm" placeholder="What's you want to share?">
+            <input style="border-radius: 25px !important;background: #fafafa;" type="text" class="form-control input-sm"
+                   placeholder="What's you want to share?">
           </div>
         </div>
       </nuxt-link>
@@ -62,7 +65,8 @@
             <div class="post_property">
               <span class="post_view_num text-muted">{{numView.num_view}} views · {{lastRead}} last read</span>
               <span class="post_view_num"></span>
-              <a href="#comment"><span style="float: right;" class="post_view_num">{{numComment.num_comment}} comments</span></a>
+              <a href="#comment"><span style="float: right;"
+                                       class="post_view_num">{{numComment.num_comment}} comments</span></a>
             </div>
             <p style="white-space: pre-line;" class="caption">
               <span v-html="dataModal.caption"></span>
@@ -72,16 +76,28 @@
               <div id="comment" class="box-footer box-comments" style="display: block;">
                 <p style="border-bottom: 1px solid #ddd;padding-bottom: 9px;"><i class="fa fa-comments-o"
                                                                                  aria-hidden="true"></i> Comments</p>
+                <div class="box-footer"
+                     style="display: block; padding: 0; background: none; border-bottom: 1px solid #ddd; padding-bottom: 15px; margin-bottom: 8px;">
+                  <form @submit.prevent="createComment">
+                    <img class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
+                         alt="Alt Text">
+                    <div class="img-push">
+                      <input required v-model="comment" type="text" class="form-control input-sm"
+                             placeholder="Press enter to post comment">
+                      <input type="hidden" v-model="postId"/>
+                    </div>
+                  </form>
+                </div>
                 <p class="text-center" v-if="loadingModalComment==true">Loading...</p>
                 <div v-for="(item, $index) in dataModalComment" :key="$index" class="box-comment">
                   <img class="img-circle img-sm" :src="item.avatar  | getImgUrl('avatar','sm_avatar')">
                   <div class="comment-text">
-          <span class="username">
-          {{item.name}}
-          <span class="text-muted pull-right">
+                    <small class="username">
+                      {{item.name}}
+                      <span class="text-muted pull-right">
             <timeago :datetime="item.created_at" :auto-update="10"></timeago>
           </span>
-          </span>
+                    </small>
                     {{item.comments}}
                   </div>
                 </div>
@@ -91,16 +107,15 @@
         </div>
         <template v-slot:modal-footer>
           <div class="post-modal c_post" v-show="loadingModal == false">
-            <div class="box-footer" style="display: block;">
-              <form @submit.prevent="createComment">
-                <img class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
-                     alt="Alt Text">
-                <div class="img-push">
-                  <input required v-model="comment" type="text" class="form-control input-sm"
-                         placeholder="Press enter to post comment">
-                  <input type="hidden" v-model="postId"/>
-                </div>
-              </form>
+            <div class="post_property">
+
+              <div @click="savePost()" class="btn-save-post" v-if="savePostLoading==true">
+                <i class="fa fa-download" aria-hidden="true"></i> Save
+              </div>
+              <div class="btn-save-post" v-else>
+                <i class="fa fa-download" aria-hidden="true"></i> Save...
+              </div>
+
             </div>
           </div>
         </template>
@@ -173,7 +188,8 @@
                 postId: null,
                 numView: 0,
                 numComment: 0,
-                lastRead: null
+                lastRead: null,
+                savePostLoading: true
             }
         },
         watch: {
@@ -249,7 +265,7 @@
                     })
             },
             searchFeed() {
-                if (this.search.length >= 5) {
+                if (this.search.length >= 2) {
                     this.page = 1;
                     this.feeds = [];
                     this.onInfinite();
@@ -278,6 +294,18 @@
                         this.loadingModalComment = false
                     }
                 })
+            },
+            async savePost(){
+                this.savePostLoading = false;
+                this.$axios
+                    .post('post/save-post', {
+                        id: this.postId
+                    })
+                    .then(({data}) => {
+
+                        this.savePostLoading = true
+
+                    })
             }
         }
     }

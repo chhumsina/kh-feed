@@ -45,6 +45,7 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::get('post/list', 'PostController@list');
     Route::get('post/detail/{id}', 'PostController@detail');
 
+    Route::post('post/save-post', 'PostController@savePost');
     Route::get('post/detail/{id}', 'PostController@detail');
     Route::get('post/detail-comment/{id}', 'PostController@detailComment');
 

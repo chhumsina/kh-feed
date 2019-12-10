@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Models\Comments;
 use App\Models\PostFileDownload;
 use App\Models\Posts;
+use App\Models\PostSave;
 use App\Models\PostView;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -82,6 +83,31 @@ class PostController extends Controller
             $msg['msg'] = 'Created successfully.';
             $msg['status'] = true;
             $msg['data'] = $data;
+            return response()->json($msg);
+
+        }catch (\Exception $e){
+            DB::rollBack();
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+            return response()->json($msg);
+        }
+    }
+
+    public function savePost(Request $input){
+        try{
+            DB::beginTransaction();
+
+            $post_id = $input['id'];
+            $create = PostSave::createPostSave($post_id);
+
+            if(!$create['status']){
+                throw new \Exception('Could not save, Please try again! '.$create['msg']);
+            }
+
+            DB::commit();
+
+            $msg['msg'] = 'Saved successfully.';
+            $msg['status'] = true;
             return response()->json($msg);
 
         }catch (\Exception $e){

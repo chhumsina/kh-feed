@@ -159,6 +159,17 @@
     box-shadow: 0 0px 3px;
   }
 
+  .btn-save-post {
+    background: #ececec;
+    padding: 0 7px;
+    border-radius: 2px;
+    width: auto;
+    float: right;
+    height: 25px;
+    margin-top: -1px;
+    margin-bottom: 9px;
+  }
+
   .loading-inline {
     height: 40px;
   }
@@ -205,8 +216,8 @@
   .post_property {
     margin: 10px;
     margin-top: 7px;
-    border-bottom: 1px solid #e4dede;
-    padding-bottom: 6px;
+    padding-bottom: 5px;
+    padding-top: 5px;
   }
   .post_view_num{
     padding: 0px 10px;
@@ -356,7 +367,7 @@
   }
   .c_post .box-comments .comment-text {
     margin-left: 40px;
-    color: #555;
+    color: #808080;
   }
   .c_post .box-comments .username {
     color: #444;
