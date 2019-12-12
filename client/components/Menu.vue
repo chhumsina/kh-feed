@@ -62,8 +62,7 @@
 }
 
 .menu-icon-top.menu-expand-lg .menu-nav a.nuxt-link-active {
-  color: #000;
-  background: #eaeaea;
+  color: #006fe2;
 }
 
 .menu-icon-top.menu-expand-lg .menu-nav a .fa {

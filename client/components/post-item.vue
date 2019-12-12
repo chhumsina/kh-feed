@@ -49,6 +49,12 @@
                 </span>
               </div>
             </nuxt-link>
+            <div @click="savePost()" class="btn-save-post" v-if="savePostLoading==true">
+              <i class="fa fa-download" aria-hidden="true"></i> Save
+            </div>
+            <div class="btn-save-post" v-else>
+              <i class="fa fa-download" aria-hidden="true"></i> Save...
+            </div>
           </div>
         </template>
         <div class="post-modal post-modal-content">
@@ -63,19 +69,12 @@
               />
             </div>
             <div class="post_property">
-              <div @click="savePost()" class="btn-save-post" v-if="savePostLoading==true">
-                <i class="fa fa-download" aria-hidden="true"></i> Save
-              </div>
-              <div class="btn-save-post" v-else>
-                <i class="fa fa-download" aria-hidden="true"></i> Save...
-              </div>
-
               <span class="post_view_num text-muted">{{numView.num_view}} views · {{lastRead}} last read</span>
               <span class="post_view_num"></span>
               <a href="#comment"><span style="float: right;"
                                        class="post_view_num">{{numComment.num_comment}} comments</span></a>
             </div>
-            <p id="comment" style="white-space: pre-line;" class="caption">
+            <p style="white-space: pre-line;" class="caption">
               <span v-html="dataModal.caption"></span>
             </p>
 
@@ -83,7 +82,7 @@
               <div class="box-footer box-comments" style="display: block;">
                 <p style="border-bottom: 1px solid #ddd;padding-bottom: 9px;">
                   <i class="fa fa-comments-o" aria-hidden="true"></i>
-                  Comments<span v-if="loadingModalComment==true">...</span>
+                  Comments
                 </p>
 
                 <div v-for="(item, $index) in dataModalComment" :key="$index" class="box-comment">
@@ -98,13 +97,18 @@
                     {{item.comments}}
                   </div>
                 </div>
+                <div class="box-comment text-center" v-if="loadingModalComment==true">
+                  <p>loading...</p>
+                </div>
+                <p id="comment"></p>
+
               </div>
             </div>
           </div>
         </div>
         <template v-slot:modal-footer>
           <div class="post-modal c_post" v-show="loadingModal == false">
-            <div style="border: 0;" class="box-footer">
+            <div style="border: 0;padding-bottom: 10px !important;" class="box-footer">
               <form @submit.prevent="createComment">
                 <img class="img-responsive img-circle img-sm avatar-comment" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
                      alt="Alt Text">
@@ -136,7 +140,7 @@
           </div>
         </nuxt-link>
         <div class="box-body" @click="showPostModal(item.post_id)">
-          <p style="margin-bottom: 5px; white-space: pre-line;" class="caption">
+          <p style="margin-bottom: 5px; white-space: unset;" class="caption">
             {{item.caption | truncate(150, '...')}}
           </p>
 
@@ -151,10 +155,10 @@
         </div>
         <div class="box-footer" style="display: block;" @click="showPostModal(item.post_id)">
 
-          <img class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
+          <img class="img-responsive img-circle img-sm avatar-comment" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
                alt="Alt Text">
           <div class="img-push">
-            <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+            <input type="text" class="form-control input-sm input-comment" placeholder="Press enter to post comment">
           </div>
 
         </div>
@@ -225,8 +229,9 @@
                         }
                     }).then(({data}) => {
                         if (data.status) {
-                            this.dataModalComment.unshift(data.data[0]);
-                            this.loadingModalComment = false
+                            this.dataModalComment.push(data.data[0]);
+                            this.loadingModalComment = false;
+                            this.goto('comment');
                         }
                     })
                 } catch (e) {
