@@ -500,11 +500,27 @@
     flex: 1 1 auto;
     padding: 1rem;
     margin-top: 60px;
+    margin-bottom: 70px;
   }
   .modal-open .modal{
     background: #fff;
   }
   .modal-header .close{
     display: none;
+  }
+  .modal-content {
+    position: relative;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 0;
+    border-radius: 0;
+    outline: 0;
   }
 </style>
