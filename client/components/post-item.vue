@@ -75,15 +75,17 @@
               <a href="#comment"><span style="float: right;"
                                        class="post_view_num">{{numComment.num_comment}} comments</span></a>
             </div>
-            <p style="white-space: pre-line;" class="caption">
+            <p id="comment" style="white-space: pre-line;" class="caption">
               <span v-html="dataModal.caption"></span>
             </p>
 
             <div class="c_post">
-              <div id="comment" class="box-footer box-comments" style="display: block;">
-                <p style="border-bottom: 1px solid #ddd;padding-bottom: 9px;"><i class="fa fa-comments-o"
-                                                                                 aria-hidden="true"></i> Comments</p>
-                <p class="text-center" v-if="loadingModalComment==true">Loading...</p>
+              <div class="box-footer box-comments" style="display: block;">
+                <p style="border-bottom: 1px solid #ddd;padding-bottom: 9px;">
+                  <i class="fa fa-comments-o" aria-hidden="true"></i>
+                  Comments<span v-if="loadingModalComment==true">...</span>
+                </p>
+
                 <div v-for="(item, $index) in dataModalComment" :key="$index" class="box-comment">
                   <img class="img-circle img-sm" :src="item.avatar  | getImgUrl('avatar','sm_avatar')">
                   <div class="comment-text">
@@ -104,10 +106,10 @@
           <div class="post-modal c_post" v-show="loadingModal == false">
             <div style="border: 0;" class="box-footer">
               <form @submit.prevent="createComment">
-                <img class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
+                <img class="img-responsive img-circle img-sm avatar-comment" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
                      alt="Alt Text">
                 <div class="img-push">
-                  <input required v-model="comment" type="text" class="form-control input-sm"
+                  <input @click="goto('comment')" required v-model="comment" type="text" class="form-control input-sm input-comment"
                          placeholder="Press enter to post comment">
                   <input type="hidden" v-model="postId"/>
                 </div>
@@ -203,6 +205,9 @@
             }
         },
         methods: {
+            goto(id){
+                document.getElementById(id).scrollIntoView();
+            },
             async createComment() {
                 this.loadingModalComment = true
                 let rawData = {

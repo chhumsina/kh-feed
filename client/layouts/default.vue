@@ -468,7 +468,7 @@
     -webkit-box-pack: initial;
     justify-content: initial;
     padding: 0rem;
-    border-top: 1px solid #dee2e6;
+    border-top: 0px solid #dae1e7;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     position: fixed;
@@ -493,6 +493,7 @@
     z-index: 1;
     width: 100%;
     top: 0;
+    border-bottom: 0px solid #dae1e7;
   }
   .modal-body {
     position: relative;
@@ -523,4 +524,18 @@
     border-radius: 0;
     outline: 0;
   }
+
+  .input-comment{
+    border-radius: 25px !important;
+    padding-left: 15px;
+    font-size: 15px;
+    height: 40px;
+  }
+  .avatar-comment{
+    height: 41px !important;
+    width: 41px !important;
+    margin-left: -5px;
+    margin-top: -2px;
+  }
+
 </style>
