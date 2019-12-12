@@ -28,23 +28,23 @@
     padding-left: 0;
     padding-right: 0;
   }
-  .post-modal .user-block img {
+  .modal-header-post .user-block img {
     width: 40px;
     height: 40px;
     float: left;
   }
 
-  .post-modal .user-block .username {
+  .modal-header-post .user-block .username {
     font-size: 16px;
     font-weight: 600;
   }
 
-  .post-modal .user-block .description {
+  .modal-header-post .user-block .description {
     color: #999;
     font-size: 13px;
   }
 
-  .post-modal-content {
+  .modal-header-post-content {
     margin-left: -1rem;
     margin-right: -1rem;
   }
@@ -67,10 +67,6 @@
     bottom: 0;
     margin: 0 auto;
     height: 100%;
-  }
-
-  .post-modal-content .title, .post-modal-content .caption {
-    padding: 10px;
   }
 
   .post-modal-content .loader, .post-modal-content .loader:after {
@@ -101,33 +97,33 @@
     position: relative;
   }
 
-  .post-modal .user-block .username,
+  .modal-header-post .user-block .username,
   .user-block .description,
   .user-block .comment {
     display: block;
     margin-left: 50px;
   }
 
-  .post-modal .modal-body {
+  .modal-header-post .modal-body {
     padding: 0;
   }
 
-  .post-modal .download-files ul {
+  .modal-header-post .download-files ul {
     list-style: none;
     padding: 0;
     padding-top: 12px;
   }
 
-  .post-modal .download-files {
+  .modal-header-post .download-files {
     text-align: right;
     margin-bottom: -10px;
   }
 
-  .post-modal .download-files ul .file-item {
+  .modal-header-post .download-files ul .file-item {
     display: flex;
   }
 
-  .post-modal .download-files ul .file-item i {
+  .modal-header-post .download-files ul .file-item i {
     color: brown;
     padding-top: 2px;
   }
@@ -216,10 +212,11 @@
 
   /*  post*/
   .post_property {
-    margin: 10px;
+    margin: 10px 0;
     margin-top: 7px;
     padding-bottom: 5px;
     padding-top: 5px;
+    width: 100%;
   }
   .post_view_num{
     padding: 0px 10px;
@@ -336,19 +333,16 @@
   .c_post .attachment-block .attachment-text {
     color: #555;
   }
-
-  .c_post .box-comments {
-    background: #f7f7f7 !important;
-  }
   .c_post .box-footer {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
-    /*border-top: 1px solid #f4f4f4;*/
-    padding: 10px;
     background-color: #fff;
     padding-bottom: 20px;
+    padding-left: 19px;
+    padding-right: 13px;
+    padding-top: 13px;
   }
   .c_post .box-comments .box-comment:first-of-type {
     padding-top: 0;
@@ -356,6 +350,7 @@
   .c_post .box-comments .box-comment {
     padding: 8px 0;
     border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
   }
   .c_post .img-sm,
   .c_post .box-comments .box-comment img,
@@ -479,7 +474,7 @@
     background: #fff;
     padding: 10px;
   }
-  .modal-header {
+  .modal-header-post {
     display: -webkit-box;
     display: flex;
     -webkit-box-align: start;
@@ -496,13 +491,14 @@
     width: 100%;
     top: 0;
     border-bottom: 1px solid #dae1e7;
+    left: 0;
   }
   .modal-body {
     position: relative;
     -webkit-box-flex: 1;
     flex: 1 1 auto;
-    padding: 1rem;
-    margin-top: 60px;
+    padding: 10px;
+    margin-top: 28px;
     margin-bottom: 70px;
   }
   .modal-open .modal{
@@ -527,11 +523,12 @@
     outline: 0;
   }
 
-  .input-comment{
+  .input-box{
     border-radius: 25px !important;
     padding-left: 15px;
     font-size: 15px;
     height: 40px;
+    border: 1px solid #efefef !important;
   }
   .avatar-comment{
     height: 41px !important;

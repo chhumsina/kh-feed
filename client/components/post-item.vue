@@ -8,7 +8,7 @@
           <span class="fa fa-search form-control-feedback"></span>
           <input
             type="text"
-            class="form-control"
+            class="form-control input-box"
             placeholder="Search Post"
             v-on:keyup.enter="searchFeed" v-model="search"
           />
@@ -26,7 +26,7 @@
                class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
                alt="Alt Text">
           <div class="img-push">
-            <input style="border-radius: 25px !important;background: #fafafa;" type="text" class="form-control input-sm"
+            <input style="border-radius: 25px !important;background: #fafafa;" type="text" class="form-control input-sm input-box"
                    placeholder="What's you want to share?">
           </div>
         </div>
@@ -34,9 +34,9 @@
 
       <b-modal class="fullscreen" id="post-modal">
         <template v-slot:modal-title>
-          <div class="post-modal">
+          <div class="modal-header-post" v-if="loadingModal == false">
             <nuxt-link :to="`/profile/${dataModal.user_id}`">
-              <div class="user-block" v-if="loadingModal == false">
+              <div class="user-block">
                 <img
                   class="img-circle"
                   :src="dataModal.avatar  | getImgUrl('avatar','sm_avatar')"
@@ -70,7 +70,6 @@
             </div>
             <div class="post_property">
               <span class="post_view_num text-muted">{{numView.num_view}} views · {{lastRead}} last read</span>
-              <span class="post_view_num"></span>
               <a href="#comment"><span style="float: right;"
                                        class="post_view_num">{{numComment.num_comment}} comments</span></a>
             </div>
@@ -79,7 +78,7 @@
             </p>
 
             <div class="c_post">
-              <div class="box-footer box-comments" style="display: block;">
+              <div class="box-comments" style="display: block;">
                 <p style="border-bottom: 1px solid #ddd;padding-bottom: 9px;">
                   <i class="fa fa-comments-o" aria-hidden="true"></i>
                   Comments
@@ -113,7 +112,7 @@
                 <img class="img-responsive img-circle img-sm avatar-comment" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
                      alt="Alt Text">
                 <div class="img-push">
-                  <input @click="goto('comment')" required v-model="comment" type="text" class="form-control input-sm input-comment"
+                  <input @click="goto('comment')" required v-model="comment" type="text" class="form-control input-sm input-box"
                          placeholder="Press enter to post comment">
                   <input type="hidden" v-model="postId"/>
                 </div>
@@ -158,7 +157,9 @@
           <img class="img-responsive img-circle img-sm avatar-comment" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
                alt="Alt Text">
           <div class="img-push">
-            <input type="text" class="form-control input-sm input-comment" placeholder="Press enter to post comment">
+            <div type="text" class="form-control input-sm input-box">
+              Press enter to post comment
+            </div>
           </div>
 
         </div>

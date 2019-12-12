@@ -13,7 +13,7 @@
               />
             </div>
           </div>
-          <h4>Welcome to IHere</h4>
+          <h4>Welcomesss to IHere</h4>
           <h5 class="text-muted">Bring people the tip of world class feed</h5>
           <br />
           <div class="text-center">
@@ -33,7 +33,15 @@
         methods: {
             socialLogin(service) {
                 window.location.href = `${process.env.baseUrl}auth/login/${service}`;
+            },
+            checkHomePage(){
+                if(this.$auth.user){
+                    window.location.href =  '/feed';
+                }
             }
+        },
+        mounted() {
+            this.checkHomePage();
         }
     }
 </script>
