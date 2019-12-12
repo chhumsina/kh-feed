@@ -25,6 +25,14 @@ class PostController extends Controller
         return response()->json($data);
     }
 
+    public function saveList(Request $input)
+    {
+
+        $data = Posts::listSavePost($input);
+
+        return response()->json($data);
+    }
+
     public function detail(Request $input)
     {
         $id = $input['id'];
@@ -107,6 +115,30 @@ class PostController extends Controller
             DB::commit();
 
             $msg['msg'] = 'Saved successfully.';
+            $msg['status'] = true;
+            return response()->json($msg);
+
+        }catch (\Exception $e){
+            DB::rollBack();
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+            return response()->json($msg);
+        }
+    }
+    public function unSavePost(Request $input){
+        try{
+            DB::beginTransaction();
+
+            $post_id = $input['id'];
+            $create = PostSave::unSavePost($post_id);
+
+            if(!$create['status']){
+                throw new \Exception('Could not unsave, Please try again! '.$create['msg']);
+            }
+
+            DB::commit();
+
+            $msg['msg'] = 'Unsaved successfully.';
             $msg['status'] = true;
             return response()->json($msg);
 

@@ -249,7 +249,7 @@
   }
 
   .c_post .box-header.with-border {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #c7c0c0;
   }
 
   .c_post .box-header {

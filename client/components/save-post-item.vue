@@ -1,7 +1,7 @@
 <template>
   <div class="feed">
 
-    <nav v-if=" this.$route.params.id == undefined && this.$route.name == 'feed' "
+    <nav v-if=" this.$route.params.id == undefined && this.$route.name == 'save' "
          class="navbar navbar-expand-lg navbar-light bg-white top-nav">
       <div class="container">
         <div class="has-search" style="width: 100%">
@@ -9,7 +9,7 @@
           <input
             type="text"
             class="form-control input-box"
-            placeholder="Search Post"
+            placeholder="Search Saved Post"
             v-on:keyup.enter="searchFeed" v-model="search"
           />
         </div>
@@ -49,11 +49,11 @@
                 </span>
               </div>
             </nuxt-link>
-            <div @click="savePost()" class="btn-save-post" v-if="savePostLoading==true">
-              <i class="fa fa-download" aria-hidden="true"></i> Save
+            <div @click="unSavePost()" class="btn-save-post" v-if="unSavePostLoading==true">
+              <i class="fa fa-download" aria-hidden="true"></i> Unsave
             </div>
             <div class="btn-save-post" v-else>
-              <i class="fa fa-download" aria-hidden="true"></i> Save...
+              <i class="fa fa-download" aria-hidden="true"></i> Unsave...
             </div>
           </div>
         </template>
@@ -123,46 +123,21 @@
       </b-modal>
 
       <div v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1" class="box box-widget">
-        <nuxt-link :to="`/profile/${item.user_id}`">
-          <div class="box-header with-border">
+          <div class="box-header with-border" @click="showPostModal(item.post_id)">
             <div class="user-block">
               <img
                 class="img-circle"
-                :src="item.avatar  | getImgUrl('avatar','sm_avatar')"
+                :src="item.photo | getImgUrl('photo','m_post')"
                 alt="User Image"
               />
-              <span class="username">{{item.name}}</span>
+              <span class="username">{{item.caption | truncate(35, '...')}}</span>
               <span class="description">
+                {{item.name}}
+                |
               <timeago :datetime="item.created_at" :auto-update="10"></timeago>
             </span>
             </div>
           </div>
-        </nuxt-link>
-        <div class="box-body" @click="showPostModal(item.post_id)">
-          <p style="margin-bottom: 5px; white-space: unset;" class="caption">
-            {{item.caption | truncate(150, '...')}}
-          </p>
-
-          <div class="post-img">
-            <img
-              class="attachment-img"
-              :src="item.photo | getImgUrl('photo','m_post')"
-              alt="Attachment Image"
-            />
-          </div>
-
-        </div>
-        <div class="box-footer" style="display: block;" @click="showPostModal(item.post_id)">
-
-          <img class="img-responsive img-circle img-sm avatar-comment" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
-               alt="Alt Text">
-          <div class="img-push">
-            <div type="text" class="form-control input-sm input-box">
-              Press enter to post comment
-            </div>
-          </div>
-
-        </div>
       </div>
     </div>
     <infinite-loading
@@ -192,7 +167,7 @@
                 numView: 0,
                 numComment: 0,
                 lastRead: null,
-                savePostLoading: true
+                unSavePostLoading: true
             }
         },
         watch: {
@@ -255,7 +230,7 @@
                 }
 
                 this.$axios
-                    .get('post/list', {
+                    .get('post/save-list', {
                         params: {
                             page: this.page,
                             id: id,
@@ -303,15 +278,17 @@
                     }
                 })
             },
-            async savePost(){
-                this.savePostLoading = false;
+            async unSavePost(){
+                this.unSavePostLoading = false;
                 this.$axios
-                    .post('post/save-post', {
+                    .post('post/unsave-post', {
                         id: this.postId
                     })
                     .then(({data}) => {
 
-                        this.savePostLoading = true
+                        this.unSavePostLoading = true
+
+                        window.location.href =  '/save';
 
                     })
             }

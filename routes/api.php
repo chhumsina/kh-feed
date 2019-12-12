@@ -43,9 +43,11 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::get('user/list', 'UserController@list');
     Route::get('/me', 'MeController@index');
     Route::get('post/list', 'PostController@list');
+    Route::get('post/save-list', 'PostController@saveList');
     Route::get('post/detail/{id}', 'PostController@detail');
 
     Route::post('post/save-post', 'PostController@savePost');
+    Route::post('post/unsave-post', 'PostController@unSavePost');
     Route::get('post/detail/{id}', 'PostController@detail');
     Route::get('post/detail-comment/{id}', 'PostController@detailComment');
 

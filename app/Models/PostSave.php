@@ -38,7 +38,25 @@ class PostSave extends Model
 
 
         return $msg;
+    }
 
+    public static function unSavePost($post_id){
+        try{
+            $user_id = Auth::user()->id;
+
+            $find = PostSave::where('user_id', $user_id)->where('post_id', $post_id)->first();
+            if($find){
+                $del = $find->delete();
+            }
+            $msg['status'] = true;
+        }catch (\Exception $e){
+            DB::rollBack();
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+        }
+
+
+        return $msg;
     }
 
 }

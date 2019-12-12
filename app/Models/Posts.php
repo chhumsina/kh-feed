@@ -55,6 +55,42 @@ class Posts extends Model
 
     }
 
+    public static function listSavePost($input)
+    {
+
+        $user_id = Auth::user()->id;
+
+        $search = null;
+        if (isset($input['search'])) {
+            $search = " and p.caption LIKE '%" . $input['search'] . "%' ";
+        }
+
+        $take = 10;
+        $page = ($input['page'] - 1) * $take;
+
+        $post_by = null;
+        if ($input['id']) {
+            $post_by = " and p.user_id = " . $input['id'];
+        }
+
+        $sql = "
+                select p.id as post_id,ps.updated_at as created_at, p.photo, p.caption, u.id as user_id, u.avatar, u.name from post_save as ps
+                join users as u on u.id=ps.user_id
+                join posts as p on p.id=ps.post_id
+                where p.status = true
+                and ps.user_id=$user_id
+                $search
+                $post_by
+                group by p.photo, p.id, p.caption, p.status, u.id, u.avatar, u.name, ps.updated_at
+                order by ps.updated_at desc
+                limit $page,$take
+            ";
+        $data = DB::select($sql);
+
+        return $data;
+
+    }
+
     public static function detail($id)
     {
 
