@@ -48,15 +48,15 @@
     margin-left: -1rem;
     margin-right: -1rem;
   }
-
   .modal-dialog {
     max-width: 100%;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 100vh;
     display: flex;
+    height: 100vh;
+    margin: 0;
   }
 
   .post-modal-content .photo-content .photo {
@@ -460,25 +460,51 @@
     color: #fff;
     background-color: #35495e;
   }
-
   .modal-footer {
-     display: initial;
-     -webkit-box-align: center;
-     align-items: center;
-     -webkit-box-pack: initial;
-     justify-content: initial;
-     padding: 0rem;
+    display: inline;
+    display: initial;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: initial;
+    justify-content: initial;
+    padding: 0rem;
     border-top: 1px solid #dee2e6;
-    border-bottom-right-radius: 0.3rem;
-    border-bottom-left-radius: 0.3rem;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #fff;
+    padding: 10px;
   }
-
+  .modal-header {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: start;
+    align-items: flex-start;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    border-bottom: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    position: fixed;
+    background: #fff;
+    z-index: 1;
+    width: 100%;
+    top: 0;
+  }
   .modal-body {
     position: relative;
     -webkit-box-flex: 1;
     flex: 1 1 auto;
     padding: 1rem;
-    padding-top: 0;
+    margin-top: 60px;
   }
-
+  .modal-open .modal{
+    background: #fff;
+  }
+  .modal-header .close{
+    display: none;
+  }
 </style>

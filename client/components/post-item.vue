@@ -32,7 +32,7 @@
         </div>
       </nuxt-link>
 
-      <b-modal id="post-modal" scrollable>
+      <b-modal class="fullscreen" id="post-modal">
         <template v-slot:modal-title>
           <div class="post-modal">
             <nuxt-link :to="`/profile/${dataModal.user_id}`">
@@ -63,6 +63,13 @@
               />
             </div>
             <div class="post_property">
+              <div @click="savePost()" class="btn-save-post" v-if="savePostLoading==true">
+                <i class="fa fa-download" aria-hidden="true"></i> Save
+              </div>
+              <div class="btn-save-post" v-else>
+                <i class="fa fa-download" aria-hidden="true"></i> Save...
+              </div>
+
               <span class="post_view_num text-muted">{{numView.num_view}} views · {{lastRead}} last read</span>
               <span class="post_view_num"></span>
               <a href="#comment"><span style="float: right;"
@@ -76,18 +83,6 @@
               <div id="comment" class="box-footer box-comments" style="display: block;">
                 <p style="border-bottom: 1px solid #ddd;padding-bottom: 9px;"><i class="fa fa-comments-o"
                                                                                  aria-hidden="true"></i> Comments</p>
-                <div class="box-footer"
-                     style="display: block; padding: 0; background: none; border-bottom: 1px solid #ddd; padding-bottom: 15px; margin-bottom: 8px;">
-                  <form @submit.prevent="createComment">
-                    <img class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
-                         alt="Alt Text">
-                    <div class="img-push">
-                      <input required v-model="comment" type="text" class="form-control input-sm"
-                             placeholder="Press enter to post comment">
-                      <input type="hidden" v-model="postId"/>
-                    </div>
-                  </form>
-                </div>
                 <p class="text-center" v-if="loadingModalComment==true">Loading...</p>
                 <div v-for="(item, $index) in dataModalComment" :key="$index" class="box-comment">
                   <img class="img-circle img-sm" :src="item.avatar  | getImgUrl('avatar','sm_avatar')">
@@ -107,15 +102,16 @@
         </div>
         <template v-slot:modal-footer>
           <div class="post-modal c_post" v-show="loadingModal == false">
-            <div class="post_property">
-
-              <div @click="savePost()" class="btn-save-post" v-if="savePostLoading==true">
-                <i class="fa fa-download" aria-hidden="true"></i> Save
-              </div>
-              <div class="btn-save-post" v-else>
-                <i class="fa fa-download" aria-hidden="true"></i> Save...
-              </div>
-
+            <div style="border: 0;" class="box-footer">
+              <form @submit.prevent="createComment">
+                <img class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
+                     alt="Alt Text">
+                <div class="img-push">
+                  <input required v-model="comment" type="text" class="form-control input-sm"
+                         placeholder="Press enter to post comment">
+                  <input type="hidden" v-model="postId"/>
+                </div>
+              </form>
             </div>
           </div>
         </template>
@@ -195,8 +191,9 @@
         watch: {
             $route(to, from) {
                 // if the current history index isn't at the last position, use 'back' transition
-                if (to.hash == '') {
-                    this.$modal.hide('post-modal')
+                console.log(to.hash);
+                if (to.hash == '' || to.hash=='#post') {
+                    this.$root.$emit('bv::hide::modal', 'post-modal');
                 }
             }
         },
@@ -277,7 +274,7 @@
                 this.loadingModalComment = true;
                 this.dataModal = '';
                 this.dataModalComment = '';
-                // this.$router.push({ name: 'feed', hash: '#post' });
+                this.$router.push({ to: this.$route.fullPath, hash: '#post' });
                 this.$root.$emit('bv::show::modal', 'post-modal')
                 this.$axios.get('post/detail/' + id).then(({data}) => {
                     if (data) {
