@@ -65,7 +65,7 @@
             <div class="photo-content">
               <img
                 class="photo"
-                :src="dataModal.photo  | getImgUrl('photo','m_post')"
+                :src="dataModal.photo  | getImgUrl('photo','sm_post')"
               />
             </div>
             <div class="post_property">
