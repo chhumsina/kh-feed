@@ -65,7 +65,7 @@
             <div class="photo-content">
               <img
                 class="photo"
-                :src="dataModal.photo  | getImgUrl('photo','m_post')"
+                v-lazy="getImgUrl(dataModal.photo, 'photo', 'm_post')"
               />
             </div>
             <div class="post_property">
@@ -144,11 +144,11 @@
           </p>
 
           <div class="post-img">
-            <img
-              class="attachment-img"
-              :src="item.photo | getImgUrl('photo','m_post')"
-              alt="Attachment Image"
-            />
+          <img
+            class="attachment-img"
+            v-lazy="getImgUrl(item.photo, 'photo', 'm_post')"
+            alt="Attachment Image"
+          />
           </div>
 
         </div>
@@ -177,6 +177,8 @@
 </template>
 
 <script>
+    import myfilter, {getImgUrl} from "../plugins/myfilter";
+
     export default {
         data() {
             return {
@@ -210,6 +212,9 @@
             }
         },
         methods: {
+            getImgUrl(image, type, size){
+                return getImgUrl(image, type, size);
+            },
             goto(id){
                 document.getElementById(id).scrollIntoView();
             },
@@ -243,9 +248,6 @@
             },
             itemsContains(text, word) {
                 return text.includes(word);
-            },
-            getImgUrl(type, image) {
-                return `${process.env.baseUrl}image/${type}/${image}`;
             },
             async onInfinite($state) {
                 var id = this.$route.params.id;

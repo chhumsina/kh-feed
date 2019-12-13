@@ -19,10 +19,10 @@
           <p>Save</p>
         </li>
       </nuxt-link>
-      <nuxt-link to="/dashboard">
+      <nuxt-link to="/activity">
         <li class="nav-item">
-          <i class="fa fa-dashboard" aria-hidden="true"></i>
-          <p>Dashboard</p>
+          <i class="fa fa-tasks" aria-hidden="true"></i>
+          <p>Activity</p>
         </li>
       </nuxt-link>
       <nuxt-link to="/account">

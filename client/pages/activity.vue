@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>das</p>
+    <p>Not yet bro</p>
   </div>
 </template>
 
