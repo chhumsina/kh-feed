@@ -46,7 +46,7 @@ class UserController extends Controller
 
             if($input['name'] != ''){
                 $user = User::getUser(Auth::user()->id);
-                $colorRandom = rand(1,15);
+                $colorRandom = rand(1,14);
                 $avatar = new Avatar();
                 $backgroundRandom = Config::get('laravolt.avatar.backgrounds');
                 $avatar->create($input['name'])->setBackground($backgroundRandom[$colorRandom])->save(public_path('/avatar/'.$user->avatar), 100);
