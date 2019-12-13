@@ -49,12 +49,27 @@
                 </span>
               </div>
             </nuxt-link>
-            <div @click="savePost()" class="btn-save-post" v-if="savePostLoading==true">
-              <i class="fa fa-download" aria-hidden="true"></i> Save
+
+
+            <div v-if="page_name == 'account'">
+              <div @click="deletePost()" class="btn-delete-post" v-if="deletePostLoading==true">
+                <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+              </div>
+              <div class="btn-delete-post" v-else>
+                <i class="fa fa-trash-o" aria-hidden="true"></i> Delete...
+              </div>
             </div>
-            <div class="btn-save-post" v-else>
-              <i class="fa fa-download" aria-hidden="true"></i> Save...
+            <div v-else>
+              <div @click="savePost()" class="btn-save-post" v-if="savePostLoading==true">
+                <i class="fa fa-download" aria-hidden="true"></i> Save
+              </div>
+              <div class="btn-save-post" v-else>
+                <i class="fa fa-download" aria-hidden="true"></i> Save...
+              </div>
             </div>
+
+
+
           </div>
         </template>
         <div class="post-modal post-modal-content">
@@ -62,7 +77,7 @@
             <div class="loader"></div>
           </div>
           <div v-if="loadingModal == false">
-            <div class="photo-content">
+            <div v-if="dataModal.photo!='no'" class="photo-content">
               <img
                 class="photo"
                 v-lazy="getImgUrl(dataModal.photo, 'photo', 'm_post')"
@@ -143,7 +158,7 @@
             {{item.caption | truncate(150, '...')}}
           </p>
 
-          <div class="post-img">
+          <div class="post-img" v-if="item.photo!='no'">
           <img
             class="attachment-img"
             v-lazy="getImgUrl(item.photo, 'photo', 'm_post')"
@@ -194,7 +209,9 @@
                 numView: 0,
                 numComment: 0,
                 lastRead: null,
-                savePostLoading: true
+                savePostLoading: true,
+                deletePostLoading: true,
+                page_name: this.$route.name
             }
         },
         watch: {
@@ -312,10 +329,61 @@
                         id: this.postId
                     })
                     .then(({data}) => {
-
+                        if(data.status == true){
+                            this.$swal.fire(
+                                data.msg,
+                                'success'
+                            );
+                        }else{
+                            this.$swal.fire(
+                                data.msg,
+                                'error'
+                            )
+                        }
                         this.savePostLoading = true
 
                     })
+            },
+            async deletePost(){
+
+                this.$swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+
+                        this.deletePostLoading = false;
+
+                        this.$axios
+                            .post('post/delete-post', {
+                                id: this.postId
+                            })
+                            .then(({data}) => {
+                                if(data.status == true){
+                                    this.$swal.fire(
+                                        data.msg,
+                                        'success'
+                                    );
+                                    location.reload();
+                                }else{
+                                    this.$swal.fire(
+                                        data.msg,
+                                        'error'
+                                    )
+                                }
+
+                                this.deletePostLoading = true
+
+                            })
+                    }else{
+                        this.deletePostLoading = true
+                    }
+                });
             }
         }
     }

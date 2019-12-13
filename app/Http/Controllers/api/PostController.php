@@ -150,4 +150,29 @@ class PostController extends Controller
         }
     }
 
+    public function deletePost(Request $input){
+        try{
+            DB::beginTransaction();
+
+            $post_id = $input['id'];
+            $create = Posts::deletePost($post_id);
+
+            if(!$create['status']){
+                throw new \Exception('Could not delete, Please try again! '.$create['msg']);
+            }
+
+            DB::commit();
+
+            $msg['msg'] = 'Deleted successfully.';
+            $msg['status'] = true;
+            return response()->json($msg);
+
+        }catch (\Exception $e){
+            DB::rollBack();
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+            return response()->json($msg);
+        }
+    }
+
 }

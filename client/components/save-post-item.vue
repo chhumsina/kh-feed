@@ -62,7 +62,7 @@
             <div class="loader"></div>
           </div>
           <div v-if="loadingModal == false">
-            <div class="photo-content">
+            <div v-if="dataModal.photo!='no'" class="photo-content">
               <img
                 class="photo"
                 v-lazy="getImgUrl(dataModal.photo, 'photo', 'm_post')"
@@ -126,6 +126,7 @@
           <div class="box-header with-border" @click="showPostModal(item.post_id)">
             <div class="user-block">
               <img
+                v-if="item.photo!='no'"
                 class="img-circle"
                 :src="item.photo | getImgUrl('photo','m_post')"
                 alt="User Image"
@@ -153,7 +154,7 @@
 
 <script>
     import myfilter, {getImgUrl} from "../plugins/myfilter";
-    
+
     export default {
         data() {
             return {
@@ -287,7 +288,17 @@
                         id: this.postId
                     })
                     .then(({data}) => {
-
+                        if(data.status == true){
+                            this.$swal.fire(
+                                data.msg,
+                                'success'
+                            );
+                        }else{
+                            this.$swal.fire(
+                                data.msg,
+                                'error'
+                            )
+                        }
                         this.unSavePostLoading = true
 
                         window.location.href =  '/save';

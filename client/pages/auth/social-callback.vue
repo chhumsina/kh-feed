@@ -24,7 +24,7 @@ export default {
             window.location.href =  '/feed';
         }).catch( (e) => {
             this.$auth.logout();
-            return this.$router.push(`/auth/${this.$route.query.origin ? this.$route.query.origin : 'register'}?error=1`);
+            return this.$router.push(`/?error=1`);
         });
     }
 }

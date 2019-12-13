@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->integer('level');
             $table->string('user_type');
             $table->string('bio');
-            $table->boolean('status');
+            $table->string('status');
             $table->string('pay_name_1');
             $table->string('pay_number_1');
             $table->string('pay_name_2');

@@ -55,12 +55,15 @@ class UserController extends Controller
 
             DB::commit();
 
-            $user = User::getUser(Auth::user()->id);
-            return response()->json($user);
+            $msg['msg'] = 'Saved successfully.';
+            $msg['status'] = true;
+            return response()->json($msg);
 
         }catch (\Exception $e){
             DB::rollBack();
-            return response()->json([]);
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+            return response()->json($msg);
         }
     }
 

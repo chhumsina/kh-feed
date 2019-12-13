@@ -168,6 +168,20 @@
     font-size: 17px;
   }
 
+  .btn-delete-post {
+    padding: 0 7px;
+    border-radius: 2px;
+    width: auto;
+    height: 25px;
+    margin-top: -1px;
+    margin-bottom: 9px;
+    right: 10px;
+    position: absolute;
+    top: 26px;
+    font-size: 17px;
+    color: #a21d00;
+  }
+
   .loading-inline {
     height: 40px;
   }
@@ -242,14 +256,14 @@
     position: relative;
     border-radius: 2px;
     background: #ffffff;
-    border-top: 3px solid #ffffff;
+    border-top: 1px solid #dcdcdc;
     margin-bottom: 10px;
     width: 100%;
-    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #dcdcdc;
   }
 
   .c_post .box-header.with-border {
-    border-bottom: 1px solid #c7c0c0;
+    border-bottom: 1px solid #eaeaea;
   }
 
   .c_post .box-header {

@@ -1,6 +1,9 @@
 <template>
   <div class="splash">
     <div class="page-header clear-filter" filter-color="orange">
+      <div v-if="error" class="alert alert-danger mb-2" role="alert">
+        Your token appeared to be invalid. Please try again.
+      </div>
       <div
         class="page-header-image"></div>
       <div class="content">
@@ -30,6 +33,11 @@
 
 <script>
     export default {
+        data() {
+            return {
+                error: this.$route.query.error
+            }
+        },
         methods: {
             socialLogin(service) {
                 window.location.href = `${process.env.baseUrl}auth/login/${service}`;

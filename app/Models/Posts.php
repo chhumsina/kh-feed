@@ -41,7 +41,7 @@ class Posts extends Model
             $sql = "
                select p.id as post_id, p.created_at, p.photo, p.caption, p.status, u.id as user_id, u.avatar, u.name from posts as p
                 join users as u on u.id=p.user_id
-                where p.status = true
+                where p.status = 'active'
                 $search
                 $post_by
                 group by p.photo, p.id, p.caption, p.status, u.id, u.avatar, u.name, p.created_at
@@ -77,7 +77,7 @@ class Posts extends Model
                 select p.id as post_id,ps.updated_at as created_at, p.photo, p.caption, u.id as user_id, u.avatar, u.name from post_save as ps
                 join users as u on u.id=ps.user_id
                 join posts as p on p.id=ps.post_id
-                where p.status = true
+                where p.status = 'active'
                 and ps.user_id=$user_id
                 $search
                 $post_by
@@ -114,7 +114,7 @@ class Posts extends Model
         try {
             $userId = Auth::user()->id;
 
-            $photo_name = null;
+            $photo_name = 'no';
             if ($input->hasFile('photo')) {
                 $file = $input->file('photo');
                 $photo_name = uniqid('photo_1' . $userId . '_') . "." . $file->getClientOriginalExtension();
@@ -128,7 +128,7 @@ class Posts extends Model
             $data['caption'] = Self::generateCaption($input_data->caption);
             $data['photo'] = $photo_name;
             $data['user_id'] = $userId;
-            $data['status'] = true;
+            $data['status'] = 'active';
             $data = array_filter($data);
             $create_post = Posts::create($data);
             $post_id = $create_post->id;
@@ -141,6 +141,24 @@ class Posts extends Model
 
         return $msg;
 
+    }
+
+    public static function deletePost($postId){
+        try {
+            $userId = Auth::user()->id;
+
+            $post = Posts::where('user_id', $userId)->where('id', $postId)->first();
+            if($post){
+                $data['status'] = 'delete';
+                $post = $post->update($data);
+            }
+            $msg['status'] = true;
+        } catch (\Exception $e) {
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+        }
+
+        return $msg;
     }
 
     public static function generateCaption($string)

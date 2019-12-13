@@ -58,7 +58,7 @@ class SocialLoginController extends Controller
                     'avatar'=>$serviceUser->getId().'.png',
                     'user_type'=>'user',
                     'level'=>1,
-                    'status'=>true,
+                    'status'=>'active',
                     'phone'=>'',
                     'pay_name_1'=>'',
                     'pay_number_1'=>'',
@@ -97,7 +97,7 @@ class SocialLoginController extends Controller
             $userSocial = UserSocial::where('social_id', $serviceUser->getId())->first();
             return $userSocial ? $userSocial->user : null;
         }
-        return User::where('email', $email)->orWhereHas('social', function($q) use ($serviceUser, $service) {
+        return User::where('email', $email)->where('status','!=','inactive')->whereHas('social', function($q) use ($serviceUser, $service) {
             $q->where('social_id', $serviceUser->getId())->where('service', $service);
         })->first();
     }

@@ -19,8 +19,7 @@
 
     <div class="container">
       <div class="text-center profile">
-        <img :src="user.avatar | getImgUrl('avatar','m_avatar')" class="ui-w-100 rounded-circle"
-        />
+        <img v-lazy="getImgUrl(user.avatar, 'avatar', 'm_avatar')" class="ui-w-100 rounded-circle" />
 
         <div class="col-md-8 col-lg-6 col-xl-5 p-0 mx-auto">
           <h4 class="font-weight-bold my-4"> {{user.name}}</h4>
@@ -56,7 +55,7 @@
             <form @submit.prevent="overview">
 
               <div class="input-group mb-3">
-                <input v-model="form.name" type="text" class="form-control" :class="{ 'is-invalid': errors.name }"
+                <input v-model="form.name" type="text" class="form-control input-text" :class="{ 'is-invalid': errors.name }"
                        placeholder="Name">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
@@ -66,7 +65,7 @@
                 </div>
               </div>
               <div class="input-group mb-3">
-                <input v-model="form.email" type="text" class="form-control" :class="{ 'is-invalid': errors.email }"
+                <input v-model="form.email" type="text" class="form-control input-text" :class="{ 'is-invalid': errors.email }"
                        placeholder="E-mail">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1"><i class="fa fa-envelope"
@@ -77,7 +76,7 @@
                 </div>
               </div>
               <div class="input-group mb-3">
-                <input v-model="form.phone" type="text" class="form-control" :class="{ 'is-invalid': errors.phone }"
+                <input v-model="form.phone" type="text" class="form-control input-text" :class="{ 'is-invalid': errors.phone }"
                        placeholder="Phone">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1"><i class="fa fa-phone" aria-hidden="true"></i></span>
@@ -87,7 +86,7 @@
                 </div>
               </div>
               <div class="input-group mb-3">
-                <input v-model="form.bio" type="text" class="form-control" :class="{ 'is-invalid': errors.bio }"
+                <input v-model="form.bio" type="text" class="form-control input-text" :class="{ 'is-invalid': errors.bio }"
                        placeholder="Quote">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
@@ -97,8 +96,10 @@
                 </div>
               </div>
 
+              <Br/>
               <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-light w-100">
+                <button v-if="saveOverViewLoading==true" type="submit" class="btn btn-secondary btn-block">Save</button>
+                <button v-else type="button" class="btn btn-secondary btn-block">Save...</button>
               </div>
             </form>
           </div>
@@ -110,6 +111,7 @@
 
 <script>
     import PostItem from '~/components/post-item'
+    import myfilter, {getImgUrl} from "../plugins/myfilter";
 
     export default {
         middleware: 'auth',
@@ -122,16 +124,14 @@
                     phone: '',
                     bio: '',
                 },
-                error: this.$route.query.error
+                saveOverViewLoading: true
             }
         },
         components: {
             PostItem
         },
-        computed: {
-        },
-        watch: {
-        },
+        computed: {},
+        watch: {},
         mounted() {
         },
         created() {
@@ -141,21 +141,34 @@
             this.form.phone = this.$store.state.auth.user.phone
         },
         methods: {
+            getImgUrl(image, type, size){
+                return getImgUrl(image, type, size);
+            },
             async overview() {
+                this.saveOverViewLoading = false;
                 try {
-                    // this.$axios.post('update-overview', this.form);
                     this.$axios.post('update-overview', this.form).then(({data}) => {
                         if (data) {
-                            location.href = location.href;
+                            if(data.status == true){
+                                this.$swal.fire(
+                                    data.msg,
+                                    'success'
+                                );
+                            }else{
+                                this.$swal.fire(
+                                    data.msg,
+                                    'error'
+                                )
+                            }
                         }
+                        location.href = location.href;
+                        this.saveOverViewLoading = true;
                     })
                 } catch (e) {
+                    this.saveOverViewLoading = true;
                     console.log(e);
                     return;
                 }
-            },
-            getImgUrl(type,image) {
-                return `${process.env.baseUrl}image/${type}/${image}`;
             },
             async logout() {
                 await this.$auth.logout()
@@ -249,9 +262,15 @@
     padding: 0;
     background: #fff;
     padding: 29px 22px;
-    border-top: 1px solid #aaa;
+    border-top:1px solid #dcdcdc;
     border-radius: 2px;
     border-bottom: 1px solid #aaa;
+  }
+  .account .overview-list .input-text{
+    border-top-left-radius: 20px !important;
+    border-bottom-left-radius: 20px !important;
+    padding-bottom: 8px;
+    padding-left: 18px;
   }
 
   .account .profile {

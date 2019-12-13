@@ -1,23 +1,54 @@
 <template>
   <div class="create-post container">
     <h4 class="text-center header-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Create Post</h4>
-    <form @submit.prevent="createPost"
+    <div v-if="user.status == 'pending'">
+      <b-alert show variant="warning">
+        <h4 class="alert-heading"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Postponement </h4>
+        <div>
+          Sorry, We need to postpone for your creating post due to some of the posts are not satisfy with our policy and
+          mission.
+          <ul>
+            <li>Short with meaningful</li>
+            <li>Useful thing</li>
+            <li>Interesting topic</li>
+            <li>Be able to help people</li>
+          </ul>
+        </div>
+        <hr>
+        <p class="mb-0">
+          Your account will be able to create post again in next future.
+        </p>
+      </b-alert>
+    </div>
+    <form v-else @submit.prevent="createPost"
           enctype="multipart/form-data">
+
+      <b-alert show variant="success">
+        <h6 class="alert-heading"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Great Post are: </h6>
+        <div>
+          <ul>
+            <li>Short with meaningful</li>
+            <li>Useful thing</li>
+            <li>Interesting topic</li>
+            <li>Be able to help people</li>
+          </ul>
+        </div>
+      </b-alert>
+
       <div class="form-group">
-        <textarea v-model="caption" class="form-control" style="height: 150px" name="caption" required
+        <textarea v-model="caption" class="form-control" style="height: 200px" name="caption" required
                   placeholder="Enter Caption"/>
-        <span class="Error"></span>
       </div>
       <div class="preview text-center">
-        <img class="preview-img" src="http://i.imgur.com/I86rTVl.jpg" alt="Preview Image"/>
-        <div class="browse-button">
-          <input @change="addFile('photo', $event)" class="browse-input" type="file" required name="photo"
-                 id="UploadedFile"/>
-        </div>
-        <span class="Error"></span>
+
+        <input accept="image/x-png,image/jpeg" style="width: 100%;" @change="addFile('photo', $event)" type="file" name="photo"
+               id="UploadedFile"/>
+        <div class="preview-icon"><i class="fa fa-picture-o" aria-hidden="true"></i></div>
       </div>
+      <Br/>
       <div class="form-group">
-        <input class="btn btn-primary btn-block" type="submit" value="Submit"/>
+        <button v-if="createPostLoading==true" type="submit" class="btn btn-secondary btn-block">Submit</button>
+        <button v-else type="button" class="btn btn-secondary btn-block">Submit...</button>
       </div>
     </form>
   </div>
@@ -32,7 +63,7 @@
                 strategy: this.$auth.$storage.getUniversal('strategy'),
                 caption: '',
                 photo: '',
-                error: this.$route.query.error
+                createPostLoading: true
             }
         },
         mounted() {
@@ -42,12 +73,15 @@
                 this[fileKey] = event.target.files[0];
             },
             async createPost() {
+                this.createPostLoading = false;
                 let rawData = {
                     caption: this.caption
                 }
                 rawData = JSON.stringify(rawData)
                 let formData = new FormData();
-                formData.append('photo', this.photo, this.photo.name)
+                if (typeof (this.photo.name) !== "undefined" && this.photo !== null) {
+                    formData.append('photo', this.photo, this.photo.name)
+                }
                 formData.append('data', rawData);
                 try {
                     let response = await this.$axios.post('create-post', formData, {
@@ -56,10 +90,24 @@
                         }
                     }).then(({data}) => {
                         if (data) {
-                            location.href = location.href;
+                            if(data.status == true){
+                                this.caption = '';
+                                document.getElementById('UploadedFile').value = null;
+                                this.$swal.fire(
+                                    data.msg,
+                                    'success'
+                                );
+                            }else{
+                                this.$swal.fire(
+                                    data.msg,
+                                    'error'
+                                )
+                            }
                         }
+                        this.createPostLoading = true;
                     })
                 } catch (e) {
+                    this.createPostLoading = true;
                     console.log(e);
                     return;
                 }
@@ -107,10 +155,14 @@
     margin-bottom: 15px;
   }
 
-  .preview i {
-    color: white;
-    font-size: 35px;
-    transform: translate(50px, 130px);
+  .preview-icon{
+    position: absolute;
+    right: 2px;
+    top: 0px;
+  }
+  .preview-icon i{
+    font-size: 30px;
+    color: #555;
   }
 
   .browse-button {
