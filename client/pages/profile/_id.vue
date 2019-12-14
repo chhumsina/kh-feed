@@ -18,32 +18,18 @@
         </div>
       </div>
       <div class="account-tabs">
-        <tiny-tabs
-          class="nav nav-tabs tabs-alt justify-content-center"
-          id="mytabs"
-          :anchor="false"
-          :closable="false"
-          :hideTitle="true"
-          @on-close="onClose"
-          @on-before="onBefore"
-          @on-after="onAfter"
-        >
+          <ul>
+            <li>Posts</li>
+            <li>Overview</li>
+          </ul>
           <div class="section" id="posts">
-            <h3 class="title">Posts</h3>
-            <span style="visibility: hidden">Posts</span>
-
             <post-item/>
-
           </div>
           <div class="section" id="Overview">
-            <h3 class="title">Overview</h3>
-            <span style="visibility: hidden;">Overview</span>
-
             <div class="overview-list">
               sdfs
             </div>
           </div>
-        </tiny-tabs>
       </div>
     </div>
   </div>
@@ -103,26 +89,6 @@
             },
             async logout() {
                 await this.$auth.logout()
-            },
-            onClose(id) {
-                console.log(
-                    'Callback function that gets evaluated while closing the tab',
-                    id
-                )
-            },
-            onBefore(id, tab) {
-                console.log(
-                    'Callback function that gets evaluated before a tab is activated',
-                    id,
-                    tab
-                )
-            },
-            onAfter(id, tab) {
-                console.log(
-                    'Callback function that gets evaluated after a tab is activated',
-                    id,
-                    tab
-                )
             }
         }
     }
@@ -132,43 +98,6 @@
   .account .ui-w-100 {
     width: 100px !important;
     height: auto;
-  }
-
-  .account .tinytabs .tabs {
-    width: 100%;
-    text-align: center;
-    border-top: 1px solid #ccc;
-    padding: 10px 0px;
-    z-index: 1;
-  }
-
-  .account .tinytabs .tabs .tab .close {
-    padding-left: 5px;
-  }
-
-  .account .tinytabs .tabs .tab {
-    margin: 0 3px 0 0;
-    padding: 6px 15px;
-    text-decoration: none;
-    font-weight: bold;
-  }
-
-  .account .tinytabs .section {
-    overflow: hidden;
-    clear: both;
-    width: 100%;
-    th: 100%;
-    margin-top: -25px;
-  }
-
-  .account .tinytabs .tab.sel {
-    color: #000;
-    text-shadow: none;
-  }
-
-  .account .nav-tabs {
-    border-bottom: 0;
-    margin-bottom: 50px;
   }
 
   .account ul.follower-list {

@@ -33,6 +33,14 @@ class PostController extends Controller
         return response()->json($data);
     }
 
+    public function activityList(Request $input)
+    {
+
+        $data = Posts::listActivity($input);
+
+        return response()->json($data);
+    }
+
     public function detail(Request $input)
     {
         $id = $input['id'];

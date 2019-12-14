@@ -30,6 +30,8 @@ class Comments extends Model
             $postComm = PostComments::createPostComment($comm_id, $post_id);
             $msg['status'] = true;
 
+            $activity = PostActivity::createPostActivity($comm_id, 'comment');
+
         } catch (\Exception $e) {
             $msg['msg'] = $e->getMessage();
             $msg['status'] = false;

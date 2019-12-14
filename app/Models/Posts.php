@@ -91,6 +91,44 @@ class Posts extends Model
 
     }
 
+    public static function listActivity($input)
+    {
+
+        $user_id = Auth::user()->id;
+
+        $take = 10;
+        $page = ($input['page'] - 1) * $take;
+
+        $sql = "
+                select * from 
+                    (
+                    select ua.object_type as type, ua.updated_at as activity_date, p.id as post_id, p.caption,
+                    p.photo, CONCAT('Commented: ',c.description) as description
+                    from user_activity as ua
+                    join post_comments as pc on (pc.comment_id=ua.object_id and pc.status=1 and pc.user_id=2)
+                    join comments as c on c.id=pc.comment_id
+                    join posts as p on (p.id=pc.post_id and p.status='active')
+                    where
+                    ua.user_id=$user_id
+                    and ua.object_type='comment'
+                    
+                    UNION
+                    
+                    select ua.object_type as type, ua.updated_at as activity_date, p.id as post_id, p.caption,
+                    p.photo, 'Viewed post' as description
+                    from user_activity as ua
+                    join posts as p on (p.id=ua.object_id and p.status='active')
+                    where ua.user_id=$user_id
+                    and ua.object_type='post'
+                    ) as activity order by activity_date desc
+                limit $page,$take
+            ";
+        $data = DB::select($sql);
+
+        return $data;
+
+    }
+
     public static function detail($id)
     {
 
@@ -104,7 +142,16 @@ class Posts extends Model
             ";
         $data = DB::select($sql);
 
-        $view = PostView::createPostView($id);
+        try {
+            DB::beginTransaction();
+
+            $view = PostView::createPostView($id);
+            $activity = PostActivity::createPostActivity($id, 'post');
+
+            DB::commit();
+        }catch (\Exception $e) {
+            DB::rollBack();
+        }
 
         return $data;
     }

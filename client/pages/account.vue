@@ -19,7 +19,7 @@
 
     <div class="container">
       <div class="text-center profile">
-        <img v-lazy="getImgUrl(user.avatar, 'avatar', 'm_avatar')" class="ui-w-100 rounded-circle" />
+        <img v-lazy="getImgUrl(user.avatar, 'avatar', 'm_avatar')" class="ui-w-100 rounded-circle"/>
 
         <div class="col-md-8 col-lg-6 col-xl-5 p-0 mx-auto">
           <h4 class="font-weight-bold my-4"> {{user.name}}</h4>
@@ -31,31 +31,20 @@
         </div>
       </div>
     </div>
-    <div class="account-tabs">
-      <tiny-tabs
-        class="nav nav-tabs tabs-alt justify-content-center"
-        id="mytabs"
-        :anchor="false"
-        :closable="false"
-        :hideTitle="true"
-        @on-close="onClose"
-        @on-before="onBefore"
-        @on-after="onAfter"
-      >
-        <div class="section" id="posts">
-          <h3 class="title">Posts</h3>
-          <span style="visibility: hidden">Posts</span>
-          <post-item/>
-        </div>
-        <div class="section" id="Overview">
-          <h3 class="title">Overview</h3>
-          <span style="visibility: hidden;">Overview</span>
 
+    <no-ssr>
+    <div class="account-tabs">
+      <b-tabs content-class="mt-3" align="center">
+        <b-tab title="Posts" active>
+          <post-item/>
+        </b-tab>
+        <b-tab title="Overview">
           <div class="overview-list">
             <form @submit.prevent="overview">
 
               <div class="input-group mb-3">
-                <input v-model="form.name" type="text" class="form-control input-text" :class="{ 'is-invalid': errors.name }"
+                <input v-model="form.name" type="text" class="form-control input-text"
+                       :class="{ 'is-invalid': errors.name }"
                        placeholder="Name">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
@@ -65,7 +54,8 @@
                 </div>
               </div>
               <div class="input-group mb-3">
-                <input v-model="form.email" type="text" class="form-control input-text" :class="{ 'is-invalid': errors.email }"
+                <input v-model="form.email" type="text" class="form-control input-text"
+                       :class="{ 'is-invalid': errors.email }"
                        placeholder="E-mail">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1"><i class="fa fa-envelope"
@@ -76,7 +66,8 @@
                 </div>
               </div>
               <div class="input-group mb-3">
-                <input v-model="form.phone" type="text" class="form-control input-text" :class="{ 'is-invalid': errors.phone }"
+                <input v-model="form.phone" type="text" class="form-control input-text"
+                       :class="{ 'is-invalid': errors.phone }"
                        placeholder="Phone">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1"><i class="fa fa-phone" aria-hidden="true"></i></span>
@@ -86,10 +77,12 @@
                 </div>
               </div>
               <div class="input-group mb-3">
-                <input v-model="form.bio" type="text" class="form-control input-text" :class="{ 'is-invalid': errors.bio }"
+                <input v-model="form.bio" type="text" class="form-control input-text"
+                       :class="{ 'is-invalid': errors.bio }"
                        placeholder="Quote">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-quote-right"
+                                                                    aria-hidden="true"></i></span>
                 </div>
                 <div class="invalid-feedback" v-if="errors.bio">
                   {{errors.bio[0]}}
@@ -103,9 +96,10 @@
               </div>
             </form>
           </div>
-        </div>
-      </tiny-tabs>
+        </b-tab>
+      </b-tabs>
     </div>
+    </no-ssr>
   </div>
 </template>
 
@@ -141,7 +135,7 @@
             this.form.phone = this.$store.state.auth.user.phone
         },
         methods: {
-            getImgUrl(image, type, size){
+            getImgUrl(image, type, size) {
                 return getImgUrl(image, type, size);
             },
             async overview() {
@@ -149,12 +143,12 @@
                 try {
                     this.$axios.post('update-overview', this.form).then(({data}) => {
                         if (data) {
-                            if(data.status == true){
+                            if (data.status == true) {
                                 this.$swal.fire(
                                     data.msg,
                                     'success'
                                 );
-                            }else{
+                            } else {
                                 this.$swal.fire(
                                     data.msg,
                                     'error'
@@ -172,72 +166,31 @@
             },
             async logout() {
                 await this.$auth.logout()
-            },
-            onClose(id) {
-                console.log(
-                    'Callback function that gets evaluated while closing the tab',
-                    id
-                )
-            },
-            onBefore(id, tab) {
-                console.log(
-                    'Callback function that gets evaluated before a tab is activated',
-                    id,
-                    tab
-                )
-            },
-            onAfter(id, tab) {
-                console.log(
-                    'Callback function that gets evaluated after a tab is activated',
-                    id,
-                    tab
-                )
             }
         }
     }
 </script>
 
 <style>
-  .account .ui-w-100 {
-    width: 100px !important;
-    height: auto;
+  .account .nav-tabs {
+    border-bottom: 0 !important;
+    margin-bottom: -14px !important;
   }
-
-  .account .tinytabs .tabs {
-    width: 100%;
-    text-align: center;
-    border-top: 1px solid #ccc;
-    padding: 10px 0px;
-    z-index: 1;
+  .account .nav-tabs .nav-link.active, .account .nav-tabs .nav-item.show .nav-link {
+    color: #495057;
+    background-color: initial;
+    border: 0 !important;
   }
-
-  .account .tinytabs .tabs .tab .close {
-    padding-left: 5px;
-  }
-
-  .account .tinytabs .tabs .tab {
-    margin: 0 3px 0 0;
-    padding: 6px 15px;
-    text-decoration: none;
+  .account .nav-tabs .nav-link {
+    border: 0px solid transparent;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
     font-weight: bold;
   }
 
-  .account .tinytabs .section {
-    overflow: hidden;
-    clear: both;
-    width: 100%;
-    th: 100%;
-    margin-top: -25px;
-  }
-
-  .account .tinytabs .tab.sel {
-    color: #000;
-    text-shadow: none;
-  }
-
-  .account .nav-tabs {
-    border-bottom: 0;
-    margin-bottom: 50px;
+  .account .ui-w-100 {
+    width: 100px !important;
+    height: auto;
   }
 
   .account ul.follower-list {
@@ -262,15 +215,22 @@
     padding: 0;
     background: #fff;
     padding: 29px 22px;
-    border-top:1px solid #dcdcdc;
+    border-top: 1px solid #dcdcdc;
     border-radius: 2px;
     border-bottom: 1px solid #aaa;
   }
-  .account .overview-list .input-text{
+
+  .account .overview-list .input-text {
     border-top-left-radius: 20px !important;
     border-bottom-left-radius: 20px !important;
     padding-bottom: 8px;
     padding-left: 18px;
+    border-right: 0;
+  }
+
+  .account .input-group.mb-3 .input-group-prepend span {
+    width: 40px !important;
+    text-align: center;
   }
 
   .account .profile {
@@ -287,7 +247,6 @@
     border: 1px solid #dee2e6;
     padding: 2px;
   }
-
 
 
 </style>

@@ -93,7 +93,7 @@
             <timeago :datetime="item.created_at" :auto-update="10"></timeago>
           </span>
                     </small>
-                    {{item.comments}}
+                    <small>{{item.comments}}</small>
                   </div>
                 </div>
                 <div class="box-comment text-center" v-if="loadingModalComment==true">
@@ -310,6 +310,10 @@
 </script>
 
 <style scoped>
+
+  .c_post .box {
+    margin-bottom: -2px;
+  }
 
   .feed .top-nav {
     font-weight: 600;

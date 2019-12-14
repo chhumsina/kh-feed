@@ -1,21 +1,14 @@
 <template>
   <div class="feed">
 
-    <nav v-if=" this.$route.params.id == undefined && this.$route.name == 'feed' "
-         class="navbar navbar-expand-lg navbar-light bg-white top-nav">
-      <div class="container">
-        <div class="has-search" style="width: 100%">
-          <span class="fa fa-search form-control-feedback"></span>
-          <input
-            type="text"
-            class="form-control input-box"
-            placeholder="Search Post"
-            v-on:keyup.enter="searchFeed" v-model="search"
-          />
-        </div>
-      </div>
-    </nav>
 
+    <div style="background: #fff;
+    height: 56px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    padding: 15px;">
+      <p>Activity for  <small class="badge">View post</small> <small>and</small> <small class="badge">Comment</small></p>
+    </div>
 
     <div class="container c_post">
 
@@ -49,27 +42,12 @@
                 </span>
               </div>
             </nuxt-link>
-
-
-            <div v-if="page_name == 'account'">
-              <div @click="deletePost()" class="btn-delete-post" v-if="deletePostLoading==true">
-                <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
-              </div>
-              <div class="btn-delete-post" v-else>
-                <i class="fa fa-trash-o" aria-hidden="true"></i> Delete...
-              </div>
+            <div @click="savePost()" class="btn-save-post" v-if="savePostLoading==true">
+              <i class="fa fa-download" aria-hidden="true"></i> Save
             </div>
-            <div v-else>
-              <div @click="savePost()" class="btn-save-post" v-if="savePostLoading==true">
-                <i class="fa fa-download" aria-hidden="true"></i> Save
-              </div>
-              <div class="btn-save-post" v-else>
-                <i class="fa fa-download" aria-hidden="true"></i> Save...
-              </div>
+            <div class="btn-save-post" v-else>
+              <i class="fa fa-download" aria-hidden="true"></i> Save...
             </div>
-
-
-
           </div>
         </template>
         <div class="post-modal post-modal-content">
@@ -138,46 +116,22 @@
       </b-modal>
 
       <div v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1" class="box box-widget">
-        <nuxt-link :to="`/profile/${item.user_id}`">
-          <div class="box-header with-border">
+          <div class="box-header with-border" @click="showPostModal(item.post_id)">
             <div class="user-block">
               <img
+                v-if="item.photo!='no'"
                 class="img-circle"
-                :src="item.avatar  | getImgUrl('avatar','sm_avatar')"
+                :src="item.photo | getImgUrl('photo','m_post')"
                 alt="User Image"
               />
-              <span class="username">{{item.name}}</span>
+              <span class="username">{{item.caption | truncate(35, '...')}}</span>
               <span class="description">
-              <timeago :datetime="item.created_at" :auto-update="10"></timeago>
+                {{item.description | truncate(20, '...')}}
+                -
+              <timeago :datetime="item.activity_date" :auto-update="10"></timeago>
             </span>
             </div>
           </div>
-        </nuxt-link>
-        <div class="box-body" @click="showPostModal(item.post_id)">
-          <p style="margin-bottom: 5px; white-space: unset;" class="caption">
-            {{item.caption | truncate(150, '...')}}
-          </p>
-
-          <div class="post-img" v-if="item.photo!='no'">
-          <img
-            class="attachment-img"
-            v-lazy="getImgUrl(item.photo, 'photo', 'm_post')"
-            alt="Attachment Image"
-          />
-          </div>
-
-        </div>
-        <div class="box-footer" style="display: block;" @click="showPostModal(item.post_id)">
-
-          <img class="img-responsive img-circle img-sm avatar-comment" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
-               alt="Alt Text">
-          <div class="img-push">
-            <div type="text" class="form-control input-sm input-box">
-              Press enter to post comment
-            </div>
-          </div>
-
-        </div>
       </div>
     </div>
     <infinite-loading
@@ -209,9 +163,7 @@
                 numView: 0,
                 numComment: 0,
                 lastRead: null,
-                savePostLoading: true,
-                deletePostLoading: true,
-                page_name: this.$route.name
+                savePostLoading: true
             }
         },
         watch: {
@@ -274,7 +226,7 @@
                 }
 
                 this.$axios
-                    .get('post/list', {
+                    .get('post/activity-list', {
                         params: {
                             page: this.page,
                             id: id,
@@ -344,52 +296,15 @@
 
                     })
             },
-            async deletePost(){
-
-                this.$swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.value) {
-
-                        this.deletePostLoading = false;
-
-                        this.$axios
-                            .post('post/delete-post', {
-                                id: this.postId
-                            })
-                            .then(({data}) => {
-                                if(data.status == true){
-                                    this.$swal.fire(
-                                        data.msg,
-                                        'success'
-                                    );
-                                    location.reload();
-                                }else{
-                                    this.$swal.fire(
-                                        data.msg,
-                                        'error'
-                                    )
-                                }
-
-                                this.deletePostLoading = true
-
-                            })
-                    }else{
-                        this.deletePostLoading = true
-                    }
-                });
-            }
         }
     }
 </script>
 
 <style scoped>
+
+  .c_post .box {
+    margin-bottom: -2px;
+  }
 
   .feed .top-nav {
     font-weight: 600;
