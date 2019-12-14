@@ -24,7 +24,7 @@
           enctype="multipart/form-data">
 
       <b-alert show variant="success">
-        <h6 class="alert-heading"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Great Post are: </h6>
+        <h6 class="alert-heading"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Great Post should be: </h6>
         <div>
           <ul>
             <li>Short with meaningful</li>
