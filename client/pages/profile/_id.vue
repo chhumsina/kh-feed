@@ -124,6 +124,26 @@
 </script>
 
 <style scoped>
+  .account .no-border-left{
+    border-left: 0;
+    background: #fff;
+  }
+  .account .nav-tabs {
+    border-bottom: 0 !important;
+    margin-bottom: -14px !important;
+  }
+  .account .nav-tabs .nav-link.active, .account .nav-tabs .nav-item.show .nav-link {
+    color: #495057;
+    background-color: initial;
+    border: 0 !important;
+  }
+  .account .nav-tabs .nav-link {
+    border: 0px solid transparent;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    font-weight: bold;
+  }
+
   .account .ui-w-100 {
     width: 100px !important;
     height: auto;
@@ -151,9 +171,22 @@
     padding: 0;
     background: #fff;
     padding: 29px 22px;
-    border-top: 1px solid #aaa;
+    border-top: 1px solid #dcdcdc;
     border-radius: 2px;
     border-bottom: 1px solid #aaa;
+  }
+
+  .account .overview-list .input-text {
+    border-top-left-radius: 20px !important;
+    border-bottom-left-radius: 20px !important;
+    padding-bottom: 8px;
+    padding-left: 18px;
+    border-right: 0;
+  }
+
+  .account .input-group.mb-3 .input-group-prepend span {
+    width: 40px !important;
+    text-align: center;
   }
 
   .account .profile {
@@ -163,6 +196,7 @@
     margin-left: -15px;
     margin-right: -15px;
     padding: 25px;
+    border-bottom: 1px solid #ddd;
   }
 
   .account .rounded-circle {

@@ -27,6 +27,13 @@
   body {
     background-color: #eeeeee;
   }
+  .alert.alert-success {
+    border-radius: 0;
+  }
+  .username {
+    font-size: 15px !important;
+    color: #555;
+  }
   .margin-left-0{
     margin-left: 0 !important;
   }

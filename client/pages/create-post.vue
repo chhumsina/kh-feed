@@ -79,7 +79,7 @@
             addPhoto(fileKey, event) {
                 // this[fileKey] = event.target.files[0];
                 // Reference to the DOM input element
-                var resize_width = 150;//without px
+                var resize_width = 300;//without px
 
                 //get the image selected
                 var item = event.target.files[0];
