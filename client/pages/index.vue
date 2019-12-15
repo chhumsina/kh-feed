@@ -61,7 +61,7 @@
     right: 50%;
     transform: translate(50%,-50%);
     font-family: verdana;
-    font-size: 80px;
+    font-size: 90px;
     font-weight: 700;
     color: #f5f5f5;
     text-shadow: 1px 1px 1px #919191,

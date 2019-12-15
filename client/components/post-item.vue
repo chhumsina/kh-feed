@@ -88,7 +88,7 @@
               <a href="#comment"><span style="float: right;"
                                        class="post_view_num">{{numComment.num_comment}} comments</span></a>
             </div>
-            <p style="white-space: pre-line;" class="caption">
+            <p style="white-space: pre-line; word-break: break-all;" class="caption">
               <span v-html="dataModal.caption"></span>
             </p>
 
@@ -154,8 +154,11 @@
           </div>
         </nuxt-link>
         <div class="box-body" @click="showPostModal(item.post_id)">
-          <p style="margin-bottom: 5px; white-space: unset;" class="caption">
-            {{item.caption | truncate(150, '...')}}
+          <p v-if="item.photo=='no'" style="margin-bottom: 5px; white-space: unset; word-break: break-all;" class="caption">
+            {{item.caption | truncate(250, '...')}}
+          </p>
+          <p v-else style="margin-bottom: 5px; white-space: unset; word-break: break-all;" class="caption">
+            {{item.caption | truncate(70, '...')}}
           </p>
 
           <div class="post-img" v-if="item.photo!='no'">

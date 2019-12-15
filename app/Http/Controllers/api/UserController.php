@@ -38,19 +38,21 @@ class UserController extends Controller
         try{
             DB::beginTransaction();
 
-            $update = User::updateOverView($input);
-
-            if(!$update){
-                throw new \Exception('Could not update, Please try again!');
-            }
-
-            if($input['name'] != ''){
+            $userId = Auth::user()->id;
+            $user = User::where('id', $userId)->first()->name;
+            if($input['name'] != '' && $input['name'] != $user){
                 $user = User::getUser(Auth::user()->id);
                 $colorRandom = rand(1,14);
                 $avatar = new Avatar();
                 $backgroundRandom = Config::get('laravolt.avatar.backgrounds');
                 $avatar->create($input['name'])->setBackground($backgroundRandom[$colorRandom])->save(public_path('/avatar/'.$user->avatar), 100);
 
+            }
+
+            $update = User::updateOverView($input);
+
+            if(!$update){
+                throw new \Exception('Could not update, Please try again!');
             }
 
             DB::commit();

@@ -1,5 +1,8 @@
 <template>
   <div class="create-post container">
+    <div style="float: left;" @click="$router.go(-1)">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </div>
     <h4 class="text-center header-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Create Post</h4>
     <div v-if="user.status == 'pending'">
       <b-alert show variant="warning">
@@ -23,7 +26,7 @@
     <form v-else @submit.prevent="createPost"
           enctype="multipart/form-data">
 
-      <b-alert show variant="success">
+      <b-alert show variant="success" v-if="photo==null">
         <h6 class="alert-heading"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Great Post should be: </h6>
         <div>
           <ul>
@@ -35,18 +38,22 @@
         </div>
       </b-alert>
 
+      <div class="image-preview" v-if="photo!=null">
+        <img class="preview" :src="photo">
+      </div>
+
       <div class="form-group">
-        <textarea v-model="caption" class="form-control" style="height: 200px" name="caption" required
+        <textarea v-model="caption" class="form-control" style="height: 35vh;" name="caption" required
                   placeholder="Enter Caption"/>
       </div>
-      <div class="preview text-center">
+      <div class="preview-photo text-center">
 
-        <input accept="image/x-png,image/jpeg" style="width: 100%;" @change="addFile('photo', $event)" type="file" name="photo"
-               id="UploadedFile"/>
-        <div class="preview-icon"><i class="fa fa-picture-o" aria-hidden="true"></i></div>
+        <input accept="image/x-png,image/jpeg" ref="photo"  style="width: 100%; display: none;" @change="addPhoto('photo', $event)" type="file" name="photo"
+               id="addPhotoId"/>
+        <div class="" @click="$refs.photo.click()"><i style="font-size: 40px;" class="fa fa-picture-o" aria-hidden="true"></i></div>
       </div>
-      <Br/>
-      <div class="form-group">
+
+      <div class="form-group btn-post">
         <button v-if="createPostLoading==true" type="submit" class="btn btn-secondary btn-block">Submit</button>
         <button v-else type="button" class="btn btn-secondary btn-block">Submit...</button>
       </div>
@@ -62,26 +69,65 @@
             return {
                 strategy: this.$auth.$storage.getUniversal('strategy'),
                 caption: '',
-                photo: '',
+                photo: null,
                 createPostLoading: true
             }
         },
         mounted() {
         },
         methods: {
-            addFile(fileKey, event) {
-                this[fileKey] = event.target.files[0];
+            addPhoto(fileKey, event) {
+                // this[fileKey] = event.target.files[0];
+                // Reference to the DOM input element
+                var resize_width = 150;//without px
+
+                //get the image selected
+                var item = event.target.files[0];
+                if (item) {
+                    //create a FileReader
+                    var reader = new FileReader();
+
+                    //image turned to base64-encoded Data URI.
+                    reader.readAsDataURL(item);
+                    reader.name = item.name;//get the image's name
+                    reader.size = item.size; //get the image's size
+                    var _this = this;
+                    reader.onload = function(event) {
+                        var img = new Image();//create a image
+                        img.src = event.target.result;//result is base64-encoded Data URI
+                        img.name = event.target.name;//set name (optional)
+                        img.size = event.target.size;//set size (optional)
+                        var finalImage = null;
+                        img.onload = function(el) {
+                            var elem = document.createElement('canvas');//create a canvas
+
+                            //scale the image to 600 (width) and keep aspect ratio
+                            var scaleFactor = resize_width / el.target.width;
+                            elem.width = resize_width;
+                            elem.height = el.target.height * scaleFactor;
+
+                            //draw in canvas
+                            var ctx = elem.getContext('2d');
+                            ctx.drawImage(el.target, 0, 0, elem.width, elem.height);
+
+                            //get the base64-encoded Data URI from the resize image
+                            var finalImage = ctx.canvas.toDataURL(el.target, 'image/jpeg', 0);
+
+                            //assign it to thumb src
+                            _this.photo = finalImage;
+                        }
+
+                    }
+                }
             },
             async createPost() {
                 this.createPostLoading = false;
                 let rawData = {
-                    caption: this.caption
+                    caption: this.caption,
+                    photo: this.photo
                 }
                 rawData = JSON.stringify(rawData)
                 let formData = new FormData();
-                if (typeof (this.photo.name) !== "undefined" && this.photo !== null) {
-                    formData.append('photo', this.photo, this.photo.name)
-                }
                 formData.append('data', rawData);
                 try {
                     let response = await this.$axios.post('create-post', formData, {
@@ -92,7 +138,8 @@
                         if (data) {
                             if(data.status == true){
                                 this.caption = '';
-                                document.getElementById('UploadedFile').value = null;
+                                this.photo = null;
+                                document.getElementById('addPhotoId').value = null;
                                 this.$swal.fire(
                                     data.msg,
                                     'success'
@@ -129,82 +176,27 @@
     margin-bottom: 90px;
   }
 
-  img.preview-img {
+  .image-preview {
+    background: #fff;
     width: 100%;
-  }
-
-  .form-group.file-downloads {
-    background: #fff;
-    padding: 19px;
-    border: 1px solid #ddd;
-  }
-
-  .file-downloads {
-    padding: 15px;
-    background: #fff;
+    /*height: 250px;*/
+    /*line-height: 250px;*/
+    text-align: center;
+    margin-bottom: 10px;
     border: 1px solid #ccc;
   }
-
-  input.form-control.file {
-    border: 0;
+  .image-preview > img{
+    vertical-align: middle;
   }
-
-  .preview {
-    border: 1px solid #ccc;
-    position: relative;
-    margin-bottom: 15px;
-  }
-
-  .preview-icon{
-    position: absolute;
-    right: 2px;
-    top: 0px;
-  }
-  .preview-icon i{
-    font-size: 30px;
-    color: #555;
-  }
-
-  .browse-button {
+  .btn-post {
+    position: fixed;
     width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0px;
-    background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(black));
-    background: linear-gradient(180deg, transparent, black);
-    opacity: 0;
-    -webkit-transition: 0.3s ease;
-    transition: 0.3s ease;
-  }
-
-  .browse-button:hover {
-    opacity: 1;
-  }
-
-  .browse-input[data-v-9ca2f330] {
-    width: 100%;
-    height: 100%;
-    -webkit-transform: translate(-1px, -26px);
-    transform: translate(-1px, -26px);
-    opacity: 0;
-    border: 0;
-  }
-
-  .form-group input {
-    transition: 0.3s linear;
-  }
-
-  .form-group input:focus {
-    border: 1px solid crimson;
-    box-shadow: 0 0 0 0;
-  }
-
-  .Error {
-    color: crimson;
-    font-size: 13px;
-  }
-
-  .Back {
-    font-size: 25px;
+    bottom: -17px;
+    left: 0;
+    padding: 10px;
+    padding-bottom: 0;
+    background: #fff;
+    height: 60px;
+    border-top: 1px solid #ddd;
   }
 </style>

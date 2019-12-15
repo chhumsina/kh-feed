@@ -17,20 +17,49 @@
           </div>
         </div>
       </div>
-      <div class="account-tabs">
-          <ul>
-            <li>Posts</li>
-            <li>Overview</li>
-          </ul>
-          <div class="section" id="posts">
-            <post-item/>
-          </div>
-          <div class="section" id="Overview">
-            <div class="overview-list">
-              sdfs
-            </div>
-          </div>
-      </div>
+      <no-ssr>
+        <div class="account-tabs">
+          <b-tabs content-class="mt-3" align="center">
+            <b-tab title="Posts" active>
+              <post-item/>
+            </b-tab>
+            <b-tab title="Overview">
+              <div class="overview-list">
+                  <div class="input-group mb-3">
+                    <input disabled v-model="user_data.name" type="text" class="form-control input-text no-border"
+                           placeholder="Name">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text no-border" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
+                    </div>
+                  </div>
+                  <div class="input-group mb-3">
+                    <input disabled v-model="user_data.email" type="text" class="form-control input-text no-border"
+                           placeholder="E-mail">
+                    <div class="input-group-prepend">
+                  <span class="input-group-text no-border" id="basic-addon1"><i class="fa fa-envelope"
+                                                                      aria-hidden="true"></i></span>
+                    </div>
+                  </div>
+                  <div class="input-group mb-3">
+                    <input disabled v-model="user_data.phone" type="text" class="form-control input-text no-border"
+                           placeholder="Phone">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text no-border" id="basic-addon1"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                    </div>
+                  </div>
+                  <div class="input-group mb-3">
+                    <input disabled v-model="user_data.bio" type="text" class="form-control input-text no-border"
+                           placeholder="Quote">
+                    <div class="input-group-prepend">
+                <span class="input-group-text no-border" id="basic-addon1"><i class="fa fa-quote-right"
+                                                                    aria-hidden="true"></i></span>
+                    </div>
+                  </div>
+              </div>
+            </b-tab>
+          </b-tabs>
+        </div>
+      </no-ssr>
     </div>
   </div>
 </template>

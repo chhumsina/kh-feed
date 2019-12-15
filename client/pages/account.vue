@@ -47,7 +47,7 @@
                        :class="{ 'is-invalid': errors.name }"
                        placeholder="Name">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
+                  <span class="input-group-text no-border-left" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
                 </div>
                 <div class="invalid-feedback" v-if="errors.name">
                   {{errors.name[0]}}
@@ -58,7 +58,7 @@
                        :class="{ 'is-invalid': errors.email }"
                        placeholder="E-mail">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1"><i class="fa fa-envelope"
+                  <span class="input-group-text no-border-left" id="basic-addon1"><i class="fa fa-envelope"
                                                                       aria-hidden="true"></i></span>
                 </div>
                 <div class="invalid-feedback" v-if="errors.email">
@@ -70,7 +70,7 @@
                        :class="{ 'is-invalid': errors.phone }"
                        placeholder="Phone">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                  <span class="input-group-text no-border-left" id="basic-addon1"><i class="fa fa-phone" aria-hidden="true"></i></span>
                 </div>
                 <div class="invalid-feedback" v-if="errors.phone">
                   {{errors.phone[0]}}
@@ -81,7 +81,7 @@
                        :class="{ 'is-invalid': errors.bio }"
                        placeholder="Quote">
                 <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1"><i class="fa fa-quote-right"
+                <span class="input-group-text no-border-left" id="basic-addon1"><i class="fa fa-quote-right"
                                                                     aria-hidden="true"></i></span>
                 </div>
                 <div class="invalid-feedback" v-if="errors.bio">
@@ -172,6 +172,10 @@
 </script>
 
 <style>
+  .account .no-border-left{
+    border-left: 0;
+    background: #fff;
+  }
   .account .nav-tabs {
     border-bottom: 0 !important;
     margin-bottom: -14px !important;
@@ -240,6 +244,7 @@
     margin-left: -15px;
     margin-right: -15px;
     padding: 25px;
+    border-bottom: 1px solid #ddd;
   }
 
   .account .rounded-circle {

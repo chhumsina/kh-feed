@@ -24,17 +24,17 @@ Route::group(['prefix' => '/auth', ['middleware' => 'throttle:20,5']], function(
 Route::get('image/{type}/{size}/{img}', function($type,$size,$img)
 {
     $img  = Image::make(public_path('/'.$type.'/'.$img));
-    if($size == 'sm_post'){
-        $resize = $img->resize(100, 70);
-    }elseif($size == 'm_post'){
-        $resize = $img->resize(350, 200);
-    }elseif($size == 'sm_avatar'){
-        $resize = $img->resize(80, 80);
-    }elseif($size == 'm_avatar'){
-        $resize = $img->resize(150, 150);
-    }
+//    if($size == 'sm_post'){
+//        $resize = $img->resize(100, 70);
+//    }elseif($size == 'm_post'){
+//        $resize = $img->resize(350, 200);
+//    }elseif($size == 'sm_avatar'){
+//        $resize = $img->resize(80, 80);
+//    }elseif($size == 'm_avatar'){
+//        $resize = $img->resize(150, 150);
+//    }
 
-    return $resize->response('png');
+    return $img->response('png');
 });
 
 

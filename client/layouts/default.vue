@@ -2,7 +2,7 @@
   <div>
     <!--    <TopNav v-if="$auth.user && showTopNav.includes(this.$route.name)" />-->
     <nuxt/>
-    <Menu v-if="$auth.user && !showMenu.includes(this.$route.name)"/>
+    <Menu v-if="$auth.user && !hideMenu.includes(this.$route.name)"/>
   </div>
 </template>
 <script>
@@ -15,14 +15,23 @@
         data() {
             return {
                 showTopNav: ['recommend', 'feed', 'messages'],
-                showMenu: ['post-id']
+                hideMenu: ['post-id','create-post']
             }
         }
     }
 </script>
 <style>
+  a:hover, a:visited, a:link, a:active{
+    text-decoration: none !important;
+  }
   body {
     background-color: #eeeeee;
+  }
+  .margin-left-0{
+    margin-left: 0 !important;
+  }
+  .no-border{
+    border: 0 !important;
   }
   .c_post, .recommend, .messages {
     padding-left: 0;

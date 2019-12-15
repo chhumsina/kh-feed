@@ -1,63 +1,16 @@
 <template>
   <div class="recommend container">
-    <div class="post">
-      <div class="card">
-        <div class="header">
-          <h2><strong>Top</strong> Post <small>Recommended to buy</small></h2>
-        </div>
-        <div class="body">
-
-          <div v-show="loadingPost" class="loading-inline">
-            <div class="loader"></div>
-          </div>
-
-          <ul v-show="loadingPost==false" class="new_friend_list list-unstyled row">
-            <li v-for="(item, $index) in posts"
-                :key="$index" class="col-lg-4 col-md-2 col-sm-6 col-4">
-              <nuxt-link :to="`/post/${item.id}`">
-                <img
-                  :src="item.photo | getImgUrl('photo','sm_post')"
-                  class="img-thumbnail"
-                  alt="User Image"
-                />
-                <h6 class="users_name">
-                  {{item.caption | truncate(20, '...')}}
-                </h6>
-<!--                <small class="join_date">Today</small>-->
-              </nuxt-link>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="creator">
-      <div class="card">
-        <div class="header">
-          <h2>
-            <strong>Top</strong> Creator <small>Recommended to follow</small>
-          </h2>
-        </div>
-        <div class="body">
-
-          <div v-show="loadingUser" class="loading-inline">
-            <div class="loader"></div>
-          </div>
-
-          <ul v-show="loadingUser==false" class="new_friend_list list-unstyled row">
-            <li v-for="(item, $index) in users"
-                :key="$index" class="col-lg-4 col-md-2 col-sm-6 col-4">
-              <nuxt-link :to="`/profile/${item.id}`">
-                <img
-                  :src="item.avatar  | getImgUrl('avatar','sm_avatar')"
-                  class="img-thumbnail"
-                  alt="User Image"
-                />
-                <h6 class="users_name">{{item.name | truncate(20, '...')}}</h6>
-              </nuxt-link>
-            </li>
-          </ul>
-        </div>
-      </div>
+    <div>
+      <b-alert show variant="warning">
+        <h4 class="alert-heading">Under Construction!</h4>
+        <p>
+         Hope you you will be back!
+        </p>
+        <hr>
+        <p class="mb-0">
+          Thank you for coming
+        </p>
+      </b-alert>
     </div>
   </div>
 </template>

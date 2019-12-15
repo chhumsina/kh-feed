@@ -105,7 +105,7 @@ class Posts extends Model
                     select ua.object_type as type, ua.updated_at as activity_date, p.id as post_id, p.caption,
                     p.photo, CONCAT('Commented: ',c.description) as description
                     from user_activity as ua
-                    join post_comments as pc on (pc.comment_id=ua.object_id and pc.status=1 and pc.user_id=2)
+                    join post_comments as pc on (pc.comment_id=ua.object_id and pc.status=1 and pc.user_id=$user_id)
                     join comments as c on c.id=pc.comment_id
                     join posts as p on (p.id=pc.post_id and p.status='active')
                     where
@@ -161,17 +161,24 @@ class Posts extends Model
         try {
             $userId = Auth::user()->id;
 
+            $input_data = json_decode($input->data);
+
             $photo_name = 'no';
-            if ($input->hasFile('photo')) {
-                $file = $input->file('photo');
-                $photo_name = uniqid('photo_1' . $userId . '_') . "." . $file->getClientOriginalExtension();
-                Storage::disk('photo')->put($photo_name, File::get($file));
-                if (!Storage::disk('photo')->exists($photo_name)) {
-                    return false;
+            if (isset($input_data->photo)) {
+                $base64_image = $input_data->photo;
+                if (preg_match('/^data:image\/(\w+);base64,/', $base64_image)) {
+                    $data_img = substr($base64_image, strpos($base64_image, ',') + 1);
+
+                    $photo_name = uniqid('photo_1' . $userId . '_') . ".png";
+
+                    $data_img = base64_decode($data_img);
+                    Storage::disk('photo')->put($photo_name, $data_img);
+                    if (!Storage::disk('photo')->exists($photo_name)) {
+                        return false;
+                    }
                 }
             }
 
-            $input_data = json_decode($input->data);
             $data['caption'] = Self::generateCaption($input_data->caption);
             $data['photo'] = $photo_name;
             $data['user_id'] = $userId;
@@ -182,7 +189,7 @@ class Posts extends Model
             $msg['status'] = true;
 
         } catch (\Exception $e) {
-            $msg['msg'] = $e->getMessage();
+            $msg['msg'] = $e->getMessage().$e->getLine();
             $msg['status'] = false;
         }
 

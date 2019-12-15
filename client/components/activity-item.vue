@@ -66,7 +66,7 @@
               <a href="#comment"><span style="float: right;"
                                        class="post_view_num">{{numComment.num_comment}} comments</span></a>
             </div>
-            <p style="white-space: pre-line;" class="caption">
+            <p style="white-space: pre-line; word-break: break-all;" class="caption">
               <span v-html="dataModal.caption"></span>
             </p>
 
@@ -121,11 +121,11 @@
               <img
                 v-if="item.photo!='no'"
                 class="img-circle"
-                :src="item.photo | getImgUrl('photo','m_post')"
+                :src="item.photo | getImgUrl('photo','sm_post')"
                 alt="User Image"
               />
-              <span class="username">{{item.caption | truncate(35, '...')}}</span>
-              <span class="description">
+              <span class="username" :class="item.photo!='no' ? '' : 'margin-left-0'">{{item.caption | truncate(35, '...')}}</span>
+              <span class="description" :class="item.photo!='no' ? '' : 'margin-left-0'">
                 {{item.description | truncate(20, '...')}}
                 -
               <timeago :datetime="item.activity_date" :auto-update="10"></timeago>
