@@ -40,6 +40,9 @@
 
       <div class="image-preview" v-if="photo!=null">
         <img class="preview" :src="photo">
+        <div  @click="$refs.photo.click()" style="position: absolute; right: 1px; bottom: 3px; background: rgba(255,255,255, .6); padding: 3px 5px; font-weight: bold; font-size: 13px; padding-right: 9px; padding-bottom: 7px;">
+          Change <i class="fa fa-picture-o" aria-hidden="true"></i>
+        </div>
       </div>
 
       <div class="form-group">
@@ -50,7 +53,7 @@
 
         <input accept="image/x-png,image/jpeg" ref="photo"  style="width: 100%; display: none;" @change="addPhoto('photo', $event)" type="file" name="photo"
                id="addPhotoId"/>
-        <div class="" @click="$refs.photo.click()"><i style="font-size: 40px;" class="fa fa-picture-o" aria-hidden="true"></i></div>
+        <div v-if="photo==null" @click="$refs.photo.click()"><i style="font-size: 40px;" class="fa fa-picture-o" aria-hidden="true"></i></div>
       </div>
 
       <div class="form-group btn-post">
@@ -79,7 +82,7 @@
             addPhoto(fileKey, event) {
                 // this[fileKey] = event.target.files[0];
                 // Reference to the DOM input element
-                var resize_width = 300;//without px
+                var resize_width = 350;//without px
 
                 //get the image selected
                 var item = event.target.files[0];
@@ -118,6 +121,8 @@
                         }
 
                     }
+                }else{
+                    this.photo = null;
                 }
             },
             async createPost() {
@@ -183,10 +188,13 @@
     /*line-height: 250px;*/
     text-align: center;
     margin-bottom: 10px;
+    padding: 5px;
     border: 1px solid #ccc;
+    position: relative;
   }
   .image-preview > img{
     vertical-align: middle;
+    width: 100%;
   }
   .btn-post {
     position: fixed;

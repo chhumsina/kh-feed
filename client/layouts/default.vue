@@ -29,6 +29,8 @@
   }
   .alert.alert-success {
     border-radius: 0;
+    background: #f1f1f1;
+    border: 1px solid #ccc;
   }
   .username {
     font-size: 15px !important;
@@ -76,7 +78,7 @@
   }
 
   .post-modal-content .photo-content .photo {
-    position: absolute;
+    /*position: absolute;*/
     left: 0;
     right: 0;
     top: 0;
@@ -108,9 +110,25 @@
 
   .post-modal-content .photo-content {
     background: #ddd;
-    height: 224px;
+    /*height: 224px;*/
     overflow: hidden;
     position: relative;
+  }
+
+  .thumbnail {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #ddd;
+  }
+
+  .thumbnail img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: 0 auto;
   }
 
   .modal-header-post .user-block .username,
@@ -243,9 +261,7 @@
   /*  post*/
   .post_property {
     margin: 10px 0;
-    margin-top: 7px;
-    padding-bottom: 5px;
-    padding-top: 5px;
+    margin-top: 0px;
     width: 100%;
   }
   .post_view_num{
@@ -420,9 +436,6 @@
     text-align: center;
     padding-top: 7px;
   }
-  .c_post .post-img img{
-    width: 100%;
-  }
   /*  post*/
 </style>
 <style scopped>
@@ -527,7 +540,7 @@
     position: relative;
     -webkit-box-flex: 1;
     flex: 1 1 auto;
-    padding: 10px;
+    padding: 0px;
     margin-top: 28px;
     margin-bottom: 70px;
   }
@@ -563,7 +576,7 @@
   .avatar-comment{
     height: 41px !important;
     width: 41px !important;
-    margin-left: -5px !important;
+    margin-left: -9px !important;
     margin-top: -2px !important;
   }
 

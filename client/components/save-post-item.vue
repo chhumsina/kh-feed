@@ -62,47 +62,48 @@
             <div class="loader"></div>
           </div>
           <div v-if="loadingModal == false">
-            <div v-if="dataModal.photo!='no'" class="photo-content">
-              <img
-                class="photo"
-                v-lazy="getImgUrl(dataModal.photo, 'photo', 'm_post')"
+            <div v-if="dataModal.photo!='no'" class="thumbnail">
+              <img v-lazy="getImgUrl(dataModal.photo, 'photo', 'm_post')"
               />
             </div>
-            <div class="post_property">
-              <span class="post_view_num text-muted">{{numView.num_view}} views · {{lastRead}} last read</span>
-              <a href="#comment"><span style="float: right;"
-                                       class="post_view_num">{{numComment.num_comment}} comments</span></a>
-            </div>
-            <p style="white-space: pre-line; word-break: break-all;" class="caption">
-              <span v-html="dataModal.caption"></span>
-            </p>
+            <div style="padding: 10px;">
+              <div class="post_property">
+                <small class="post_view_num text-muted">{{numView.num_view}} views · {{lastRead}} last read</small>
+                <a href="#comment"><small style="float: right;"
+                                          class="post_view_num">{{numComment.num_comment}} comments</small></a>
+              </div>
+              <p style="white-space: pre-line; word-break: break-all;" class="caption">
+                <span v-html="dataModal.caption"></span>
+              </p>
 
-            <div class="c_post">
-              <div class="box-comments" style="display: block;">
-                <p style="border-bottom: 1px solid #ddd;padding-bottom: 9px;">
-                  <i class="fa fa-comments-o" aria-hidden="true"></i>
-                  Comments
-                </p>
+              <div class="c_post">
+                <div class="box-comments" style="display: block;">
+                  <p style="border-bottom: 1px solid #ddd;padding-bottom: 9px;">
+                    <i class="fa fa-comments-o" aria-hidden="true"></i>
+                    Comments
+                  </p>
 
-                <div v-for="(item, $index) in dataModalComment" :key="$index" class="box-comment">
-                  <img class="img-circle img-sm" :src="item.avatar  | getImgUrl('avatar','sm_avatar')">
-                  <div class="comment-text">
-                    <small class="username">
-                      {{item.name}}
-                      <span class="text-muted pull-right">
+                  <div v-for="(item, $index) in dataModalComment" :key="$index" class="box-comment">
+                    <img class="img-circle img-sm" :src="item.avatar  | getImgUrl('avatar','sm_avatar')">
+                    <div class="comment-text">
+                      <small class="username">
+                        {{item.name}}
+                        <span class="text-muted pull-right">
             <timeago :datetime="item.created_at" :auto-update="10"></timeago>
           </span>
-                    </small>
-                    <small>{{item.comments}}</small>
+                      </small>
+                      <small>{{item.comments}}</small>
+                    </div>
                   </div>
+                  <div class="box-comment text-center" v-if="loadingModalComment==true">
+                    <p>loading...</p>
+                  </div>
+                  <p id="comment"></p>
+                  <br/>
                 </div>
-                <div class="box-comment text-center" v-if="loadingModalComment==true">
-                  <p>loading...</p>
-                </div>
-                <p id="comment"></p>
-                <br/>
               </div>
             </div>
+
           </div>
         </div>
         <template v-slot:modal-footer>
