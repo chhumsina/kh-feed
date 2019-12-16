@@ -31,6 +31,7 @@
     border-radius: 0;
     background: #f1f1f1;
     border: 1px solid #ccc;
+    padding-bottom: 0px;
   }
   .username {
     font-size: 15px !important;

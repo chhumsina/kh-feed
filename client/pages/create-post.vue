@@ -26,22 +26,17 @@
     <form v-else @submit.prevent="createPost"
           enctype="multipart/form-data">
 
-      <b-alert show variant="success" v-if="photo==null">
-        <h6 class="alert-heading"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Great Post should be: </h6>
-        <div>
-          <ul>
-            <li>Short with meaningful</li>
-            <li>Useful thing</li>
-            <li>Interesting topic</li>
-            <li>Be able to help people</li>
-          </ul>
-        </div>
-      </b-alert>
-
       <div class="image-preview" v-if="photo!=null">
         <img class="preview" :src="photo">
         <div  @click="$refs.photo.click()" style="position: absolute; right: 1px; bottom: 3px; background: rgba(255,255,255, .6); padding: 3px 5px; font-weight: bold; font-size: 13px; padding-right: 9px; padding-bottom: 7px;">
           Change <i class="fa fa-picture-o" aria-hidden="true"></i>
+        </div>
+      </div>
+
+      <div class="image-preview"  v-if="photo==null">
+        <img class="preview" :src="placeholder_photo.photo">
+        <div  @click="$refs.photo.click()" style="position: absolute; right: 1px; bottom: 3px; background: rgba(255,255,255, .6); padding: 3px 5px; font-weight: bold; font-size: 13px; padding-right: 9px; padding-bottom: 7px;">
+          Browse <i class="fa fa-picture-o" aria-hidden="true"></i>
         </div>
       </div>
 
@@ -53,7 +48,6 @@
 
         <input accept="image/x-png,image/jpeg" ref="photo"  style="width: 100%; display: none;" @change="addPhoto('photo', $event)" type="file" name="photo"
                id="addPhotoId"/>
-        <div v-if="photo==null" @click="$refs.photo.click()"><i style="font-size: 40px;" class="fa fa-picture-o" aria-hidden="true"></i></div>
       </div>
 
       <div class="form-group btn-post">
@@ -73,7 +67,10 @@
                 strategy: this.$auth.$storage.getUniversal('strategy'),
                 caption: '',
                 photo: null,
-                createPostLoading: true
+                createPostLoading: true,
+                placeholder_photo: {
+                    photo: require('../assets/default/placeholder-300x200.png')
+                }
             }
         },
         mounted() {

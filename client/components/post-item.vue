@@ -26,11 +26,24 @@
                class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
                alt="Alt Text">
           <div class="img-push">
-            <input style="border-radius: 25px !important;background: #fafafa;" type="text" class="form-control input-sm input-box"
-                   placeholder="What's you want to share?">
+            <div style="padding-top: 8px;border-radius: 25px !important;background: #fafafa;" class="form-control input-sm input-box">
+              What's you want to share?
+            </div>
           </div>
         </div>
       </nuxt-link>
+
+      <b-alert show variant="success"  v-if=" this.$route.params.id == undefined && this.$route.name == 'feed' ">
+        <h6 class="alert-heading"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Great Post should be: </h6>
+        <div>
+          <ul>
+            <li>Short with meaningful</li>
+            <li>Useful thing</li>
+            <li>Interesting topic</li>
+            <li>Be able to help people</li>
+          </ul>
+        </div>
+      </b-alert>
 
       <b-modal class="fullscreen" id="post-modal">
         <template v-slot:modal-title>
