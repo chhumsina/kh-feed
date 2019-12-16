@@ -38,16 +38,16 @@ class UserController extends Controller
         try{
             DB::beginTransaction();
 
-            $userId = Auth::user()->id;
-            $user = User::where('id', $userId)->first()->name;
-            if($input['name'] != '' && $input['name'] != $user){
-                $user = User::getUser(Auth::user()->id);
-                $colorRandom = rand(1,14);
-                $avatar = new Avatar();
-                $backgroundRandom = Config::get('laravolt.avatar.backgrounds');
-                $avatar->create($input['name'])->setBackground($backgroundRandom[$colorRandom])->save(public_path('/avatar/'.$user->avatar), 100);
-
-            }
+//            $userId = Auth::user()->id;
+//            $user = User::where('id', $userId)->first()->name;
+//            if($input['name'] != '' && $input['name'] != $user){
+//                $user = User::getUser(Auth::user()->id);
+//                $colorRandom = rand(1,14);
+//                $avatar = new Avatar();
+//                $backgroundRandom = Config::get('laravolt.avatar.backgrounds');
+//                $avatar->create($input['name'])->setBackground($backgroundRandom[$colorRandom])->save(public_path('/avatar/'.$user->avatar), 100);
+//
+//            }
 
             $update = User::updateOverView($input);
 
@@ -58,6 +58,30 @@ class UserController extends Controller
             DB::commit();
 
             $msg['msg'] = 'Saved successfully.';
+            $msg['status'] = true;
+            return response()->json($msg);
+
+        }catch (\Exception $e){
+            DB::rollBack();
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+            return response()->json($msg);
+        }
+    }
+
+    public function changeAvatar(Request $input){
+        try{
+            DB::beginTransaction();
+
+            $update = User::changeAvatar($input);
+
+            if(!$update){
+                throw new \Exception('Could not change, Please try again!');
+            }
+
+            DB::commit();
+
+            $msg['msg'] = 'Changed successfully.';
             $msg['status'] = true;
             return response()->json($msg);
 

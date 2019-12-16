@@ -117,7 +117,7 @@
   }
 
   .thumbnail {
-    height: 250px;
+    /*height: 250px;*/
     display: flex;
     flex-direction: column;
     justify-content: center;

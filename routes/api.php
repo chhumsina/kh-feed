@@ -31,7 +31,7 @@ Route::get('image/{type}/{size}/{img}', function($type,$size,$img)
         if($size == 'sm_post'){
             $resize = $img->resize(40, 40);
         }elseif($size == 'sm_avatar'){
-            $resize = $img->resize(80, 80);
+            $resize = $img->resize(40, 40);
         }
 
         return $resize->response('png');
@@ -55,7 +55,8 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::get('post/detail/{id}', 'PostController@detail');
     Route::get('post/detail-comment/{id}', 'PostController@detailComment');
 
-    Route::post('update-overview', 'UserController@updateOverview');
+    Route::post('user/change-avatar', 'UserController@changeAvatar');
+    Route::post('user/update-overview', 'UserController@updateOverview');
     Route::post('create-post', 'PostController@createPost');
     Route::post('create-comment', 'PostController@createComment');
 

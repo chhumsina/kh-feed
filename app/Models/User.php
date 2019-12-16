@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -65,6 +66,40 @@ class User extends Authenticatable implements JWTSubject
             ->update($data);
 
         return $update;
+
+    }
+
+    public static function changeAvatar($input){
+        try{
+            $userId = Auth::user()->id;
+
+            $base64_image = $input['avatar'];
+            if (preg_match('/^data:image\/(\w+);base64,/', $base64_image)) {
+                $data_img = substr($base64_image, strpos($base64_image, ',') + 1);
+
+                $user = User::getUser($userId);
+                $avatar_name = $user->avatar;
+
+                $data_img = base64_decode($data_img);
+                Storage::disk('avatar')->put($avatar_name, $data_img);
+                if (!Storage::disk('avatar')->exists($avatar_name)) {
+                    throw new \Exception('Cannot change avatar!');
+                }
+
+                $data['avatar'] = $avatar_name;
+
+                $update = User::where('id',$userId)
+                    ->update($data);
+            }
+
+            $msg['status'] = true;
+
+        } catch (\Exception $e) {
+            $msg['msg'] = $e->getMessage().$e->getLine();
+            $msg['status'] = false;
+        }
+
+        return $msg;
 
     }
 

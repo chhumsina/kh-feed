@@ -174,7 +174,7 @@ class Posts extends Model
                     $data_img = base64_decode($data_img);
                     Storage::disk('photo')->put($photo_name, $data_img);
                     if (!Storage::disk('photo')->exists($photo_name)) {
-                        return false;
+                        throw new \Exception('Cannot create post!');
                     }
                 }
             }

@@ -19,7 +19,17 @@
 
     <div class="container">
       <div class="text-center profile">
-        <img v-lazy="getImgUrl(user.avatar, 'avatar', 'm_avatar')" class="ui-w-100 rounded-circle"/>
+        <div style="position: relative;">
+          <img v-lazy="getImgUrl(user.avatar, 'avatar', 'm_avatar')" class="ui-w-100 rounded-circle"/>
+          <div
+            style="position: absolute; margin: 0 auto; left: 0; right: 0; bottom: -15px; color: #035398; font-size: 11px;"
+            @click="$refs.avatar.click()">
+            Change
+            <input accept="image/x-png,image/jpeg" ref="avatar" style="width: 100%; display: none;"
+                   @change="changeAvatar('avatar', $event)" type="file" name="avatar"
+                   id="addAvatarId"/>
+          </div>
+        </div>
 
         <div class="col-md-8 col-lg-6 col-xl-5 p-0 mx-auto">
           <h4 class="font-weight-bold my-4"> {{user.name}}</h4>
@@ -33,72 +43,75 @@
     </div>
 
     <no-ssr>
-    <div class="account-tabs">
-      <b-tabs content-class="mt-3" align="center">
-        <b-tab title="Posts" active>
-          <post-item/>
-        </b-tab>
-        <b-tab title="Overview">
-          <div class="overview-list">
-            <form @submit.prevent="overview">
+      <div class="account-tabs">
+        <b-tabs content-class="mt-3" align="center">
+          <b-tab title="Posts" active>
+            <post-item/>
+          </b-tab>
+          <b-tab title="Overview">
+            <div class="overview-list">
+              <form @submit.prevent="overview">
 
-              <div class="input-group mb-3">
-                <input v-model="form.name" type="text" class="form-control input-text"
-                       :class="{ 'is-invalid': errors.name }"
-                       placeholder="Name">
-                <div class="input-group-prepend">
-                  <span class="input-group-text no-border-left" id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
+                <div class="input-group mb-3">
+                  <input v-model="form.name" type="text" class="form-control input-text"
+                         :class="{ 'is-invalid': errors.name }"
+                         placeholder="Name">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text no-border-left" id="basic-addon1"><i class="fa fa-user"
+                                                                                       aria-hidden="true"></i></span>
+                  </div>
+                  <div class="invalid-feedback" v-if="errors.name">
+                    {{errors.name[0]}}
+                  </div>
                 </div>
-                <div class="invalid-feedback" v-if="errors.name">
-                  {{errors.name[0]}}
-                </div>
-              </div>
-              <div class="input-group mb-3">
-                <input v-model="form.email" type="text" class="form-control input-text"
-                       :class="{ 'is-invalid': errors.email }"
-                       placeholder="E-mail">
-                <div class="input-group-prepend">
+                <div class="input-group mb-3">
+                  <input v-model="form.email" type="text" class="form-control input-text"
+                         :class="{ 'is-invalid': errors.email }"
+                         placeholder="E-mail">
+                  <div class="input-group-prepend">
                   <span class="input-group-text no-border-left" id="basic-addon1"><i class="fa fa-envelope"
-                                                                      aria-hidden="true"></i></span>
+                                                                                     aria-hidden="true"></i></span>
+                  </div>
+                  <div class="invalid-feedback" v-if="errors.email">
+                    {{errors.email[0]}}
+                  </div>
                 </div>
-                <div class="invalid-feedback" v-if="errors.email">
-                  {{errors.email[0]}}
+                <div class="input-group mb-3">
+                  <input v-model="form.phone" type="text" class="form-control input-text"
+                         :class="{ 'is-invalid': errors.phone }"
+                         placeholder="Phone">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text no-border-left" id="basic-addon1"><i class="fa fa-phone"
+                                                                                       aria-hidden="true"></i></span>
+                  </div>
+                  <div class="invalid-feedback" v-if="errors.phone">
+                    {{errors.phone[0]}}
+                  </div>
                 </div>
-              </div>
-              <div class="input-group mb-3">
-                <input v-model="form.phone" type="text" class="form-control input-text"
-                       :class="{ 'is-invalid': errors.phone }"
-                       placeholder="Phone">
-                <div class="input-group-prepend">
-                  <span class="input-group-text no-border-left" id="basic-addon1"><i class="fa fa-phone" aria-hidden="true"></i></span>
-                </div>
-                <div class="invalid-feedback" v-if="errors.phone">
-                  {{errors.phone[0]}}
-                </div>
-              </div>
-              <div class="input-group mb-3">
-                <input v-model="form.bio" type="text" class="form-control input-text"
-                       :class="{ 'is-invalid': errors.bio }"
-                       placeholder="Quote">
-                <div class="input-group-prepend">
+                <div class="input-group mb-3">
+                  <input v-model="form.bio" type="text" class="form-control input-text"
+                         :class="{ 'is-invalid': errors.bio }"
+                         placeholder="Quote">
+                  <div class="input-group-prepend">
                 <span class="input-group-text no-border-left" id="basic-addon1"><i class="fa fa-quote-right"
-                                                                    aria-hidden="true"></i></span>
+                                                                                   aria-hidden="true"></i></span>
+                  </div>
+                  <div class="invalid-feedback" v-if="errors.bio">
+                    {{errors.bio[0]}}
+                  </div>
                 </div>
-                <div class="invalid-feedback" v-if="errors.bio">
-                  {{errors.bio[0]}}
-                </div>
-              </div>
 
-              <Br/>
-              <div class="form-group">
-                <button v-if="saveOverViewLoading==true" type="submit" class="btn btn-secondary btn-block">Save</button>
-                <button v-else type="button" class="btn btn-secondary btn-block">Save...</button>
-              </div>
-            </form>
-          </div>
-        </b-tab>
-      </b-tabs>
-    </div>
+                <Br/>
+                <div class="form-group">
+                  <button v-if="saveOverViewLoading==true" type="submit" class="btn btn-secondary btn-block">Save
+                  </button>
+                  <button v-else type="button" class="btn btn-secondary btn-block">Save...</button>
+                </div>
+              </form>
+            </div>
+          </b-tab>
+        </b-tabs>
+      </div>
     </no-ssr>
   </div>
 </template>
@@ -138,10 +151,81 @@
             getImgUrl(image, type, size) {
                 return getImgUrl(image, type, size);
             },
+            changeAvatar(fileKey, event) {
+                // this[fileKey] = event.target.files[0];
+                // Reference to the DOM input element
+                var resize_width = 100;//without px
+
+                //get the image selected
+                var item = event.target.files[0];
+                if (item) {
+                    //create a FileReader
+                    var reader = new FileReader();
+
+                    //image turned to base64-encoded Data URI.
+                    reader.readAsDataURL(item);
+                    reader.name = item.name;//get the image's name
+                    reader.size = item.size; //get the image's size
+                    var _this = this;
+                    reader.onload = function (event) {
+                        var img = new Image();//create a image
+                        img.src = event.target.result;//result is base64-encoded Data URI
+                        img.name = event.target.name;//set name (optional)
+                        img.size = event.target.size;//set size (optional)
+                        var finalImage = null;
+                        img.onload = function (el) {
+                            var elem = document.createElement('canvas');//create a canvas
+
+                            //scale the image to 600 (width) and keep aspect ratio
+                            var scaleFactor = resize_width / el.target.width;
+                            elem.width = resize_width;
+                            elem.height = resize_width;
+
+                            //draw in canvas
+                            var ctx = elem.getContext('2d');
+                            ctx.drawImage(el.target, 0, 0, elem.width, elem.height);
+                            ctx.globalCompositeOperation='destination-in';
+                            ctx.beginPath();
+                            ctx.arc(50, 50, 50, 0, Math.PI*2);
+                            ctx.fillStyle = "#0095DD";
+                            ctx.fill();
+                            // reset to default
+                            ctx.globalCompositeOperation='source-over';
+                            //get the base64-encoded Data URI from the resize image
+                            var finalImage = ctx.canvas.toDataURL(el.target, 'image/jpeg', 0);
+
+                            //assign it to thumb src
+                            _this.saveChangeAvatar(finalImage);
+                        }
+
+                    }
+                }
+            },
+            async saveChangeAvatar(avatar) {
+                this.savePostLoading = false;
+                this.$axios
+                    .post('user/change-avatar', {
+                        avatar: avatar
+                    })
+                    .then(({data}) => {
+                        if (data.status == true) {
+                            this.$swal.fire(
+                                data.msg,
+                                'success'
+                            );
+                        } else {
+                            this.$swal.fire(
+                                data.msg,
+                                'error'
+                            )
+                        }
+                        location.href = location.href;
+                    })
+            },
             async overview() {
                 this.saveOverViewLoading = false;
                 try {
-                    this.$axios.post('update-overview', this.form).then(({data}) => {
+                    this.$axios.post('user/update-overview', this.form).then(({data}) => {
                         if (data) {
                             if (data.status == true) {
                                 this.$swal.fire(
@@ -172,19 +256,22 @@
 </script>
 
 <style>
-  .account .no-border-left{
+  .account .no-border-left {
     border-left: 0;
     background: #fff;
   }
+
   .account .nav-tabs {
     border-bottom: 0 !important;
     margin-bottom: -14px !important;
   }
+
   .account .nav-tabs .nav-link.active, .account .nav-tabs .nav-item.show .nav-link {
     color: #495057;
     background-color: initial;
     border: 0 !important;
   }
+
   .account .nav-tabs .nav-link {
     border: 0px solid transparent;
     border-top-left-radius: 0.25rem;
