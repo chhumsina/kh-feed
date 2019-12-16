@@ -34,7 +34,8 @@
     padding-bottom: 0px;
   }
   .username {
-    font-size: 15px !important;
+    font-size: 14px !important;
+    padding-top: 2px;
     color: #555;
   }
   .margin-left-0{
@@ -319,7 +320,7 @@
 
   .c_post .user-block .description {
     color: #999;
-    font-size: 13px;
+    font-size: 11px;
   }
 
   .c_post .user-block .username,
@@ -418,6 +419,7 @@
     color: #444;
     display: block;
     font-weight: 600;
+    margin-bottom: -4px;
   }
   .c_post .box-comments .text-muted {
     font-weight: 400;

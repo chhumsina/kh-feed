@@ -11,8 +11,10 @@
           Sorry, We need to postpone for your creating post due to some of the posts are not satisfy with our policy and
           mission.
           <ul>
+            <li>Will not post Drug and Sexual Content</li>
+            <li>Will not post Spam (unuseful)</li>
+            <li>Keep post as learning curve</li>
             <li>Short with meaningful</li>
-            <li>Useful thing</li>
             <li>Interesting topic</li>
             <li>Be able to help people</li>
           </ul>
@@ -23,19 +25,52 @@
         </p>
       </b-alert>
     </div>
-    <form v-else @submit.prevent="createPost"
+    <form @submit.prevent="createPost"
           enctype="multipart/form-data">
+    <div style="background: #fff; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+      <p style="margin-bottom: 3px;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> You're participating with Us:</p>
+      <b-form-checkbox
+        v-model="p1"
+        name="p1"
+        value="yes"
+        unchecked-value="no"
+        required
+      >
+        <small>Will not post Drug and Sexual Content</small>
+      </b-form-checkbox>
+      <b-form-checkbox
+        v-model="p2"
+        name="p2"
+        value="yes"
+        unchecked-value="no"
+        required
+      >
+        <small>Will not post Spam (unuseful)</small>
+      </b-form-checkbox>
+      <b-form-checkbox
+        v-model="p3"
+        name="p3"
+        value="yes"
+        unchecked-value="no"
+        required
+      >
+        <small>Keep post as learning curve</small>
+      </b-form-checkbox>
+      <p style="margin-bottom: 3px; text-align: right; font-size: 12px; margin-top: 9px; color: #f7283b; }"> We'll not ban a grateful person.</p>
+    </div>
 
       <div class="image-preview" v-if="photo!=null">
         <img class="preview" :src="photo">
-        <div  @click="$refs.photo.click()" style="position: absolute; right: 1px; bottom: 3px; background: rgba(255,255,255, .6); padding: 3px 5px; font-weight: bold; font-size: 13px; padding-right: 9px; padding-bottom: 7px;">
+        <div @click="$refs.photo.click()"
+             style="position: absolute; right: 1px; bottom: 3px; background: rgba(255,255,255, .6); padding: 3px 5px; font-weight: bold; font-size: 13px; padding-right: 9px; padding-bottom: 7px;">
           Change <i class="fa fa-picture-o" aria-hidden="true"></i>
         </div>
       </div>
 
-      <div class="image-preview"  v-if="photo==null">
+      <div class="image-preview" v-if="photo==null">
         <img class="preview" :src="placeholder_photo.photo">
-        <div  @click="$refs.photo.click()" style="position: absolute; right: 1px; bottom: 3px; background: rgba(255,255,255, .6); padding: 3px 5px; font-weight: bold; font-size: 13px; padding-right: 9px; padding-bottom: 7px;">
+        <div @click="$refs.photo.click()"
+             style="position: absolute; right: 1px; bottom: 3px; background: rgba(255,255,255, .6); padding: 3px 5px; font-weight: bold; font-size: 13px; padding-right: 9px; padding-bottom: 7px;">
           Browse <i class="fa fa-picture-o" aria-hidden="true"></i>
         </div>
       </div>
@@ -46,7 +81,8 @@
       </div>
       <div class="preview-photo text-center">
 
-        <input accept="image/x-png,image/jpeg" ref="photo"  style="width: 100%; display: none;" @change="addPhoto('photo', $event)" type="file" name="photo"
+        <input accept="image/x-png,image/jpeg" ref="photo" style="width: 100%; display: none;"
+               @change="addPhoto('photo', $event)" type="file" name="photo"
                id="addPhotoId"/>
       </div>
 
@@ -64,6 +100,9 @@
         middleware: 'auth',
         data() {
             return {
+                p1:'no',
+                p2:'no',
+                p3:'no',
                 strategy: this.$auth.$storage.getUniversal('strategy'),
                 caption: '',
                 photo: null,
@@ -92,13 +131,13 @@
                     reader.name = item.name;//get the image's name
                     reader.size = item.size; //get the image's size
                     var _this = this;
-                    reader.onload = function(event) {
+                    reader.onload = function (event) {
                         var img = new Image();//create a image
                         img.src = event.target.result;//result is base64-encoded Data URI
                         img.name = event.target.name;//set name (optional)
                         img.size = event.target.size;//set size (optional)
                         var finalImage = null;
-                        img.onload = function(el) {
+                        img.onload = function (el) {
                             var elem = document.createElement('canvas');//create a canvas
 
                             //scale the image to 600 (width) and keep aspect ratio
@@ -118,7 +157,7 @@
                         }
 
                     }
-                }else{
+                } else {
                     this.photo = null;
                 }
             },
@@ -138,7 +177,7 @@
                         }
                     }).then(({data}) => {
                         if (data) {
-                            if(data.status == true){
+                            if (data.status == true) {
                                 this.caption = '';
                                 this.photo = null;
                                 document.getElementById('addPhotoId').value = null;
@@ -146,7 +185,7 @@
                                     data.msg,
                                     'success'
                                 );
-                            }else{
+                            } else {
                                 this.$swal.fire(
                                     data.msg,
                                     'error'
@@ -189,10 +228,12 @@
     border: 1px solid #ccc;
     position: relative;
   }
-  .image-preview > img{
+
+  .image-preview > img {
     vertical-align: middle;
     width: 100%;
   }
+
   .btn-post {
     position: fixed;
     width: 100%;

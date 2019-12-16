@@ -35,8 +35,7 @@
           <h4 class="font-weight-bold my-4"> {{user.name}}</h4>
 
           <div v-if="user.bio" class="text-muted mb-4">
-            <i class="fa fa-quote-left" aria-hidden="true"></i> {{user.bio}} <i class="fa fa-quote-right"
-                                                                                aria-hidden="true"></i>
+            <i class="fa fa-quote-left" aria-hidden="true"></i> {{user.bio}} <i class="fa fa-quote-right" aria-hidden="true"></i>
           </div>
         </div>
       </div>

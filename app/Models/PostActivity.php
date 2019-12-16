@@ -19,11 +19,11 @@ class PostActivity extends Model
         try{
             $user_id = Auth::user()->id;
 
-            $find = PostActivity::where('user_id', $user_id)->where('object_id', $obj_id)->orderBy('updated_at','DESC')->first();
-            if($find){
-                if($find->object_type == 'post' && $obj_type == 'post'){
+            $last = PostActivity::where('user_id', $user_id)->orderBy('updated_at','DESC')->first();
+            if($last){
+                if(($last->object_type == 'post' && $obj_type == 'post') && ($last->object_id==$obj_id)){
                     $data['updated_at'] = now();
-                    $create = $find->update($data);
+                    $create = $last->update($data);
                 }else{
                     $data['user_id'] = $user_id;
                     $data['object_id'] = $obj_id;

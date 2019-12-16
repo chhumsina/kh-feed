@@ -1,14 +1,21 @@
 <template>
   <div class="recommend container">
     <div>
-      <b-alert show variant="warning">
-        <h4 class="alert-heading">Under Construction!</h4>
+      <b-alert show variant="warning" style="    border-radius: 170px;
+    width: 300px;
+    height: 300px;
+    text-align: center;
+    margin: 0 auto;
+    padding-top: 60px;
+    border: 1px solid #ddd;">
+        <i style="font-size: 55px;" class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+        <h4 class="alert-heading">Upcoming!</h4>
         <p>
-         Hope you you will be back!
+         Hope you will be back!
         </p>
         <hr>
         <p class="mb-0">
-          Thank you for coming
+          Thank you
         </p>
       </b-alert>
     </div>

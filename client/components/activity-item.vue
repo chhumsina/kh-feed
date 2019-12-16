@@ -208,6 +208,7 @@
                             this.dataModalComment.push(data.data[0]);
                             this.loadingModalComment = false;
                             this.goto('comment');
+                            this.numComment.num_comment = this.dataModalComment.length;
                         }
                     })
                 } catch (e) {

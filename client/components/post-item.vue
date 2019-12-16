@@ -37,10 +37,10 @@
         <h6 class="alert-heading"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Great Post should be: </h6>
         <div>
           <ul>
-            <li>Short with meaningful</li>
-            <li>Useful thing</li>
-            <li>Interesting topic</li>
-            <li>Be able to help people</li>
+            <li><small>Short with meaningful</small></li>
+            <li><small>Useful thing</small></li>
+            <li><small>Interesting topic</small></li>
+            <li><small>Be able to help people</small></li>
           </ul>
         </div>
       </b-alert>
@@ -122,6 +122,11 @@
                       </small>
                       <small>{{item.comments}}</small>
                     </div>
+                  </div>
+                  <div class="text-center" v-if="numComment.num_comment==0">
+                    <i class="fa fa-comments-o" style="font-size: 75px; color: #ccc;" aria-hidden="true"></i>
+                    <p style="margin-bottom: -5px; font-weight: bold; color: #aaa;">No any comments yet</p>
+                    <small>Be the first to comment</small>
                   </div>
                   <div class="box-comment text-center" v-if="loadingModalComment==true">
                     <p>loading...</p>
@@ -269,6 +274,7 @@
                             this.dataModalComment.push(data.data[0]);
                             this.loadingModalComment = false;
                             this.goto('comment');
+                            this.numComment.num_comment = this.dataModalComment.length;
                         }
                     })
                 } catch (e) {
