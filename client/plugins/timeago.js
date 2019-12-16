@@ -1,13 +1,15 @@
 import Vue from 'vue'
 import VueTimeago from 'vue-timeago'
+import toNow from 'date-fns/distance_in_words_to_now'
 
 Vue.use(VueTimeago, {
-  name: 'Timeago', // Component name, `Timeago` by default
-  locale: 'en', // Default locale
-  // We use `date-fns` under the hood
-  // So you can use all locales from it
-  locales: {
-    'zh-CN': require('date-fns/locale/zh_cn'),
-    ja: require('date-fns/locale/ja')
+  name: "Timeago",
+  converter: (date, locale, converterOptions) => {
+    const { includeSeconds, addSuffix = true } = converterOptions
+    return toNow(date, {
+      locale,
+      includeSeconds,
+      addSuffix
+    }).replace("less than a minute ago", "just now") // here
   }
-})
+});
