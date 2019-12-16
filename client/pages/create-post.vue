@@ -25,8 +25,17 @@
         </p>
       </b-alert>
     </div>
-    <form @submit.prevent="createPost"
+
+    <form v-else @submit.prevent="createPost"
           enctype="multipart/form-data">
+      <b-alert show variant="warning">
+        <h4 class="alert-heading"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Testing Mode </h4>
+        <div>
+          khfeed is still in developing and testing.
+          Therefore, all the created posts will be deleted after we officially published.
+        </div>
+      </b-alert>
+
     <div style="background: #fff; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
       <p style="margin-bottom: 3px;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> You're participating with Us:</p>
       <b-form-checkbox
