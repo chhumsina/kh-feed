@@ -131,6 +131,7 @@
     max-height: 100%;
     display: block;
     margin: 0 auto;
+    width: 100%;
   }
 
   .modal-header-post .user-block .username,
