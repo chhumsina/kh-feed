@@ -504,6 +504,15 @@
     color: #fff;
     background-color: #35495e;
   }
+  .swal2-actions button {
+    padding: 6px 15px !important;
+  }
+  .swal2-title {
+    font-size: 17px !important;
+  }
+  .modal-footer, .modal-header {
+    display: none;
+  }
   .create-comment {
     display: inline;
     display: initial;
@@ -582,6 +591,29 @@
     width: 41px !important;
     margin-left: -9px !important;
     margin-top: -2px !important;
+  }
+
+  .no-border-left {
+    border-left: 0;
+    background: #fff;
+  }
+
+  .nav-tabs {
+    border-bottom: 0 !important;
+    margin-bottom: -14px !important;
+  }
+
+  .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    color: #495057;
+    background-color: initial;
+    border: 0 !important;
+  }
+
+  .nav-tabs .nav-link {
+    border: 0px solid transparent;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    font-weight: bold;
   }
 
 </style>

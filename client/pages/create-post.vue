@@ -191,8 +191,7 @@
                                 this.photo = null;
                                 document.getElementById('addPhotoId').value = null;
                                 this.$swal.fire(
-                                    data.msg,
-                                    'success'
+                                    data.msg
                                 );
                             } else {
                                 this.$swal.fire(
@@ -202,6 +201,7 @@
                             }
                         }
                         this.createPostLoading = true;
+                        this.$router.push({ path: 'account' });
                     })
                 } catch (e) {
                     this.createPostLoading = true;

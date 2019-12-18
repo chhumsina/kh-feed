@@ -170,10 +170,14 @@
                     })
             },
             searchFeed() {
-                if (this.search.length >= 2) {
+                if (this.search.length >= 2 || this.search.length==0) {
                     this.page = 1;
                     this.feeds = [];
                     this.onInfinite();
+                }else{
+                    this.$swal.fire(
+                        'Please enter more than 2 characters!'
+                    );
                 }
             },
             async showPostModal(id) {

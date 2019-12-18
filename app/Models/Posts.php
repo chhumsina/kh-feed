@@ -27,7 +27,7 @@ class Posts extends Model
         } else {
             $search = null;
             if (isset($input['search'])) {
-                $search = " and p.caption LIKE '%" . $input['search'] . "%' ";
+                $search = " and LOWER(p.caption) LIKE '%" . strtolower($input['search']) . "%' ";
             }
 
             $take = 10;

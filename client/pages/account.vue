@@ -255,28 +255,6 @@
 </script>
 
 <style>
-  .account .no-border-left {
-    border-left: 0;
-    background: #fff;
-  }
-
-  .account .nav-tabs {
-    border-bottom: 0 !important;
-    margin-bottom: -14px !important;
-  }
-
-  .account .nav-tabs .nav-link.active, .account .nav-tabs .nav-item.show .nav-link {
-    color: #495057;
-    background-color: initial;
-    border: 0 !important;
-  }
-
-  .account .nav-tabs .nav-link {
-    border: 0px solid transparent;
-    border-top-left-radius: 0.25rem;
-    border-top-right-radius: 0.25rem;
-    font-weight: bold;
-  }
 
   .account .ui-w-100 {
     width: 100px !important;

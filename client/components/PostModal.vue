@@ -26,6 +26,14 @@
           <i class="fa fa-trash-o" aria-hidden="true"></i> Delete...
         </div>
       </div>
+      <div v-else-if="page_name == 'save'">
+        <div @click="unSavePost()" class="btn-save-post" v-if="unSavePostLoading==true">
+          <i class="fa fa-download" aria-hidden="true"></i> Unsave
+        </div>
+        <div class="btn-save-post" v-else>
+          <i class="fa fa-download" aria-hidden="true"></i> Unsave...
+        </div>
+      </div>
       <div v-else>
         <div @click="savePost()" class="btn-save-post" v-if="savePostLoading==true">
           <i class="fa fa-download" aria-hidden="true"></i> Save
@@ -136,75 +144,13 @@
                 numComment: 0,
                 lastRead: null,
                 savePostLoading: true,
+                unSavePostLoading: true,
                 deletePostLoading: true,
             }
         },
         methods:{
             goto(id){
                 document.getElementById(id).scrollIntoView();
-            },
-            async savePost(){
-                this.savePostLoading = false;
-                this.$axios
-                    .post('post/save-post', {
-                        id: this.postId
-                    })
-                    .then(({data}) => {
-                        if(data.status == true){
-                            this.$swal.fire(
-                                data.msg,
-                                'success'
-                            );
-                        }else{
-                            this.$swal.fire(
-                                data.msg,
-                                'error'
-                            )
-                        }
-                        this.savePostLoading = true
-
-                    })
-            },
-            async deletePost(){
-
-                this.$swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.value) {
-
-                        this.deletePostLoading = false;
-
-                        this.$axios
-                            .post('post/delete-post', {
-                                id: this.postId
-                            })
-                            .then(({data}) => {
-                                if(data.status == true){
-                                    this.$swal.fire(
-                                        data.msg,
-                                        'success'
-                                    );
-                                    location.reload();
-                                }else{
-                                    this.$swal.fire(
-                                        data.msg,
-                                        'error'
-                                    )
-                                }
-
-                                this.deletePostLoading = true
-
-                            })
-                    }else{
-                        this.deletePostLoading = true
-                    }
-                });
             },
             async createComment() {
                 this.loadingModalComment = true
@@ -262,6 +208,90 @@
                         this.loadingModalComment = false
                     }
                 })
+            },
+            async unSavePost(){
+                this.unSavePostLoading = false;
+                this.$axios
+                    .post('post/unsave-post', {
+                        id: this.postId
+                    })
+                    .then(({data}) => {
+                        if(data.status == true){
+                            this.$swal.fire(
+                                data.msg
+                            );
+                        }else{
+                            this.$swal.fire(
+                                data.msg,
+                                'error'
+                            )
+                        }
+                        this.unSavePostLoading = true
+
+                        window.location.href =  '/save';
+
+                    })
+            },
+            async savePost(){
+                this.savePostLoading = false;
+                this.$axios
+                    .post('post/save-post', {
+                        id: this.postId
+                    })
+                    .then(({data}) => {
+                        if(data.status == true){
+                            this.$swal.fire(
+                                data.msg
+                            );
+                        }else{
+                            this.$swal.fire(
+                                data.msg,
+                                'error'
+                            )
+                        }
+                        this.savePostLoading = true
+
+                    })
+            },
+            async deletePost(){
+
+                this.$swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#aaa',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+
+                        this.deletePostLoading = false;
+
+                        this.$axios
+                            .post('post/delete-post', {
+                                id: this.postId
+                            })
+                            .then(({data}) => {
+                                if(data.status == true){
+                                    this.$swal.fire(
+                                        data.msg
+                                    );
+                                    location.reload();
+                                }else{
+                                    this.$swal.fire(
+                                        data.msg,
+                                        'error'
+                                    )
+                                }
+
+                                this.deletePostLoading = true
+
+                            })
+                    }else{
+                        this.deletePostLoading = true
+                    }
+                });
             }
         }
     }
