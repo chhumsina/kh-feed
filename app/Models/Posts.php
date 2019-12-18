@@ -129,6 +129,80 @@ class Posts extends Model
 
     }
 
+    public static function listReaction($input)
+    {
+
+        $user_id = Auth::user()->id;
+
+        $take = 10;
+        $page = ($input['page'] - 1) * $take;
+
+        $sql_comment = "
+                select ua.object_type as type, ua.updated_at as activity_date, p.id as post_id, p.caption,
+                CONCAT('Commented: ',c.description) as description,u.id as by_user_id,
+                u.avatar as by_user_avatar,u.name as by_user_name
+                from user_activity as ua
+                join post_comments as pc on (pc.comment_id=ua.object_id and pc.status=1 and pc.user_id!=$user_id)
+                join comments as c on c.id=pc.comment_id
+                join posts as p on (p.id=pc.post_id and p.status='active' and p.user_id=$user_id)
+                join users as u on (u.id=ua.user_id and u.status='active')
+                where
+                ua.user_id!=$user_id
+                and
+                ua.object_type='comment'
+            ";
+
+        $sql_post = "
+                select ua.object_type as type, ua.updated_at as activity_date, p.id as post_id, p.caption,
+                'Viewed post' as description,u.id as by_user_id,
+                u.avatar as by_user_avatar,u.name as by_user_name
+                from user_activity as ua
+                join posts as p on (p.id=ua.object_id and p.status='active' and p.user_id=$user_id)
+                join users as u on (u.id=ua.user_id and u.status='active')
+                where
+                ua.user_id!=$user_id
+                and
+                ua.object_type='post'
+             ";
+
+        $sql_profile = "
+                select ua.object_type as type, ua.updated_at as activity_date, '' as post_id, '' as caption,
+                'Viewed profile' as description,u.id as by_user_id,
+                u.avatar as by_user_avatar,u.name as by_user_name
+                from user_activity as ua
+                join users as u1 on (u1.id=ua.object_id and u1.status='active' and u1.id=$user_id)
+                join users as u on (u.id=ua.user_id and u.status='active')
+                where
+                ua.user_id!=$user_id
+                and
+                ua.object_type='profile'
+               ";
+
+        $sql = null;
+        if($input['filter_type'] == 'profile'){
+            $sql = $sql_profile;
+        }elseif($input['filter_type'] == 'post'){
+            $sql = $sql_post;
+        }elseif($input['filter_type'] == 'comment'){
+            $sql = $sql_comment;
+        }else{
+            $sql = $sql_profile." UNION ".$sql_post." UNION ".$sql_comment;
+        }
+
+        $sqlFinal = "
+            select * from 
+                (
+                    $sql
+                ) as activity order by activity_date DESC
+                limit $page,$take
+        ";
+
+        $data = DB::select($sqlFinal);
+
+        return $data;
+
+    }
+
     public static function detail($id)
     {
 
@@ -145,7 +219,7 @@ class Posts extends Model
         try {
             DB::beginTransaction();
 
-            $view = PostView::createPostView($id);
+            $view = PostView::createPostView($id, 'post');
             $activity = PostActivity::createPostActivity($id, 'post');
 
             DB::commit();

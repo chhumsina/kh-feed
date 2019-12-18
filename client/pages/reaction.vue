@@ -2,7 +2,7 @@
   <div>
 
     <no-ssr>
-      <activity-item/>
+      <reaction-item/>
     </no-ssr>
 
   </div>
@@ -10,7 +10,7 @@
 
 <script>
 
-    import ActivityItem from '../components/activity-item'
+    import ReactionItem from '../components/reaction-item'
 
     export default {
         middleware: 'auth',
@@ -20,7 +20,7 @@
             }
         },
         components: {
-            ActivityItem
+            ReactionItem
         },
         mounted() {
         },

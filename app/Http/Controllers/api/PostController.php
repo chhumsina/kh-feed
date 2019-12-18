@@ -41,6 +41,14 @@ class PostController extends Controller
         return response()->json($data);
     }
 
+    public function reactionList(Request $input)
+    {
+
+        $data = Posts::listReaction($input);
+
+        return response()->json($data);
+    }
+
     public function detail(Request $input)
     {
         $id = $input['id'];

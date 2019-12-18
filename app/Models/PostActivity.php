@@ -21,7 +21,10 @@ class PostActivity extends Model
 
             $last = PostActivity::where('user_id', $user_id)->orderBy('updated_at','DESC')->first();
             if($last){
-                if(($last->object_type == 'post' && $obj_type == 'post') && ($last->object_id==$obj_id)){
+                if((($last->object_type == 'post' && $obj_type == 'post') && ($last->object_id==$obj_id))) {
+                    $data['updated_at'] = now();
+                    $create = $last->update($data);
+                }elseif((($last->object_type == 'profile' && $obj_type == 'profile') && ($last->object_id==$obj_id))){
                     $data['updated_at'] = now();
                     $create = $last->update($data);
                 }else{

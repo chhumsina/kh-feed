@@ -15,12 +15,12 @@ class PostView extends Model
         'post_id','user_id','type'
     ];
 
-    public static function createPostView($post_id){
+    public static function createPostView($obj_id, $obj_type){
         $user_id = Auth::user()->id;
 
-        $data['type'] = 'post';
+        $data['type'] = $obj_type;
         $data['user_id'] = $user_id;
-        $data['post_id'] = $post_id;
+        $data['post_id'] = $obj_id;
 
         $create = PostView::create($data);
         return $create;

@@ -109,6 +109,9 @@
               </form>
             </div>
           </b-tab>
+          <b-tab title="Reaction" @click="listReaction()">
+
+          </b-tab>
         </b-tabs>
       </div>
     </no-ssr>
@@ -246,6 +249,9 @@
                     console.log(e);
                     return;
                 }
+            },
+            async listReaction(){
+                this.$router.push({ path: 'reaction' });
             },
             async logout() {
                 await this.$auth.logout()

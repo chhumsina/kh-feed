@@ -71,6 +71,7 @@
               </p>
 
               <div v-for="(item, $index) in dataModalComment" :key="$index" class="box-comment">
+                <nuxt-link :to="`/profile/${item.user_id}`">
                 <img class="img-circle img-sm" :src="item.avatar  | getImgUrl('avatar','sm_avatar')">
                 <div class="comment-text">
                   <small class="username">
@@ -81,6 +82,7 @@
                   </small>
                   <small>{{item.comments}}</small>
                 </div>
+                </nuxt-link>
               </div>
               <div class="text-center" v-if="numComment==0">
                 <i class="fa fa-comments-o" style="font-size: 75px; color: #ccc;" aria-hidden="true"></i>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Models\PostActivity;
+use App\Models\PostView;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,9 +16,18 @@ class UserController extends Controller
 {
     public function account(Request $input)
     {
-        $id = $input->id;
+        $account_id = $input->id;
 
-        $data = User::where('id', $id)->first();
+        $data = User::where('id', $account_id)->first();
+        try {
+            DB::beginTransaction();
+
+            $view = PostView::createPostView($account_id, 'profile');
+            $activity = PostActivity::createPostActivity($account_id, 'profile');
+            DB::commit();
+        }catch (\Exception $e) {
+            DB::rollBack();
+        }
 
         return response()->json($data);
     }
