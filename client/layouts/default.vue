@@ -504,7 +504,7 @@
     color: #fff;
     background-color: #35495e;
   }
-  .modal-footer {
+  .create-comment {
     display: inline;
     display: initial;
     -webkit-box-align: center;
