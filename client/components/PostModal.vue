@@ -48,7 +48,7 @@
       <div v-if="loadingModal" class="loading">
         <div class="loader"></div>
       </div>
-      <div v-if="loadingModal == false">
+      <div style="margin-top: 45px;" v-if="loadingModal == false">
         <div v-if="dataModal.photo!='no'" class="thumbnail">
           <img v-lazy="getImgUrl(dataModal.photo, 'photo', 'm_post')"
           />

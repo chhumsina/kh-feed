@@ -8,10 +8,10 @@
           </nuxt-link>
         </div>
         <div>
-          <a href="#" @click.prevent="logout">
+          <div @click.prevent="logout">
             <i class="fa fa-sign-out"/>
             Logout
-          </a>
+          </div>
         </div>
       </div>
     </div>

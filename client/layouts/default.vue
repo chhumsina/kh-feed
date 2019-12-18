@@ -441,8 +441,7 @@
     padding-top: 7px;
   }
   /*  post*/
-</style>
-<style scopped>
+
   .easy-bottom-bar {
     background-color: #19caad;
     color: #fff;
