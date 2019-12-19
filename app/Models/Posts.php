@@ -91,18 +91,17 @@ class Posts extends Model
 
     }
 
+
     public static function listActivity($input)
     {
 
         $user_id = Auth::user()->id;
 
-        $take = 10;
+        $take = 15;
         $page = ($input['page'] - 1) * $take;
 
-        $sql = "
-                select * from 
-                    (
-                    select ua.object_type as type, ua.updated_at as activity_date, p.id as post_id, p.caption,
+        $sql_comment = "
+                select ua.object_type as type, ua.updated_at as activity_date, p.id as post_id, p.caption,
                     p.photo, CONCAT('Commented: ',c.description) as description
                     from user_activity as ua
                     join post_comments as pc on (pc.comment_id=ua.object_id and pc.status=1 and pc.user_id=$user_id)
@@ -111,19 +110,62 @@ class Posts extends Model
                     where
                     ua.user_id=$user_id
                     and ua.object_type='comment'
-                    
-                    UNION
-                    
-                    select ua.object_type as type, ua.updated_at as activity_date, p.id as post_id, p.caption,
+            ";
+
+        $sql_post = "
+                select ua.object_type as type, ua.updated_at as activity_date, p.id as post_id, p.caption,
                     p.photo, 'Viewed post' as description
                     from user_activity as ua
                     join posts as p on (p.id=ua.object_id and p.status='active')
                     where ua.user_id=$user_id
                     and ua.object_type='post'
-                    ) as activity order by activity_date desc
+             ";
+
+        $sql_recommend = "
+                select ua.object_type as type, ua.updated_at as activity_date, p.id as post_id, p.caption,
+                    p.photo, 'Recommended post' as description
+                    from user_activity as ua
+                    join posts as p on (p.id=ua.object_id and p.status='active')
+                    join users as u on (u.id=ua.user_id and u.status='active')
+                    where
+                    ua.user_id=$user_id
+                    and
+                    ua.object_type='recommend'
+             ";
+
+        $sql_profile = "
+                select ua.object_type as type, ua.updated_at as activity_date, u.id as post_id, u.name as caption,
+                    u.avatar as photo, 'Viewed profile' as description
+                from user_activity as ua
+                join users as u on (u.id=ua.object_id and u.status='active' and u.id!=$user_id)
+                where
+                ua.user_id=$user_id
+                and
+                ua.object_type='profile'
+               ";
+
+        $sql = null;
+        if($input['filter_type'] == 'profile'){
+            $sql = $sql_profile;
+        }elseif($input['filter_type'] == 'recommend'){
+            $sql = $sql_recommend;
+        }elseif($input['filter_type'] == 'post'){
+            $sql = $sql_post;
+        }elseif($input['filter_type'] == 'comment'){
+            $sql = $sql_comment;
+        }else{
+            $sql = $sql_profile." UNION ".$sql_post." UNION ".$sql_comment." UNION ".$sql_recommend;
+        }
+
+        $sqlFinal = "
+            select * from 
+                (
+                    $sql
+                ) as activity order by activity_date DESC
                 limit $page,$take
-            ";
-        $data = DB::select($sql);
+        ";
+
+        $data = DB::select($sqlFinal);
 
         return $data;
 
@@ -134,7 +176,7 @@ class Posts extends Model
 
         $user_id = Auth::user()->id;
 
-        $take = 10;
+        $take = 15;
         $page = ($input['page'] - 1) * $take;
 
         $sql_comment = "
@@ -165,6 +207,19 @@ class Posts extends Model
                 ua.object_type='post'
              ";
 
+        $sql_recommend = "
+                select ua.object_type as type, ua.updated_at as activity_date, p.id as post_id, p.caption,
+                'Recommended post' as description,u.id as by_user_id,
+                u.avatar as by_user_avatar,u.name as by_user_name
+                from user_activity as ua
+                join posts as p on (p.id=ua.object_id and p.status='active' and p.user_id=$user_id)
+                join users as u on (u.id=ua.user_id and u.status='active')
+                where
+                ua.user_id!=$user_id
+                and
+                ua.object_type='recommend'
+             ";
+
         $sql_profile = "
                 select ua.object_type as type, ua.updated_at as activity_date, '' as post_id, '' as caption,
                 'Viewed profile' as description,u.id as by_user_id,
@@ -181,12 +236,14 @@ class Posts extends Model
         $sql = null;
         if($input['filter_type'] == 'profile'){
             $sql = $sql_profile;
+        }elseif($input['filter_type'] == 'recommend'){
+             $sql = $sql_recommend;
         }elseif($input['filter_type'] == 'post'){
             $sql = $sql_post;
         }elseif($input['filter_type'] == 'comment'){
             $sql = $sql_comment;
         }else{
-            $sql = $sql_profile." UNION ".$sql_post." UNION ".$sql_comment;
+            $sql = $sql_profile." UNION ".$sql_post." UNION ".$sql_comment." UNION ".$sql_recommend;
         }
 
         $sqlFinal = "

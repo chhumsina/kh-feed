@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Models\Comments;
+use App\Models\PostActivity;
 use App\Models\PostFileDownload;
 use App\Models\Posts;
 use App\Models\PostSave;
@@ -117,6 +118,30 @@ class PostController extends Controller
         }
     }
 
+    public function recommendPost(Request $input){
+        try{
+            DB::beginTransaction();
+
+            $post_id = $input['id'];
+            $create = PostActivity::createPostActivity($post_id,'recommend');
+
+            if(!$create['status']){
+                throw new \Exception('Could not recommend, Please try again! '.$create['msg']);
+            }
+
+            DB::commit();
+
+            $msg['msg'] = 'Recommend successfully.';
+            $msg['status'] = true;
+            return response()->json($msg);
+
+        }catch (\Exception $e){
+            DB::rollBack();
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+            return response()->json($msg);
+        }
+    }
     public function savePost(Request $input){
         try{
             DB::beginTransaction();

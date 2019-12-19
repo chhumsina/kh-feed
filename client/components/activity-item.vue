@@ -1,16 +1,16 @@
 <template>
   <div class="feed">
 
-
-    <div style="background: #fff;
-    height: 56px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-    padding: 15px;">
-      <p>Activity for  <small class="badge">View post</small> <small>and</small> <small class="badge">Comment</small></p>
+    <div style="background: rgb(255, 255, 255); height: 56px; margin-bottom: 10px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px; padding: 15px; position: fixed; width: 100%; top: 0; z-index: 1;">
+      <ul class="activity-filter">
+        <li :class="filterType == 'comment' ? 'comment' : ''" @click="filterReactionList('comment')">Comm.</li>
+        <li :class="filterType == 'profile' ? 'profile' : ''" @click="filterReactionList('profile')">Profile</li>
+        <li :class="filterType == 'post' ? 'post' : ''" @click="filterReactionList('post')">Post</li>
+        <li :class="filterType == 'recommend' ? 'recommend' : ''" @click="filterReactionList('recommend')">Recom.</li>
+      </ul>
     </div>
 
-    <div class="container c_post">
+    <div class="container c_post" style="margin-top: 67px;">
 
       <nuxt-link to="/create-post" v-if=" this.$route.params.id == undefined && this.$route.name == 'feed' ">
         <div class="box-footer"
@@ -32,22 +32,49 @@
       </b-modal>
 
       <div v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1" class="box box-widget">
-          <div class="box-header with-border" @click="showPostModal(item.post_id)">
-            <div class="user-block">
-              <img
-                v-if="item.photo!='no'"
-                class="img-circle"
-                :src="item.photo | getImgUrl('photo','sm_post')"
-                alt="User Image"
-              />
-              <span class="username" :class="item.photo!='no' ? '' : 'margin-left-0'">{{item.caption | truncate(35, '...')}}</span>
-              <span class="description" :class="item.photo!='no' ? '' : 'margin-left-0'">
+        <div v-if="item.type=='profile'" class="box-header with-border">
+          <nuxt-link :to="`/profile/${item.post_id}`">
+          <div class="user-block">
+            <img
+              class="img-circle"
+              :src="item.photo | getImgUrl('avatar','sm_avatar')"
+              alt="User Image"
+            />
+            <span class="description " v-bind:class="item.type">
                 {{item.description | truncate(20, '...')}}
                 -
               <timeago :datetime="item.activity_date" :auto-update="10"></timeago>
             </span>
-            </div>
+            <small style="margin-left: 10px;"><span>Profile:</span> {{item.caption}}</small>
           </div>
+          </nuxt-link>
+        </div>
+        <div v-else class="box-header with-border" @click="showPostModal(item.post_id)">
+
+          <div class="user-block" v-if="item.photo!='no'">
+            <img
+              class="img-circle"
+              :src="item.photo | getImgUrl('photo','sm_post')"
+              alt="User Image"
+            />
+            <span class="description " v-bind:class="item.type">
+                {{item.description | truncate(20, '...')}}
+                -
+              <timeago :datetime="item.activity_date" :auto-update="10"></timeago>
+            </span>
+            <small style="margin-left: 10px;"><span>Post:</span> {{item.caption | truncate(30, '...')}}</small>
+          </div>
+          <div class="user-block" v-else>
+            <span style="margin-left: 0"  class="description " v-bind:class="item.type">
+                {{item.description | truncate(20, '...')}}
+                -
+              <timeago :datetime="item.activity_date" :auto-update="10"></timeago>
+            </span>
+            <small><span>Post:</span> {{item.caption | truncate(30, '...')}}</small>
+          </div>
+
+        </div>
+
       </div>
     </div>
     <infinite-loading
@@ -73,7 +100,7 @@
             return {
                 page: 1,
                 feeds: [],
-                search: null,
+                filterType: null,
                 postId: null,
                 page_name: this.$route.name,
             }
@@ -114,7 +141,7 @@
                         params: {
                             page: this.page,
                             id: id,
-                            search: this.search
+                            filter_type: this.filterType
                         }
                     })
                     .then(({data}) => {
@@ -127,12 +154,15 @@
                         }
                     })
             },
-            searchFeed() {
-                if (this.search.length >= 2) {
-                    this.page = 1;
-                    this.feeds = [];
-                    this.onInfinite();
+            filterReactionList(type) {
+                if(type == this.filterType){
+                    this.filterType = null;
+                }else{
+                    this.filterType = type;
                 }
+                this.page = 1;
+                this.feeds = [];
+                this.onInfinite();
             },
             async showPostModal(id) {
                 this.postId = id;
@@ -144,6 +174,29 @@
 </script>
 
 <style scoped>
+  ul.activity-filter {
+    padding: 0;
+    list-style: none;
+    text-align: center;
+    margin-top: 3px;
+  }
+  ul.activity-filter li {
+    display: inline;
+    padding: 3px 10px;
+    font-weight: 400;
+  }
+  span.description.recommend, ul.activity-filter .recommend {
+    color: #1648ff !important;
+  }
+  span.description.comment, ul.activity-filter .comment {
+    color: #6a9e26 !important;
+  }
+  span.description.post, ul.activity-filter .post {
+    color: #35bfbd !important;
+  }
+  span.description.profile, ul.activity-filter .profile {
+    color: #dc3545 !important;
+  }
 
   .c_post .box {
     margin-bottom: -2px;

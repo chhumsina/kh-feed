@@ -26,6 +26,7 @@
           <i class="fa fa-trash-o" aria-hidden="true"></i> Delete...
         </div>
       </div>
+
       <div v-else-if="page_name == 'save'">
         <div @click="unSavePost()" class="btn-save-post" v-if="unSavePostLoading==true">
           <i class="fa fa-download" aria-hidden="true"></i> Unsave
@@ -61,6 +62,13 @@
           </div>
           <p style="white-space: pre-line; word-break: break-all;" class="caption">
             <span v-html="dataModal.caption"></span>
+          </p>
+
+          <p v-if="recommendPostLoading==true" @click="recommendPost()" style="text-align: center; background: #00a1ff; color: #fff; border-radius: 3px; padding: 6px;font-weight: 400;">
+            <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Recommend<span v-if="recommendPostLoading==false">...</span>
+          </p>
+          <p v-if="recommendPostLoading==false" style="text-align: center; background: #00a1ff; color: #fff; border-radius: 3px; padding: 6px;font-weight: 400;">
+            <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Recommend...
           </p>
 
           <div class="c_post">
@@ -148,6 +156,7 @@
                 savePostLoading: true,
                 unSavePostLoading: true,
                 deletePostLoading: true,
+                recommendPostLoading: true,
             }
         },
         methods:{
@@ -252,6 +261,27 @@
                             )
                         }
                         this.savePostLoading = true
+
+                    })
+            },
+            async recommendPost(){
+                this.recommendPostLoading = false;
+                this.$axios
+                    .post('post/recommend-post', {
+                        id: this.postId
+                    })
+                    .then(({data}) => {
+                        if(data.status == true){
+                            this.$swal.fire(
+                                data.msg
+                            );
+                        }else{
+                            this.$swal.fire(
+                                data.msg,
+                                'error'
+                            )
+                        }
+                        this.recommendPostLoading = true
 
                     })
             },

@@ -27,6 +27,9 @@ class PostActivity extends Model
                 }elseif((($last->object_type == 'profile' && $obj_type == 'profile') && ($last->object_id==$obj_id))){
                     $data['updated_at'] = now();
                     $create = $last->update($data);
+                }elseif((($last->object_type == 'recommend' && $obj_type == 'recommend') && ($last->object_id==$obj_id))){
+                    $data['updated_at'] = now();
+                    $create = $last->update($data);
                 }else{
                     $data['user_id'] = $user_id;
                     $data['object_id'] = $obj_id;
