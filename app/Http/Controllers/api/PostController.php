@@ -50,6 +50,14 @@ class PostController extends Controller
         return response()->json($data);
     }
 
+    public function topRecommendList(Request $input)
+    {
+
+        $data = Posts::listTopRecommend($input);
+
+        return response()->json($data);
+    }
+
     public function detail(Request $input)
     {
         $id = $input['id'];

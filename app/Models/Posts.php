@@ -171,6 +171,20 @@ class Posts extends Model
 
     }
 
+    public static function listTopRecommend($input){
+        $sql = "
+            select count(ua.object_id) as num_recom,p.caption,p.photo, ua.object_id as post_id,u.avatar,u.name from user_activity as ua
+            join posts as p on (p.id=ua.object_id and p.status='active')
+            join users as u on (u.id=p.user_id and u.status='active')
+            where ua.object_type = 'recommend'
+            group by p.caption, p.photo, ua.object_id, u.avatar, u.name
+            order by num_recom desc
+        ";
+
+        $data = DB::select($sql);
+        return $data;
+    }
+
     public static function listReaction($input)
     {
 

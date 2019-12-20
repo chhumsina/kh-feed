@@ -1,181 +1,163 @@
 <template>
   <div class="recommend container">
-    <div>
-      <b-alert show variant="warning" style="    border-radius: 170px;
-    width: 300px;
-    height: 300px;
-    text-align: center;
-    margin: 0 auto;
-    padding-top: 60px;
-    border: 1px solid #ddd;">
-        <i style="font-size: 55px;" class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-        <h4 class="alert-heading">Upcoming!</h4>
-        <p>
-         Hope you will be back!
-        </p>
-        <hr>
-        <p class="mb-0">
-          Thank you
-        </p>
-      </b-alert>
+    <b-modal class="fullscreen" id="post-modal" hide-title="true">
+      <post-modal
+        :postId="postId" :page_name="page_name"
+      />
+    </b-modal>
+    <div class="top-recommend">
+      <h4 style="margin-bottom: 20px; color: #1648ff !important;" class="text-center"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Top Recommend</h4>
+      <swiper :options="swiperOption" :data="feeds">
+        <swiper-slide  v-for="(item, $index) in feeds">
+
+          <div v-if="item.photo!='no'" @click="showPostModal(item.post_id)">
+            <img
+              class="post_img"
+              :src="item.photo | getImgUrl('photo','m_post')"
+            />
+
+            <div class="post_user">
+              <p class="text-center">{{item.caption | truncate(35, '...')}}</p>
+              <img
+                class="user_img"
+                :src="item.avatar | getImgUrl('avatar','sm_avatar')"
+              />
+              <small>{{item.name}}</small>
+              <div class="num_recom">
+                {{item.num_recom}}
+              </div>
+            </div>
+          </div>
+          <div v-else @click="showPostModal(item.post_id)">
+            <p style="padding: 20px;" class="text-center">{{item.caption | truncate(200, '...')}}</p>
+            <div class="post_user">
+              <img
+                class="user_img"
+                :src="item.avatar | getImgUrl('avatar','sm_avatar')"
+              />
+              <small>{{item.name}}</small>
+              <div class="num_recom">
+                {{item.num_recom}}
+              </div>
+            </div>
+          </div>
+
+        </swiper-slide>
+      </swiper>
     </div>
   </div>
 </template>
 
 <script>
+    import PostModal from '../components/PostModal';
+
     export default {
+        components:{
+            PostModal
+        },
         middleware: 'auth',
         data() {
             return {
-                strategy: this.$auth.$storage.getUniversal('strategy'),
-                users: [],
-                posts: [],
-                loadingUser: true,
-                loadingPost: true,
+                page: 1,
+                feeds: [],
+                search: null,
+                postId: null,
+                page_name: this.$route.name,
+                swiperOption: {
+                    effect: 'coverflow',
+                    grabCursor: true,
+                    centeredSlides: true,
+                    slidesPerView: 'auto',
+                    coverflowEffect: {
+                        rotate: 50,
+                        stretch: 0,
+                        depth: 100,
+                        modifier: 1,
+                        slideShadows : true
+                    },
+                    pagination: {
+                        el: '.swiper-pagination'
+                    }
+                }
             }
         },
-        mounted() {
-            this.listUser();
-            this.listPost();
+        beforeMount() {
+            this.topRecommendLIst()
         },
         methods: {
-            async logout() {
-                await this.$auth.logout()
+            async showPostModal(id) {
+                this.postId = id;
+                this.$router.push({ to: this.$route.fullPath, hash: '#post' });
+                this.$root.$emit('bv::show::modal', 'post-modal');
             },
-            async listUser() {
-                this.loadingUser = true
+            async topRecommendLIst() {
+                var id = this.$route.params.id;
+
                 this.$axios
-                    .get('user/list', {
+                    .get('post/top-recommend-list', {
                         params: {
-                            list_type: 'recommend'
+                            page: this.page,
+                            id: id,
+                            search: this.search
                         }
                     })
                     .then(({data}) => {
                         if (data.length) {
-                            this.users = data;
-                        }
-                        this.loadingUser = false
-                    })
-            },
-            async listPost() {
-                this.loadingPost = true
-                this.$axios
-                    .get('post/list', {
-                        params: {
-                            list_type: 'recommend'
+                            this.feeds.push(...data);
                         }
                     })
-                    .then(({data}) => {
-                        if (data.length) {
-                            this.posts = data;
-                        }
-                        this.loadingPost = false
-                    })
-            },
+            }
         }
     }
 </script>
 
 <style scoped>
-  .recommend {
-    margin-top: 67px;
-    margin-bottom: 50px;
+  .recommend.container {
+    margin-top: 20px;
   }
-  .recommend h6.post_title {
-    text-align: left;
-  }
-
-  .recommend .card {
-    -moz-transition: all 0.5s;
-    -o-transition: all 0.5s;
-    -webkit-transition: all 0.5s;
-    transition: all 0.5s;
-    background: #fff;
-    border-radius: 0.1875rem;
-    margin-bottom: 15px;
-    border: 0;
-    display: inline-block;
-    position: relative;
+  .swiper-inner {
     width: 100%;
-    box-shadow: none;
-    border-bottom: 1px solid #ddd;
-    border-top: 1px solid #ddd;
+    height: 400px;
+    padding-top: 50px;
+    padding-bottom: 50px;
   }
-
-  .recommend .card .header {
-    color: #424242;
-    padding: 20px;
+  .swiper-slide{
+    background-position: center;
+    background-size: cover;
+    width: 300px;
+    height: 300px;
+    background: #fff;
+    box-shadow: 1px 1px 1px #ddd;
     position: relative;
-    box-shadow: none;
+    padding: 7px;
+    overflow: hidden;
   }
-
-  .recommend .card .header h2 {
-    color: #757575;
-    position: relative;
+  .swiper-slide .post_img{
+    opacity: 0.5;
+    width: 100%;
   }
-
-  .recommend .card .header h2:before {
-    background: #6572b8;
-  }
-
-  .recommend .card .header h2 {
-    font-size: 15px;
-  }
-
-  .recommend .card .header h2::before {
+  .post_user {
     position: absolute;
-    width: 2px;
-    height: 18px;
-    left: -20px;
-    top: 0;
-    content: '';
+    bottom: 0px;
+    background: #fff;
+    padding: 13px;
+    width: 100%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    box-shadow: 0px 1px 0px #ccc;
   }
-
-  .recommend .theme-purple .card .header h2 strong {
-    color: #6572b8;
-  }
-
-  .recommend .card .header h2 small {
-    color: #9e9e9e;
-    line-height: 15px;
-  }
-
-  .recommend .card .body {
-    color: #424242;
-    font-weight: 400;
-    padding: 20px;
-    padding-top: 0;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    position: relative;
-  }
-
-  .recommend .new_friend_list {
-    margin-bottom: 0px;
-  }
-
-  .recommend .new_friend_list li .users_name {
-    color: #424242;
-    text-transform: capitalize;
-  }
-
-  .recommend .new_friend_list li .users_name {
-    margin-top: 5px;
-  }
-
-  .recommend .new_friend_list li .users_name {
-    margin-bottom: 0px;
-  }
-
-  .recommend  .new_friend_list li .join_date {
-    color: #757575;
-  }
-
-  .recommend ul.new_friend_list.list-unstyled.row li {
-    margin-bottom: 15px;
+  .num_recom{
+    position: absolute;
+    right: 11px;
+    bottom: 16px;
+    font-weight: bold;
+    font-size: 19px;
+    background: #5f72fd;
+    color: #fff;
+    width: 30px;
     text-align: center;
-  }
-
-  .recommend .creator .body img {
-    border-radius: 50%;
+    border-radius: 4px;
+    padding-bottom: 5px;
   }
 </style>
