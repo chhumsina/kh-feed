@@ -6,9 +6,10 @@
       />
     </b-modal>
     <div class="top-recommend">
-      <h4 style="margin-bottom: 20px; color: #1648ff !important;" class="text-center"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Top Recommend</h4>
-      <swiper :options="swiperOption" :data="feeds">
-        <swiper-slide  v-for="(item, $index) in feeds">
+      <h5 style="margin-bottom: 20px; color: #1648ff !important;" class="text-center"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Top Recommend</h5>
+
+      <swiper :options="swiperOption" :data="topRecom">
+        <swiper-slide  v-for="(item, $index) in topRecom">
 
           <div v-if="item.photo!='no'" @click="showPostModal(item.post_id)">
             <img
@@ -29,7 +30,7 @@
             </div>
           </div>
           <div v-else @click="showPostModal(item.post_id)">
-            <p style="padding: 20px;" class="text-center">{{item.caption | truncate(200, '...')}}</p>
+            <p style="padding: 20px;" class="text-center">{{item.caption | truncate(220, '...')}}</p>
             <div class="post_user">
               <img
                 class="user_img"
@@ -44,6 +45,7 @@
 
         </swiper-slide>
       </swiper>
+
     </div>
   </div>
 </template>
@@ -58,9 +60,8 @@
         middleware: 'auth',
         data() {
             return {
-                page: 1,
-                feeds: [],
-                search: null,
+                topRecom: [],
+                topRecomLoading: true,
                 postId: null,
                 page_name: this.$route.name,
                 swiperOption: {
@@ -81,7 +82,7 @@
                 }
             }
         },
-        beforeMount() {
+        created() {
             this.topRecommendLIst()
         },
         watch: {
@@ -100,21 +101,14 @@
                 this.$root.$emit('bv::show::modal', 'post-modal');
             },
             async topRecommendLIst() {
-                var id = this.$route.params.id;
-
                 this.$axios
-                    .get('post/top-recommend-list', {
-                        params: {
-                            page: this.page,
-                            id: id,
-                            search: this.search
-                        }
-                    })
+                    .get('post/top-recommend-list')
                     .then(({data}) => {
                         if (data.length) {
-                            this.feeds.push(...data);
+                            this.topRecom.push(...data);
                         }
-                    })
+                        this.topRecomLoading = false;
+                    });
             }
         }
     }
@@ -162,11 +156,11 @@
     bottom: 16px;
     font-weight: bold;
     font-size: 19px;
-    background: #5f72fd;
+    background: #1648ff;
     color: #fff;
     width: 30px;
     text-align: center;
     border-radius: 4px;
-    padding-bottom: 5px;
+    padding-bottom: 2px;
   }
 </style>

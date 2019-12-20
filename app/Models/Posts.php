@@ -178,7 +178,9 @@ class Posts extends Model
             join users as u on (u.id=p.user_id and u.status='active')
             where ua.object_type = 'recommend'
             group by p.caption, p.photo, ua.object_id, u.avatar, u.name
+            HAVING count(ua.object_id) > 1
             order by num_recom desc
+            limit 10
         ";
 
         $data = DB::select($sql);
