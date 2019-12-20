@@ -84,6 +84,15 @@
         beforeMount() {
             this.topRecommendLIst()
         },
+        watch: {
+            $route(to, from) {
+                // if the current history index isn't at the last position, use 'back' transition
+                console.log(to.hash);
+                if (to.hash == '' || to.hash=='#post') {
+                    this.$root.$emit('bv::hide::modal', 'post-modal');
+                }
+            }
+        },
         methods: {
             async showPostModal(id) {
                 this.postId = id;
