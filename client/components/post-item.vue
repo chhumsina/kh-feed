@@ -26,14 +26,36 @@
                class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
                alt="Alt Text">
           <div class="img-push">
-            <div style="padding-top: 8px;border-radius: 25px !important;background: #fafafa;" class="form-control input-sm input-box">
+            <div style="padding-top: 8px;border-radius: 25px !important;background: #fafafa;"
+                 class="form-control input-sm input-box">
               What's you want to share?
             </div>
           </div>
         </div>
       </nuxt-link>
 
-      <b-alert show variant="success"  v-if=" this.$route.params.id == undefined && this.$route.name == 'feed' ">
+      <div v-if="userTop.length>1 && this.$route.name == 'feed'">
+        <h6 style="padding: 15px; padding-bottom: 10px; padding-top: 10px; color: #555;" class="alert-heading"><i
+          class="fa fa-users" aria-hidden="true"></i> User by most view </h6>
+        <div class="slide-profile">
+          <swiper :options="swiperOption" :data="userTop">
+            <swiper-slide v-for="(item, $index) in userTop" :key="$index">
+              <nuxt-link :to="`/profile/${item.id}`">
+                <img
+                  class="img-circle"
+                  :src="item.avatar  | getImgUrl('avatar','m_avatar')"
+                  alt="User Image"
+                />
+                <small>{{item.name}}</small>
+              </nuxt-link>
+            </swiper-slide>
+<!--            <swiper-slide>-->
+<!--              View allow-->
+<!--            </swiper-slide>-->
+          </swiper>
+        </div>
+      </div>
+      <b-alert show variant="success" v-if=" this.$route.params.id == undefined && this.$route.name == 'feed' ">
         <h6 class="alert-heading"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Great Post should be: </h6>
         <div>
           <ul>
@@ -68,7 +90,8 @@
           </div>
         </nuxt-link>
         <div class="box-body" @click="showPostModal(item.post_id)">
-          <p v-if="item.photo=='no'" style="margin-bottom: 5px; white-space: unset; word-break: break-all;" class="caption">
+          <p v-if="item.photo=='no'" style="margin-bottom: 5px; white-space: unset; word-break: break-all;"
+             class="caption">
             {{item.caption | truncate(250, '...')}}
           </p>
           <p v-else style="margin-bottom: 5px; white-space: unset; word-break: break-all;" class="caption">
@@ -84,7 +107,8 @@
         </div>
         <div class="box-footer" style="display: block;" @click="showPostModal(item.post_id)">
 
-          <img class="img-responsive img-circle img-sm avatar-comment" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
+          <img class="img-responsive img-circle img-sm avatar-comment"
+               :src="user.avatar | getImgUrl('avatar','sm_avatar')"
                alt="Alt Text">
           <div class="img-push">
             <div type="text" class="form-control input-sm input-box">
@@ -111,11 +135,27 @@
     import PostModal from '../components/PostModal';
 
     export default {
-        components:{
+        components: {
             PostModal
         },
         data() {
             return {
+                swiperOption: {
+                    slidesPerView: 5,
+                    spaceBetween: 50,
+                    // init: false,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true
+                    },
+                    breakpoints: {
+                        768: {
+                            slidesPerView: 3,
+                            spaceBetween: 5
+                        }
+                    }
+                },
+                userTop: [],
                 page: 1,
                 feeds: [],
                 search: null,
@@ -127,7 +167,7 @@
             $route(to, from) {
                 // if the current history index isn't at the last position, use 'back' transition
                 console.log(to.hash);
-                if (to.hash == '' || to.hash=='#post') {
+                if (to.hash == '' || to.hash == '#post') {
                     this.$root.$emit('bv::hide::modal', 'post-modal');
                 }
             }
@@ -135,10 +175,13 @@
         computed: {
             postModal: function () {
                 return this.dataModal
-            }
+            },
+        },
+        created() {
+            this.listUserByTopView();
         },
         methods: {
-            getImgUrl(image, type, size){
+            getImgUrl(image, type, size) {
                 return getImgUrl(image, type, size);
             },
             itemsContains(text, word) {
@@ -170,11 +213,11 @@
                     })
             },
             searchFeed() {
-                if (this.search.length >= 2 || this.search.length==0) {
+                if (this.search.length >= 2 || this.search.length == 0) {
                     this.page = 1;
                     this.feeds = [];
                     this.onInfinite();
-                }else{
+                } else {
                     this.$swal.fire(
                         'Please enter more than 2 characters!'
                     );
@@ -182,8 +225,19 @@
             },
             async showPostModal(id) {
                 this.postId = id;
-                this.$router.push({ to: this.$route.fullPath, hash: '#post' });
+                this.$router.push({to: this.$route.fullPath, hash: '#post'});
                 this.$root.$emit('bv::show::modal', 'post-modal');
+            },
+            async listUserByTopView() {
+                if(this.$route.name == 'feed'){
+                    this.$axios
+                        .get('user/list-user-by-top-view')
+                        .then(({data}) => {
+                            if (data.length) {
+                                this.userTop.push(...data);
+                            }
+                        });
+                }
             }
         }
     }
@@ -218,5 +272,22 @@
     text-align: center;
     pointer-events: none;
     color: #aaa;
+  }
+
+  .slide-profile {
+    margin-bottom: 18px;
+    text-align: center;
+  }
+
+  .slide-profile .swiper-slide {
+    background: #fff;
+    height: 150px;
+    text-align: center;
+    box-shadow: 0px 1px 3px #ccc;
+    padding: 13px 0;
+  }
+
+  .slide-profile .swiper-slide img.img-circle {
+    margin-bottom: 2px;
   }
 </style>

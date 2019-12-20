@@ -32,15 +32,9 @@ class UserController extends Controller
         return response()->json($data);
     }
 
-    public function list(Request $input)
+    public function listUserByTopView(Request $input)
     {
-        $list_type = $input['list_type'];
-
-        if($list_type == 'recommend'){
-            $data = User::take(6)->get();
-        }else{
-            $data = User::get();
-        }
+        $data = User::userByTopViewList($input);
 
         return response()->json($data);
     }

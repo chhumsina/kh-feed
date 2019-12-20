@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -105,6 +106,22 @@ class User extends Authenticatable implements JWTSubject
 
     public static function getUser($id){
         $data = User::where('id', $id)->first();
+
+        return $data;
+    }
+
+    public static function userByTopViewLIst($input){
+        $sql = "
+            select count(ua.object_id) as num_view,u.avatar, u.name,u.id from user_activity as ua
+            join users as u on u.id=ua.object_id
+            where 
+            ua.object_type='profile'
+            group by ua.object_id, u.avatar, u.name,u.id
+            HAVING count(ua.object_id) > 1
+            order by num_view desc
+            limit 10
+            ";
+        $data = DB::select($sql);
 
         return $data;
     }

@@ -42,7 +42,7 @@ Route::get('image/{type}/{size}/{img}', function($type,$size,$img)
 
 Route::group(['middleware' => 'jwt.auth'], function() {
     Route::get('account/{id}', 'UserController@account');
-    Route::get('user/list', 'UserController@list');
+    Route::get('user/list-user-by-top-view', 'UserController@listUserByTopView');
     Route::get('/me', 'MeController@index');
     Route::get('post/list', 'PostController@list');
     Route::get('post/save-list', 'PostController@saveList');
