@@ -12,6 +12,9 @@
         <swiper-slide  v-for="(item, $index) in topRecom">
 
           <div v-if="item.photo!='no'" @click="showPostModal(item.post_id)">
+            <div class="num_recom_range">
+              {{$index+1}}
+            </div>
             <img
               class="post_img"
               :src="item.photo | getImgUrl('photo','m_post')"
@@ -30,6 +33,9 @@
             </div>
           </div>
           <div v-else @click="showPostModal(item.post_id)">
+            <div class="num_recom_range">
+              {{$index+1}}
+            </div>
             <p style="padding: 20px;" class="text-center">{{item.caption | truncate(220, '...')}}</p>
             <div class="post_user">
               <img
@@ -161,6 +167,21 @@
     width: 30px;
     text-align: center;
     border-radius: 4px;
-    padding-bottom: 2px;
+  }
+  .num_recom_range {
+    position: absolute;
+    color: orange;
+    right: 0;
+    background: #fff;
+    height: 90px;
+    font-weight: bold;
+    top: -1px;
+    border-bottom-left-radius: 75px;
+    text-align: center;
+    font-size: 50px;
+    z-index: 1;
+    padding-left: 37px;
+    padding-right: 24px;
+    box-shadow: 0 0px 4px #aaa;
   }
 </style>
