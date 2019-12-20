@@ -117,7 +117,7 @@ class User extends Authenticatable implements JWTSubject
             where 
             ua.object_type='profile'
             group by ua.object_id, u.avatar, u.name,u.id
-            HAVING count(ua.object_id) > 1
+           -- HAVING count(ua.object_id) > 1
             order by num_view desc
             limit 10
             ";

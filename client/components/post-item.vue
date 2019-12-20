@@ -46,7 +46,7 @@
                   :src="item.avatar  | getImgUrl('avatar','m_avatar')"
                   alt="User Image"
                 />
-                <small>{{item.name}}</small>
+                <p style="font-size: 15px;">{{item.name}}</p>
               </nuxt-link>
             </swiper-slide>
 <!--            <swiper-slide>-->
@@ -288,6 +288,6 @@
   }
 
   .slide-profile .swiper-slide img.img-circle {
-    margin-bottom: 2px;
+    margin-bottom: 4px;
   }
 </style>
