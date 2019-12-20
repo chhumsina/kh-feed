@@ -283,8 +283,8 @@
     background: #fff;
     height: 150px;
     text-align: center;
-    box-shadow: 0px 1px 3px #ccc;
     padding: 13px 0;
+    box-shadow: 0 1px 1px #bbb;
   }
 
   .slide-profile .swiper-slide img.img-circle {

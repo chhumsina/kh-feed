@@ -30,7 +30,7 @@
   .alert.alert-success {
     border-radius: 0;
     background: #f1f1f1;
-    border: 1px solid #ccc;
+    border: 1px solid #dfdfdf;
     padding-bottom: 0px;
   }
   .username {
