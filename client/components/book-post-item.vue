@@ -1,7 +1,6 @@
 <template>
   <div class="feed">
-
-    <nav v-if=" this.$route.params.id == undefined && this.$route.name == 'feed' "
+    <nav
          class="navbar navbar-expand-lg navbar-light bg-white top-nav">
       <div class="container">
         <div class="has-search" style="width: 100%">
@@ -9,7 +8,7 @@
           <input
             type="text"
             class="form-control input-box"
-            placeholder="Search Post"
+            placeholder="Search Book"
             v-on:keyup.enter="searchFeed" v-model="search"
           />
         </div>
@@ -19,7 +18,7 @@
 
     <div class="container c_post">
 
-      <nuxt-link to="/create-post" v-if=" this.$route.params.id == undefined && this.$route.name == 'feed' ">
+      <nuxt-link to="/create-post">
         <div class="box-footer"
              style="padding: 25px 10px;display: block; margin-bottom: 10px; border-top: 1px solid #ccc; border-bottom: 1px solid #aaa;">
           <img style="margin-top: 0px; height: 35px !important; width: 35px !important;"
@@ -34,7 +33,7 @@
         </div>
       </nuxt-link>
 
-      <div v-if="userTop.length>1 && this.$route.name == 'feed'">
+      <div v-if="userTop.length>1">
         <h6 style="padding: 15px; padding-bottom: 10px; padding-top: 10px; color: #555;" class="alert-heading"><i
           class="fa fa-users" aria-hidden="true"></i> User by most view </h6>
         <div class="slide-profile">
@@ -55,16 +54,14 @@
           </swiper>
         </div>
       </div>
-      <b-alert show variant="success" v-if=" this.$route.params.id == undefined && this.$route.name == 'feed' ">
-        <h6 class="alert-heading">Finding Book?</h6>
-        <div class="more-menu">
-          <ul class="more-menu-item">
-            <li>
-              <nuxt-link to="/book">
-                <i class="fa fa-book" aria-hidden="true"></i>
-                <p>Book</p>
-              </nuxt-link>
-            </li>
+      <b-alert show variant="success">
+        <h6 class="alert-heading"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Great Post should be: </h6>
+        <div>
+          <ul>
+            <li><small>Short with meaningful</small></li>
+            <li><small>Useful thing</small></li>
+            <li><small>Interesting topic</small></li>
+            <li><small>Be able to help people</small></li>
           </ul>
         </div>
       </b-alert>
@@ -75,51 +72,28 @@
         />
       </b-modal>
 
-      <div v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1" class="box box-widget">
-        <nuxt-link :to="`/profile/${item.user_id}`">
-          <div class="box-header with-border">
-            <div class="user-block">
+      <ul class="list">
+        <li v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1" v-if="item.photo!='no'">
+          <div class="thumbnail">
+            <img class="img" v-lazy="getImgUrl(item.photo, 'photo', 'm_post')"/>
+            <div class="poster">
               <img
                 class="img-circle"
                 :src="item.avatar  | getImgUrl('avatar','sm_avatar')"
                 alt="User Image"
               />
-              <span class="username">{{item.name}}</span>
-              <span class="description">
-              <timeago :datetime="item.created_at" :auto-update="10"></timeago>
-            </span>
+              <small class="username">{{item.name | truncate(15, '...')}}</small>
             </div>
           </div>
-        </nuxt-link>
-        <div class="box-body" @click="showPostModal(item.post_id)">
-          <p v-if="item.photo=='no'" style="margin-bottom: 5px; white-space: unset; word-break: break-all;"
-             class="caption">
-            {{item.caption | truncate(250, '...')}}
-          </p>
-          <p v-else style="margin-bottom: 5px; white-space: unset; word-break: break-all;" class="caption">
-            {{item.caption | truncate(70, '...')}}
-          </p>
-
-          <div class="post-img" v-if="item.photo!='no'">
-            <div class="thumbnail">
-              <img v-lazy="getImgUrl(item.photo, 'photo', 'm_post')"/>
+          <div class="footer-img">
+            <p class="title">{{item.caption | truncate(25, '...')}}</p>
+            <div class="sub-footer">
+                <small><timeago :datetime="item.created_at" :auto-update="10"></timeago></small>
             </div>
           </div>
+        </li>
+      </ul>
 
-        </div>
-        <div class="box-footer" style="display: block;" @click="showPostModal(item.post_id)">
-
-          <img class="img-responsive img-circle img-sm avatar-comment"
-               :src="user.avatar | getImgUrl('avatar','sm_avatar')"
-               alt="Alt Text">
-          <div class="img-push">
-            <div type="text" class="form-control input-sm input-box">
-              Press enter to post comment
-            </div>
-          </div>
-
-        </div>
-      </div>
     </div>
     <infinite-loading
       @infinite="onInfinite"
@@ -292,35 +266,76 @@
   .slide-profile .swiper-slide img.img-circle {
     margin-bottom: 4px;
   }
-
-  .more-menu {
-    text-align: center;
-  }
-
-  ul.more-menu-item {
-    padding: 0;
+  .list {
     list-style: none;
-    display: inline-flex;
+    flex-wrap: wrap;
+    display: flex;
+    padding: 0;
+    margin: 0;
   }
 
-  ul.more-menu-item li {
-    width: 60px;
-    background: #fff;
-    margin-left: 5px;
-    border-radius: 38px;
-    height: 60px;
-    padding: 6px;
-    box-shadow: 0 1px 1px #aaa;
-    padding-top: 8px;
+  .list li {
+    flex: 1 0 30%;
+    padding: 0px;
+    color: #fff;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #000;
   }
 
-  ul.more-menu-item li i {
-    font-size: 27px;
+  .list li:nth-child(3n + 1) {
+    /*background: blue;*/
+    margin-right: 2%;
+    margin-left: 2%;
   }
 
-  ul.more-menu-item li p {
-    font-size: 12px;
-    margin-bottom: -10px;
-    margin-top: -5px;
+  .list li:nth-child(3n + 2) {
+    /*background: orange;*/
   }
+
+  .list li:nth-child(3n + 3) {
+    /*background: green;*/
+    margin-right: 2%;
+    margin-left: 2%;
+  }
+  .list .thumbnail{
+    position: relative;
+  }
+  .list .thumbnail .img{
+    width: 100%;
+    height: 150px;
+    border-radius: 3px;
+  }
+  .list .footer-img .title{
+    font-size: 13px;
+    margin-bottom: -7px;
+  }
+  .list .footer-img small time{
+    font-size: 11px;
+    color: #999;
+  }
+  .list .thumbnail .poster {
+    height: 30px;
+    background: #fdfdfd5c;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+  }
+  .list .thumbnail .poster img {
+    width: 25px;
+    height: 25px;
+    float: left;
+    margin-top: 2px;
+    margin-left: 2px;
+  }
+
+  .list .thumbnail .poster .username {
+    float: right;
+    position: absolute;
+    font-size: 11px !important;
+    right: 4px;
+    top: 4.5px;
+    color: #000;
+  }
+
 </style>
