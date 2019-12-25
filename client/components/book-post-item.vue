@@ -18,21 +18,6 @@
 
     <div class="container c_post">
 
-      <nuxt-link to="/create-post">
-        <div class="box-footer"
-             style="padding: 25px 10px;display: block; margin-bottom: 10px; border-top: 1px solid #ccc; border-bottom: 1px solid #aaa;">
-          <img style="margin-top: 0px; height: 35px !important; width: 35px !important;"
-               class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
-               alt="Alt Text">
-          <div class="img-push">
-            <div style="padding-top: 8px;border-radius: 25px !important;background: #fafafa;"
-                 class="form-control input-sm input-box">
-              What's you want to share?
-            </div>
-          </div>
-        </div>
-      </nuxt-link>
-
       <div v-if="userTop.length>1">
         <h6 style="padding: 15px; padding-bottom: 10px; padding-top: 10px; color: #555;" class="alert-heading"><i
           class="fa fa-users" aria-hidden="true"></i> User by most view </h6>
@@ -82,7 +67,7 @@
                 :src="item.avatar  | getImgUrl('avatar','sm_avatar')"
                 alt="User Image"
               />
-              <small class="username">{{item.name | truncate(15, '...')}}</small>
+              <small class="price">$5</small>
             </div>
           </div>
           <div class="footer-img">
@@ -277,10 +262,12 @@
   .list li {
     flex: 1 0 30%;
     padding: 0px;
-    color: #fff;
     margin-bottom: 15px;
     text-align: center;
     color: #000;
+    background: #fff;
+    box-shadow: 0 1px 1px #ddd;
+    border-radius: 3px;
   }
 
   .list li:nth-child(3n + 1) {
@@ -304,7 +291,8 @@
   .list .thumbnail .img{
     width: 100%;
     height: 150px;
-    border-radius: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
   }
   .list .footer-img .title{
     font-size: 13px;
@@ -329,13 +317,19 @@
     margin-left: 2px;
   }
 
-  .list .thumbnail .poster .username {
+  .list .thumbnail .poster .price {
     float: right;
     position: absolute;
-    font-size: 11px !important;
+    font-size: 16px !important;
     right: 4px;
-    top: 4.5px;
-    color: #000;
+    top: 2.5px;
+    font-weight: bold;
+    text-shadow: 0 1px 2px #555;
+    color: #f7a121;
+  }
+  .list li .footer-img {padding-bottom: 5px;padding-top: 5px;}
+  .list li .sub-footer {
+    margin-top: 5px;
   }
 
 </style>
