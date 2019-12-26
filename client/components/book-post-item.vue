@@ -15,7 +15,6 @@
       </div>
     </nav>
 
-
     <div class="container c_post">
 
       <div v-if="userTop.length>1">
@@ -60,19 +59,19 @@
           </div>
           <div v-else class="row" style="margin-left: 0; margin-right: 0;">
               <div class="col" style="border-right: 1px solid #ddd;">
-                <nuxt-link :to="`/create-shop`">
+                <nuxt-link :to="`/create-shop`" style="color:#555">
                   <img style="height: 70px !important; margin-bottom: 3px;"
                     class="img-circle"
                     :src="shop.avatar  | getImgUrl('page','m_page')"
                     alt="Shop Image"
                   />
-                  <p style="margin-bottom: 0;">{{shop.name}}</p>
+                  <p style="margin-bottom: 0;">{{shop.name | truncate(20, '...')}}</p>
                 </nuxt-link>
               </div>
               <div class="col" style="position: relative;">
-                <nuxt-link :to="`/create-shop`" style="padding: 14px; font-weight: bold; color: #2f8be0; position: absolute; width: 100%; left: 0; top: 24px; margin: 0 auto;">
+                <nuxt-link :to="`/sell-book`" style="padding: 14px; font-weight: bold; color: #2f8be0; position: absolute; width: 100%; left: 0; top: 24px; margin: 0 auto;">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  Sell Book
+                  Sell book
                 </nuxt-link>
               </div>
           </div>
@@ -80,32 +79,35 @@
 
       </div>
 
-      <b-modal class="fullscreen" id="post-modal" hide-title="true">
-        <post-modal
-          :postId="postId" :page_name="page_name"
+      <b-modal class="fullscreen" id="book-modal" hide-title="true">
+        <book-modal
+          :bookId="bookId" :page_name="page_name"
         />
       </b-modal>
+
       <hr>
       <ul class="list">
-        <li v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1" v-if="item.photo!='no'">
+        <li v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1"  @click="showPostModal(item.id)">
           <div class="thumbnail">
-            <img class="img" v-lazy="getImgUrl(item.photo, 'photo', 'm_post')"/>
+            <img class="img" v-lazy="getImgUrl(item.photo, 'book', 'sm_book')"/>
             <div class="poster">
               <img
                 class="img-circle"
-                :src="item.avatar  | getImgUrl('avatar','sm_avatar')"
-                alt="User Image"
+                :src="item.avatar  | getImgUrl('page','sm_page')"
+                alt="Page Image"
               />
-              <small class="price">$5</small>
+              <small class="price">{{item.price}} {{item.currency}} </small>
             </div>
           </div>
           <div class="footer-img">
-            <p class="title">{{item.caption | truncate(25, '...')}}</p>
+            <p class="title">{{item.name | truncate(25, '...')}}</p>
             <div class="sub-footer">
                 <small><timeago :datetime="item.created_at" :auto-update="10"></timeago></small>
             </div>
           </div>
         </li>
+        <li style="visibility: hidden"></li>
+        <li style="visibility: hidden"></li>
       </ul>
 
     </div>
@@ -122,11 +124,11 @@
 
 <script>
     import myfilter, {getImgUrl} from "../plugins/myfilter";
-    import PostModal from '../components/PostModal';
+    import BookModal from '../components/BookModal';
 
     export default {
         components: {
-            PostModal
+            BookModal
         },
         data() {
             return {
@@ -149,7 +151,7 @@
                 page: 1,
                 feeds: [],
                 search: null,
-                postId: null,
+                bookId: null,
                 page_name: this.$route.name,
                 show_shop_annoucement: true,
                 getShopLoading: true,
@@ -162,7 +164,7 @@
                 // if the current history index isn't at the last position, use 'back' transition
                 console.log(to.hash);
                 if (to.hash == '' || to.hash == '#post') {
-                    this.$root.$emit('bv::hide::modal', 'post-modal');
+                    this.$root.$emit('bv::hide::modal', 'book-modal');
                 }
             }
         },
@@ -195,12 +197,12 @@
             async onInfinite($state) {
                 var id = this.$route.params.id;
                 var auth_id = this.$root.user.id;
-                if (this.$route.name == 'account') {
+                if (this.$route.name == 'shop') {
                     var id = auth_id;
                 }
 
                 this.$axios
-                    .get('post/list', {
+                    .get('book/list', {
                         params: {
                             page: this.page,
                             id: id,
@@ -229,9 +231,9 @@
                 }
             },
             async showPostModal(id) {
-                this.postId = id;
-                this.$router.push({to: this.$route.fullPath, hash: '#post'});
-                this.$root.$emit('bv::show::modal', 'post-modal');
+                this.bookId = id;
+                this.$router.push({to: this.$route.fullPath, hash: '#book'});
+                this.$root.$emit('bv::show::modal', 'book-modal');
             },
             async listUserByTopView() {
                 if(this.$route.name == 'feed'){
@@ -376,9 +378,9 @@
   }
   .list .thumbnail .poster {
     height: 30px;
-    background: #fdfdfd5c;
+    background: rgba(255, 255, 255, 0.9);
     position: absolute;
-    bottom: 0px;
+    bottom: -1px;
     width: 100%;
   }
   .list .thumbnail .poster img {
@@ -396,7 +398,7 @@
     right: 4px;
     top: 2.5px;
     font-weight: bold;
-    text-shadow: 0 1px 2px #555;
+    /*text-shadow: 0 1px 2px #555;*/
     color: #f7a121;
   }
   .list li .footer-img {padding-bottom: 5px;padding-top: 5px;}

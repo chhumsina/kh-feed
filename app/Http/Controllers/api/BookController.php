@@ -18,39 +18,14 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Laravolt\Avatar\Avatar;
 
-class ShopController extends Controller
+class BookController extends Controller
 {
 
-    public function getShop(){
-        try{
-
-            $type = 'book';
-            $shop = Pages::getShop($type);
-
-            $msg['data'] = $shop;
-            $msg['msg'] = 'Get successfully.';
-            $msg['status'] = true;
-            return response()->json($msg);
-
-        }catch (\Exception $e){
-            $msg['msg'] = $e->getMessage();
-            $msg['status'] = false;
-            return response()->json($msg);
-        }
-    }
-
-    public function createShop(Request $input){
+    public function sellBook(Request $input){
         try{
             DB::beginTransaction();
-            $userId = Auth::user()->id;
 
-            $type = 'book';
-            $shop = Pages::where('user_id',$userId)->where('page_type', $type)->where('status','active')->first();
-            if(is_null($shop)){
-                $create = Pages::createShop($input,$type);
-            }else{
-                throw new \Exception('You already created '.$type.' shop!');
-            }
+            $create = Books::sellBook($input);
 
             if(!$create['status']){
                 throw new \Exception('Could not create, Please try again! '.$create['msg']);
@@ -68,6 +43,21 @@ class ShopController extends Controller
             $msg['status'] = false;
             return response()->json($msg);
         }
+    }
+
+    public function detail(Request $input)
+    {
+        $id = $input['id'];
+        $data['detail'] = Books::detail($id);
+        $data['num_view'] = PostView::numView($id,'book');
+        $data['last_read'] = PostView::lastRead($id,'book');
+        return response()->json($data);
+    }
+
+    public function bookList(Request $input){
+        $data = Books::listBook($input);
+
+        return response()->json($data);
     }
 
 }

@@ -56,7 +56,7 @@
         </div>
       </div>
       <b-alert show variant="success" v-if=" this.$route.params.id == undefined && this.$route.name == 'feed' ">
-        <h6 class="alert-heading">Finding Book?</h6>
+        <h6 style="position: absolute; top: 33px;" class="alert-heading">Finding Book?</h6>
         <div class="more-menu">
           <ul class="more-menu-item">
             <li>

@@ -25,7 +25,7 @@ Route::get('image/{type}/{size}/{img}', function($type,$size,$img)
 {
     $img  = Image::make(public_path('/'.$type.'/'.$img));
 
-    if(in_array($size,['m_avatar','m_post','m_page'])){
+    if(in_array($size,['m_avatar','m_post','m_page','m_book'])){
         return $img->response('png');
     }else{
         if($size == 'sm_post'){
@@ -34,6 +34,8 @@ Route::get('image/{type}/{size}/{img}', function($type,$size,$img)
             $resize = $img->resize(40, 40);
         }elseif($size == 'sm_page'){
             $resize = $img->resize(40, 40);
+        }elseif($size == 'sm_book'){
+            $resize = $img->resize(100, 150);
         }
 
         return $resize->response('png');
@@ -65,6 +67,9 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::post('create-post', 'PostController@createPost');
     Route::post('create-comment', 'PostController@createComment');
 
+    Route::get('book/detail/{id}', 'BookController@detail');
+    Route::post('book/sell-book', 'BookController@sellBook');
+    Route::get('book/list', 'BookController@bookList');
     Route::post('shop/create-shop', 'ShopController@createShop');
     Route::get('shop/get-shop', 'ShopController@getShop');
 

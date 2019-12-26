@@ -27,19 +27,19 @@ class PostView extends Model
 
     }
 
-    public static function numView($post_id){
+    public static function numView($post_id, $type='post'){
         $sql = "
                 select count(id)as num_view from post_view
-                where type='post' and post_id=$post_id
+                where type='$type' and post_id=$post_id
                 ";
         $data = DB::select($sql);
         return $data;
     }
 
-    public static function lastRead($post_id){
+    public static function lastRead($post_id, $type='post'){
         $sql = "
                 select created_at from post_view
-                where type='post' and post_id=$post_id
+                where type='$type' and post_id=$post_id
                 order by id desc
                 limit 1,1
                 ";
