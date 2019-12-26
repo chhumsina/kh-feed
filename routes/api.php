@@ -25,12 +25,14 @@ Route::get('image/{type}/{size}/{img}', function($type,$size,$img)
 {
     $img  = Image::make(public_path('/'.$type.'/'.$img));
 
-    if(in_array($size,['m_avatar','m_post'])){
+    if(in_array($size,['m_avatar','m_post','m_page'])){
         return $img->response('png');
     }else{
         if($size == 'sm_post'){
             $resize = $img->resize(40, 40);
         }elseif($size == 'sm_avatar'){
+            $resize = $img->resize(40, 40);
+        }elseif($size == 'sm_page'){
             $resize = $img->resize(40, 40);
         }
 
@@ -61,8 +63,10 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::post('user/change-avatar', 'UserController@changeAvatar');
     Route::post('user/update-overview', 'UserController@updateOverview');
     Route::post('create-post', 'PostController@createPost');
-    Route::post('create-shop', 'ShopController@createShop');
     Route::post('create-comment', 'PostController@createComment');
+
+    Route::post('shop/create-shop', 'ShopController@createShop');
+    Route::get('shop/get-shop', 'ShopController@getShop');
 
     Route::get('file/{id}', 'PostController@downloadFile');
 

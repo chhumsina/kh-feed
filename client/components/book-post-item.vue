@@ -41,17 +41,43 @@
       </div>
 
       <div class="book-announce" v-if="show_shop_annoucement==true">
-        <h6 class="alert-heading"><i class="fa fa-book-o" aria-hidden="true"></i> Are you a book seller? </h6>
-        <ul>
-          <li @click="show_shop_annoucement=false" style="color: red;">No</li>
-          <li style="font-weight: 100;">or</li>
-          <li @click="show_create_shop=true" style="color: green;">Yes</li>
-        </ul>
-        <div class="btn-become-book-seller" v-if="show_create_shop==true">
-          <nuxt-link :to="`/create-shop`">
-            Create Shop
-          </nuxt-link>
+        <div v-if="getShopLoading==true">
+          Loading...
         </div>
+        <div v-else>
+          <div v-if="shop==null">
+            <h6 class="alert-heading"><i class="fa fa-book-o" aria-hidden="true"></i> Are you a book seller? </h6>
+            <ul>
+              <li @click="show_shop_annoucement=false" style="color: red;">No</li>
+              <li style="font-weight: 100;">or</li>
+              <li @click="show_create_shop=true" style="color: green;">Yes</li>
+            </ul>
+            <div class="btn-become-book-seller" v-if="show_create_shop==true">
+              <nuxt-link :to="`/create-shop`">
+                Create Shop
+              </nuxt-link>
+            </div>
+          </div>
+          <div v-else class="row" style="margin-left: 0; margin-right: 0;">
+              <div class="col" style="border-right: 1px solid #ddd;">
+                <nuxt-link :to="`/create-shop`">
+                  <img style="height: 70px !important; margin-bottom: 3px;"
+                    class="img-circle"
+                    :src="shop.avatar  | getImgUrl('page','m_page')"
+                    alt="Shop Image"
+                  />
+                  <p style="margin-bottom: 0;">{{shop.name}}</p>
+                </nuxt-link>
+              </div>
+              <div class="col" style="position: relative;">
+                <nuxt-link :to="`/create-shop`" style="padding: 14px; font-weight: bold; color: #2f8be0; position: absolute; width: 100%; left: 0; top: 24px; margin: 0 auto;">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  Sell Book
+                </nuxt-link>
+              </div>
+          </div>
+        </div>
+
       </div>
 
       <b-modal class="fullscreen" id="post-modal" hide-title="true">
@@ -59,7 +85,7 @@
           :postId="postId" :page_name="page_name"
         />
       </b-modal>
-
+      <hr>
       <ul class="list">
         <li v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1" v-if="item.photo!='no'">
           <div class="thumbnail">
@@ -126,6 +152,8 @@
                 postId: null,
                 page_name: this.$route.name,
                 show_shop_annoucement: true,
+                getShopLoading: true,
+                shop: null,
                 show_create_shop: false
             }
         },
@@ -145,6 +173,7 @@
         },
         created() {
             this.listUserByTopView();
+            this.getShop();
         },
         methods: {
             getImgUrl(image, type, size) {
@@ -152,6 +181,16 @@
             },
             itemsContains(text, word) {
                 return text.includes(word);
+            },
+            async getShop() {
+                this.$axios
+                    .get('shop/get-shop')
+                    .then(({data}) => {
+                       if(data.status==true){
+                           this.shop = data.data;
+                       }
+                       this.getShopLoading = false;
+                    });
             },
             async onInfinite($state) {
                 var id = this.$route.params.id;

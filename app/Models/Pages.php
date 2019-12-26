@@ -19,7 +19,7 @@ class Pages extends Model
     ];
 
 
-    public static function createShop($input){
+    public static function createShop($input, $type){
         try {
             $userId = Auth::user()->id;
 
@@ -44,7 +44,7 @@ class Pages extends Model
             $data['avatar'] = $photo_name;
             $data['user_id'] = $userId;
             $data['level'] = 1;
-            $data['page_type'] = 'book';
+            $data['page_type'] = $type;
             $data['is_verify'] = false;
             $data['name'] = $input_data->name;
             $data['phone'] = $input_data->phone;
@@ -60,6 +60,14 @@ class Pages extends Model
         }
 
         return $msg;
+
+    }
+
+    public static function getShop($type){
+        $userId = Auth::user()->id;
+
+        $data = Pages::where('user_id', $userId)->where('page_type',$type)->where('status','active')->first();
+        return $data;
 
     }
 

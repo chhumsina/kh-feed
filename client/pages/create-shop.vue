@@ -70,13 +70,11 @@
                 }
             }
         },
-        mounted() {
-        },
         methods: {
             addPhoto(fileKey, event) {
                 // this[fileKey] = event.target.files[0];
                 // Reference to the DOM input element
-                var resize_width = 350;//without px
+                var resize_width = 100;//without px
 
                 //get the image selected
                 var item = event.target.files[0];
@@ -101,12 +99,18 @@
                             //scale the image to 600 (width) and keep aspect ratio
                             var scaleFactor = resize_width / el.target.width;
                             elem.width = resize_width;
-                            elem.height = el.target.height * scaleFactor;
+                            elem.height = resize_width;
 
                             //draw in canvas
                             var ctx = elem.getContext('2d');
                             ctx.drawImage(el.target, 0, 0, elem.width, elem.height);
-
+                            ctx.globalCompositeOperation='destination-in';
+                            ctx.beginPath();
+                            ctx.arc(50, 50, 50, 0, Math.PI*2);
+                            ctx.fillStyle = "#0095DD";
+                            ctx.fill();
+                            // reset to default
+                            ctx.globalCompositeOperation='source-over';
                             //get the base64-encoded Data URI from the resize image
                             var finalImage = ctx.canvas.toDataURL(el.target, 'image/jpeg', 0);
 
@@ -132,7 +136,7 @@
                 let formData = new FormData();
                 formData.append('data', rawData);
                 try {
-                    let response = await this.$axios.post('create-shop', formData, {
+                     await this.$axios.post('shop/create-shop', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }
@@ -145,6 +149,7 @@
                             } else {
                                 this.$swal.fire(
                                     data.msg,
+                                    'error',
                                     'error'
                                 )
                             }
