@@ -39,17 +39,20 @@
           </swiper>
         </div>
       </div>
-      <b-alert show variant="success">
-        <h6 class="alert-heading"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Great Post should be: </h6>
-        <div>
-          <ul>
-            <li><small>Short with meaningful</small></li>
-            <li><small>Useful thing</small></li>
-            <li><small>Interesting topic</small></li>
-            <li><small>Be able to help people</small></li>
-          </ul>
+
+      <div class="book-announce" v-if="show_shop_annoucement==true">
+        <h6 class="alert-heading"><i class="fa fa-book-o" aria-hidden="true"></i> Are you a book seller? </h6>
+        <ul>
+          <li @click="show_shop_annoucement=false" style="color: red;">No</li>
+          <li style="font-weight: 100;">or</li>
+          <li @click="show_create_shop=true" style="color: green;">Yes</li>
+        </ul>
+        <div class="btn-become-book-seller" v-if="show_create_shop==true">
+          <nuxt-link :to="`/create-shop`">
+            Create Shop
+          </nuxt-link>
         </div>
-      </b-alert>
+      </div>
 
       <b-modal class="fullscreen" id="post-modal" hide-title="true">
         <post-modal
@@ -122,6 +125,8 @@
                 search: null,
                 postId: null,
                 page_name: this.$route.name,
+                show_shop_annoucement: true,
+                show_create_shop: false
             }
         },
         watch: {
@@ -205,7 +210,35 @@
 </script>
 
 <style scoped>
+  .book-announce ul {
+    padding: 0;
+    list-style: none;
+    display: inline-flex;
+  }
 
+  .book-announce ul li {
+    padding: 10px;
+    font-weight: bold;
+  }
+  .book-announce {
+    background: #fff;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 13px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+  }
+  .btn-become-book-seller {
+    background: #a7a6ff;
+    font-weight: bold;
+    color: #4f4e9e;
+    text-align: center;
+    width: fit-content;
+    padding: 3px 12px;
+    border-radius: 3px;
+    margin: 0 auto;
+  }
   .feed .top-nav {
     font-weight: 600;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);

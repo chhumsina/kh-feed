@@ -52,14 +52,15 @@ module.exports = {
     './plugins/mixins/user',
     './plugins/axios',
     '~/plugins/myfilter.js',
-    {
-      src: '~plugins/infiniteloading', ssr: false },{
-      src: '~plugins/timeago', ssr: false },{ src: '~plugins/tinytabs', ssr: false
-    }
+    {src: '~plugins/infiniteloading', ssr: false },
+    {src: '~plugins/timeago', ssr: false },
+    {src: '~plugins/sweetalert', ssr: false },
+	{src: '~plugins/swiper', ssr: false },
+    {src: '~plugins/lazyload', ssr: false }
   ],
 
   env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:8000/api/',
+    baseUrl: process.env.BASE_URL || 'https://www.api.khfeed.com/api/',
   },
 
   auth: {
@@ -109,7 +110,7 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL: 'http://localhost:8000/api'
+    baseURL: 'https://www.api.khfeed.com/api'
   },
 
   /*

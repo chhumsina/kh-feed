@@ -61,6 +61,7 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::post('user/change-avatar', 'UserController@changeAvatar');
     Route::post('user/update-overview', 'UserController@updateOverview');
     Route::post('create-post', 'PostController@createPost');
+    Route::post('create-shop', 'ShopController@createShop');
     Route::post('create-comment', 'PostController@createComment');
 
     Route::get('file/{id}', 'PostController@downloadFile');
