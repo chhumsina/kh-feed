@@ -3,7 +3,7 @@
     <div style="float: left;" @click="$router.go(-1)">
       <i class="fa fa-arrow-left" aria-hidden="true"></i>
     </div>
-    <h4 class="text-center header-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Create Post</h4>
+    <h4 class="text-center header-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Create Book Giveaway</h4>
     <div v-if="user.status == 'pending'">
       <b-alert show variant="warning">
         <h4 class="alert-heading"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Postponement </h4>
@@ -28,12 +28,20 @@
 
     <form v-else @submit.prevent="createPost"
           enctype="multipart/form-data">
-      <b-alert show variant="warning">
-        <h4 class="alert-heading"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Testing Mode </h4>
+<!--      <b-alert show variant="warning">-->
+<!--        <h4 class="alert-heading"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Testing Mode </h4>-->
+<!--        <div>-->
+<!--          khfeed is still in developing and testing.-->
+<!--          Therefore, all the created posts will be deleted after we officially published.-->
+<!--        </div>-->
+<!--      </b-alert>-->
+
+      <b-alert show variant="info">
+        <h4 class="alert-heading"><i class="fa fa-star" aria-hidden="true"></i> Sharing Culture </h4>
         <div>
-          khfeed is still in developing and testing.
-          Therefore, all the created posts will be deleted after we officially published.
+          We're appreciated for your good deed.
         </div>
+        <span>Thank you,</span>
       </b-alert>
 
     <div style="background: #fff; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">

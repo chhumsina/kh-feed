@@ -20,7 +20,7 @@
       <no-ssr>
         <div class="account-tabs">
           <b-tabs content-class="mt-3" align="center">
-            <b-tab title="Posts" active>
+            <b-tab title="Giveaways" active>
               <post-item/>
             </b-tab>
             <b-tab title="Overview">

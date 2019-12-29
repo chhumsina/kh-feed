@@ -1,10 +1,10 @@
 <template>
   <nav class="menu menu-icon-top menu-expand-lg">
     <ul class="menu-nav mr-auto">
-      <nuxt-link to="/recommend">
+      <nuxt-link to="/book">
         <li class="nav-item">
-          <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-          <p>Recommend</p>
+          <i class="fa fa-book" aria-hidden="true"></i>
+          <p>Book</p>
         </li>
       </nuxt-link>
       <nuxt-link to="/feed">

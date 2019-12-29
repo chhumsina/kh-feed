@@ -13,7 +13,7 @@
             <span class="text">khfeed</span>
           </div>
           <h6 style="color: #d2d2d2 !important; text-shadow: 0px 2px 3px #555;">a slim social network for Cambodian</h6>
-          <small style="text-shadow: 1px 0px 2px #777;color: #d2d2d2;">Mission</small><h4 style="text-shadow: 0px 2px 3px #555;">Only Useful Post</h4>
+          <small style="text-shadow: 1px 0px 2px #777;color: #d2d2d2;">We do</small><h4 style="text-shadow: 0px 2px 3px #555;">emphasize book readers</h4>
           <br />
           <br />
           <br />

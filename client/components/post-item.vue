@@ -21,14 +21,14 @@
 
       <nuxt-link to="/create-post" v-if=" this.$route.params.id == undefined && this.$route.name == 'feed' ">
         <div class="box-footer"
-             style="padding: 25px 10px;display: block; margin-bottom: 10px; border-top: 1px solid #ccc; border-bottom: 1px solid #aaa;">
+             style="padding: 25px 10px;display: block; margin-bottom: 10px; border-top: 1px solid #dcdcdc; border-bottom: 1px solid #dcdcdc;">
           <img style="margin-top: 0px; height: 35px !important; width: 35px !important;"
                class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
                alt="Alt Text">
           <div class="img-push">
             <div style="padding-top: 8px;border-radius: 25px !important;background: #fafafa;"
                  class="form-control input-sm input-box">
-              What's you want to share?
+             I want to share Book Giveaway...
             </div>
           </div>
         </div>
@@ -49,25 +49,9 @@
                 <p style="font-size: 15px;">{{item.name}}</p>
               </nuxt-link>
             </swiper-slide>
-<!--            <swiper-slide>-->
-<!--              View allow-->
-<!--            </swiper-slide>-->
           </swiper>
         </div>
       </div>
-      <b-alert show variant="success" v-if=" this.$route.params.id == undefined && this.$route.name == 'feed' ">
-        <h6 style="position: absolute; top: 33px;" class="alert-heading">Finding Book?</h6>
-        <div class="more-menu">
-          <ul class="more-menu-item">
-            <li>
-              <nuxt-link to="/book">
-                <i class="fa fa-book" aria-hidden="true"></i>
-                <p>Book</p>
-              </nuxt-link>
-            </li>
-          </ul>
-        </div>
-      </b-alert>
 
       <b-modal class="fullscreen" id="post-modal" hide-title="true">
         <post-modal
@@ -307,10 +291,10 @@
     width: 60px;
     background: #fff;
     margin-left: 5px;
-    border-radius: 38px;
+    /* border-radius: 38px; */
     height: 60px;
     padding: 6px;
-    box-shadow: 0 1px 1px #aaa;
+    box-shadow: 0 1px 1px #aaaaaaa6;
     padding-top: 8px;
   }
 
@@ -322,5 +306,15 @@
     font-size: 12px;
     margin-bottom: -10px;
     margin-top: -5px;
+  }
+  .swiper-container {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    z-index: 1;
+    padding: 1px 0;
   }
 </style>
