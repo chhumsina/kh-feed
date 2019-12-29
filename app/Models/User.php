@@ -125,4 +125,44 @@ class User extends Authenticatable implements JWTSubject
 
         return $data;
     }
+
+    public static function userByTopContributionLIst($input){
+        $sql = "
+            select count(p.user_id) as num_post, u.avatar, u.id, u.name from posts as p
+            join users as u on (p.user_id=u.id and u.status='active')
+            where 
+            p.status='active'
+            group by u.avatar, u.id, u.name
+            order by num_post desc
+            limit 5
+            ";
+        $data = DB::select($sql);
+
+        return $data;
+    }
+
+    public static function listPeople($input){
+        $search = null;
+        if (isset($input['search'])) {
+            $search = " and LOWER(u.name) LIKE '%" . strtolower($input['search']) . "%' ";
+        }
+
+        $take = 9;
+        $page = ($input['page'] - 1) * $take;
+
+        $sql = "
+        select count(p.user_id) as num_post, u.avatar, u.id, u.name from posts as p
+            join users as u on (p.user_id=u.id and u.status='active')
+            where 
+            p.status='active'
+            $search
+            group by u.avatar, u.id, u.name
+            order by num_post desc
+            limit $page,$take
+            ";
+        $data = DB::select($sql);
+
+        return $data;
+    }
+
 }

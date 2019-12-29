@@ -32,9 +32,22 @@ class UserController extends Controller
         return response()->json($data);
     }
 
+    public function list(Request $input){
+        $data = User::listPeople($input);
+
+        return response()->json($data);
+    }
+
     public function listUserByTopView(Request $input)
     {
         $data = User::userByTopViewList($input);
+
+        return response()->json($data);
+    }
+
+    public function listUserByTopContribution(Request $input)
+    {
+        $data = User::userByTopContributionList($input);
 
         return response()->json($data);
     }

@@ -46,6 +46,7 @@ Route::get('image/{type}/{size}/{img}', function($type,$size,$img)
 
 Route::group(['middleware' => 'jwt.auth'], function() {
     Route::get('account/{id}', 'UserController@account');
+    Route::get('user/list-user-by-top-contribution', 'UserController@listUserByTopContribution');
     Route::get('user/list-user-by-top-view', 'UserController@listUserByTopView');
     Route::get('/me', 'MeController@index');
     Route::get('post/list', 'PostController@list');
@@ -62,6 +63,7 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::get('post/detail/{id}', 'PostController@detail');
     Route::get('post/detail-comment/{id}', 'PostController@detailComment');
 
+    Route::get('user/list', 'UserController@list');
     Route::post('user/change-avatar', 'UserController@changeAvatar');
     Route::post('user/update-overview', 'UserController@updateOverview');
     Route::post('create-post', 'PostController@createPost');

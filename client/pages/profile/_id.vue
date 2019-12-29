@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <div class="account">
 
       <div v-show="loadingAccount==false" class="container">
@@ -20,7 +21,7 @@
       <no-ssr>
         <div class="account-tabs">
           <b-tabs content-class="mt-3" align="center">
-            <b-tab title="Giveaways" active>
+            <b-tab title="Contribution" active>
               <post-item/>
             </b-tab>
             <b-tab title="Overview">

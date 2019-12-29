@@ -8,7 +8,7 @@
           <input
             type="text"
             class="form-control input-box"
-            placeholder="Search Book"
+            placeholder="Search People"
             v-on:keyup.enter="searchFeed" v-model="search"
           />
         </div>
@@ -17,72 +17,17 @@
 
     <div class="container c_post">
 
-      <div class="book-announce" v-if="show_shop_annoucement==true">
-        <div v-if="getShopLoading==true">
-          Loading...
-        </div>
-        <div v-else>
-          <div v-if="shop==null">
-            <h6 class="alert-heading"><i class="fa fa-book-o" aria-hidden="true"></i> Are you a book seller? </h6>
-            <ul>
-              <li @click="show_shop_annoucement=false" style="color: red;">No</li>
-              <li style="font-weight: 100;">or</li>
-              <li @click="show_create_shop=true" style="color: green;">Yes</li>
-            </ul>
-            <div class="btn-become-book-seller" v-if="show_create_shop==true">
-              <nuxt-link :to="`/create-shop`">
-                Create Shop
-              </nuxt-link>
-            </div>
-          </div>
-          <div v-else class="row" style="margin-left: 0; margin-right: 0;">
-              <div class="col" style="border-right: 1px solid #ddd;">
-                <nuxt-link :to="`/create-shop`" style="color:#555">
-                  <img style="height: 70px !important; margin-bottom: 3px;"
-                    class="img-circle"
-                    :src="shop.avatar  | getImgUrl('page','m_page')"
-                    alt="Shop Image"
-                  />
-                  <p style="margin-bottom: 0;">{{shop.name | truncate(20, '...')}}</p>
-                </nuxt-link>
-              </div>
-              <div class="col" style="position: relative;">
-                <nuxt-link :to="`/sell-book`" style="padding: 14px; font-weight: bold; color: #2f8be0; position: absolute; width: 100%; left: 0; top: 24px; margin: 0 auto;">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  Sell book
-                </nuxt-link>
-              </div>
-          </div>
-        </div>
-
-      </div>
-
-      <b-modal class="fullscreen" id="book-modal" hide-title="true">
-        <book-modal
-          :bookId="bookId" :page_name="page_name"
-        />
-      </b-modal>
-
-      <hr>
       <ul class="list">
-        <li v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1"  @click="showPostModal(item.id)">
-          <div class="thumbnail">
-            <img class="img" v-lazy="getImgUrl(item.photo, 'book', 'sm_book')"/>
-            <div class="poster">
-              <img
-                class="img-circle"
-                :src="item.avatar  | getImgUrl('page','sm_page')"
-                alt="Page Image"
-              />
-              <small class="price">{{item.price}} {{item.currency}} </small>
-            </div>
-          </div>
-          <div class="footer-img">
-            <p class="title">{{item.name | truncate(25, '...')}}</p>
-            <div class="sub-footer">
-                <small><timeago :datetime="item.created_at" :auto-update="10"></timeago></small>
-            </div>
-          </div>
+        <li v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1">
+          <nuxt-link :to="`/profile/${item.id}`">
+            <img
+              class="img-circle"
+              :src="item.avatar  | getImgUrl('avatar','m_avatar')"
+              alt="User Image"
+            />
+            <p style="font-size: 15px;margin-bottom: 0;margin-top: 7px;">{{item.name}}</p>
+            <p style="background: #f9f9f9; font-weight: bold; color: #ecb109; margin-top: 13px;">{{item.num_post}} <small>contr.</small></p>
+          </nuxt-link>
         </li>
         <li style="visibility: hidden"></li>
         <li style="visibility: hidden"></li>
@@ -102,23 +47,16 @@
 
 <script>
     import myfilter, {getImgUrl} from "../plugins/myfilter";
-    import BookModal from '../components/BookModal';
 
     export default {
         components: {
-            BookModal
         },
         data() {
             return {
                 page: 1,
                 feeds: [],
                 search: null,
-                bookId: null,
                 page_name: this.$route.name,
-                show_shop_annoucement: true,
-                getShopLoading: true,
-                shop: null,
-                show_create_shop: false
             }
         },
         watch: {
@@ -136,7 +74,6 @@
             },
         },
         created() {
-            this.getShop();
         },
         methods: {
             getImgUrl(image, type, size) {
@@ -144,16 +81,6 @@
             },
             itemsContains(text, word) {
                 return text.includes(word);
-            },
-            async getShop() {
-                this.$axios
-                    .get('shop/get-shop')
-                    .then(({data}) => {
-                       if(data.status==true){
-                           this.shop = data.data;
-                       }
-                       this.getShopLoading = false;
-                    });
             },
             async onInfinite($state) {
                 var id = this.$route.params.id;
@@ -163,7 +90,7 @@
                 }
 
                 this.$axios
-                    .get('book/list', {
+                    .get('user/list', {
                         params: {
                             page: this.page,
                             id: id,
@@ -191,11 +118,7 @@
                     );
                 }
             },
-            async showPostModal(id) {
-                this.bookId = id;
-                this.$router.push({to: this.$route.fullPath, hash: '#book'});
-                this.$root.$emit('bv::show::modal', 'book-modal');
-            },
+
         }
     }
 </script>
@@ -259,22 +182,6 @@
     color: #aaa;
   }
 
-  .slide-profile {
-    margin-bottom: 18px;
-    text-align: center;
-  }
-
-  .slide-profile .swiper-slide {
-    background: #fff;
-    height: 150px;
-    text-align: center;
-    padding: 13px 0;
-    box-shadow: 0 1px 1px #bbb;
-  }
-
-  .slide-profile .swiper-slide img.img-circle {
-    margin-bottom: 4px;
-  }
   .list {
     list-style: none;
     flex-wrap: wrap;
@@ -292,6 +199,7 @@
     background: #fff;
     box-shadow: 0 1px 1px #ddd;
     border-radius: 3px;
+    padding-top: 13px;
   }
 
   .list li:nth-child(3n + 1) {

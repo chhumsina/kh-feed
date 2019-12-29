@@ -28,7 +28,7 @@
           <div class="img-push">
             <div style="padding-top: 8px;border-radius: 25px !important;background: #fafafa;"
                  class="form-control input-sm input-box">
-             I want to share Book Giveaway...
+             I want to contribute my book...
             </div>
           </div>
         </div>
@@ -36,7 +36,7 @@
 
       <div v-if="userTop.length>1 && this.$route.name == 'feed'">
         <h6 style="padding: 15px; padding-bottom: 10px; padding-top: 10px; color: #555;" class="alert-heading"><i
-          class="fa fa-users" aria-hidden="true"></i> User by most view </h6>
+          class="fa fa-users" aria-hidden="true"></i> Most contributed people </h6>
         <div class="slide-profile">
           <swiper :options="swiperOption" :data="userTop">
             <swiper-slide v-for="(item, $index) in userTop" :key="$index">
@@ -49,6 +49,11 @@
                 <p style="font-size: 15px;">{{item.name}}</p>
               </nuxt-link>
             </swiper-slide>
+            <swiper-slide>
+              <nuxt-link :to="`/people/`" style="color: #666; font-weight: bold;">
+                <p style="top: 0; bottom: 0; left: 0; right: 0; margin-top: 45px;">More people</p>
+              </nuxt-link>
+            </swiper-slide>
           </swiper>
         </div>
       </div>
@@ -58,6 +63,9 @@
           :postId="postId" :page_name="page_name"
         />
       </b-modal>
+
+      <h6 v-if="feeds.length>0 && this.$route.name == 'feed'" style="padding: 15px; padding-bottom: 10px; padding-top: 10px; color: #555;" class="alert-heading"><i
+        class="fa fa-feed" aria-hidden="true"></i> Recent contributions</h6>
 
       <div v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1" class="box box-widget">
         <nuxt-link :to="`/profile/${item.user_id}`">
@@ -164,7 +172,7 @@
             },
         },
         created() {
-            this.listUserByTopView();
+            this.listUserByTopContribution();
         },
         methods: {
             getImgUrl(image, type, size) {
@@ -224,6 +232,17 @@
                             }
                         });
                 }
+            },
+            async listUserByTopContribution() {
+                if(this.$route.name == 'feed'){
+                    this.$axios
+                        .get('user/list-user-by-top-contribution')
+                        .then(({data}) => {
+                            if (data.length) {
+                                this.userTop.push(...data);
+                            }
+                        });
+                }
             }
         }
     }
@@ -270,7 +289,7 @@
     height: 150px;
     text-align: center;
     padding: 13px 0;
-    box-shadow: 0 1px 1px #bbb;
+    box-shadow: 0 1px 1px #eaeaea;
   }
 
   .slide-profile .swiper-slide img.img-circle {

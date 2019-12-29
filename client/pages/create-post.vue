@@ -3,7 +3,7 @@
     <div style="float: left;" @click="$router.go(-1)">
       <i class="fa fa-arrow-left" aria-hidden="true"></i>
     </div>
-    <h4 class="text-center header-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Create Book Giveaway</h4>
+    <h4 class="text-center header-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Contribute my book </h4>
     <div v-if="user.status == 'pending'">
       <b-alert show variant="warning">
         <h4 class="alert-heading"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Postponement </h4>
@@ -28,13 +28,13 @@
 
     <form v-else @submit.prevent="createPost"
           enctype="multipart/form-data">
-<!--      <b-alert show variant="warning">-->
-<!--        <h4 class="alert-heading"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Testing Mode </h4>-->
-<!--        <div>-->
-<!--          khfeed is still in developing and testing.-->
-<!--          Therefore, all the created posts will be deleted after we officially published.-->
-<!--        </div>-->
-<!--      </b-alert>-->
+      <b-alert show variant="warning">
+        <h4 class="alert-heading"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Testing Mode </h4>
+        <div>
+          khfeed is still in developing and testing.
+          Therefore, all the created posts will be deleted after we officially published.
+        </div>
+      </b-alert>
 
       <b-alert show variant="info">
         <h4 class="alert-heading"><i class="fa fa-star" aria-hidden="true"></i> Sharing Culture </h4>
@@ -44,37 +44,37 @@
         <span>Thank you,</span>
       </b-alert>
 
-    <div style="background: #fff; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-      <p style="margin-bottom: 3px;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> You're participating with Us:</p>
-      <b-form-checkbox
-        v-model="p1"
-        name="p1"
-        value="yes"
-        unchecked-value="no"
-        required
-      >
-        <small>Will not post Drug and Sexual Content</small>
-      </b-form-checkbox>
-      <b-form-checkbox
-        v-model="p2"
-        name="p2"
-        value="yes"
-        unchecked-value="no"
-        required
-      >
-        <small>Will not post Spam (unuseful)</small>
-      </b-form-checkbox>
-      <b-form-checkbox
-        v-model="p3"
-        name="p3"
-        value="yes"
-        unchecked-value="no"
-        required
-      >
-        <small>Keep post as learning curve</small>
-      </b-form-checkbox>
-      <p style="margin-bottom: 3px; text-align: right; font-size: 12px; margin-top: 9px; color: #f7283b; }"> We'll not ban a grateful person.</p>
-    </div>
+<!--    <div style="background: #fff; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">-->
+<!--      <p style="margin-bottom: 3px;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> You're participating with Us:</p>-->
+<!--      <b-form-checkbox-->
+<!--        v-model="p1"-->
+<!--        name="p1"-->
+<!--        value="yes"-->
+<!--        unchecked-value="no"-->
+<!--        required-->
+<!--      >-->
+<!--        <small>Will not post Drug and Sexual Content</small>-->
+<!--      </b-form-checkbox>-->
+<!--      <b-form-checkbox-->
+<!--        v-model="p2"-->
+<!--        name="p2"-->
+<!--        value="yes"-->
+<!--        unchecked-value="no"-->
+<!--        required-->
+<!--      >-->
+<!--        <small>Will not post Spam (unuseful)</small>-->
+<!--      </b-form-checkbox>-->
+<!--      <b-form-checkbox-->
+<!--        v-model="p3"-->
+<!--        name="p3"-->
+<!--        value="yes"-->
+<!--        unchecked-value="no"-->
+<!--        required-->
+<!--      >-->
+<!--        <small>Keep post as learning curve</small>-->
+<!--      </b-form-checkbox>-->
+<!--      <p style="margin-bottom: 3px; text-align: right; font-size: 12px; margin-top: 9px; color: #f7283b; }"> We'll not ban a grateful person.</p>-->
+<!--    </div>-->
 
       <div class="image-preview" v-if="photo!=null">
         <img class="preview" :src="photo">
@@ -82,6 +82,9 @@
              style="position: absolute; right: 1px; bottom: 3px; background: rgba(255,255,255, .6); padding: 3px 5px; font-weight: bold; font-size: 13px; padding-right: 9px; padding-bottom: 7px;">
           Change <i class="fa fa-picture-o" aria-hidden="true"></i>
         </div>
+        <input accept="image/x-png,image/jpeg" ref="photo" style="width: 1px; opacity: 0; margin-top: -29px; position: absolute; margin: 0 auto; left: 0; bottom: 0;"
+               @change="addPhoto('photo', $event)" type="file" name="photo" required
+               id="addPhotoId"/>
       </div>
 
       <div class="image-preview" v-if="photo==null">
@@ -90,17 +93,16 @@
              style="position: absolute; right: 1px; bottom: 3px; background: rgba(255,255,255, .6); padding: 3px 5px; font-weight: bold; font-size: 13px; padding-right: 9px; padding-bottom: 7px;">
           Browse <i class="fa fa-picture-o" aria-hidden="true"></i>
         </div>
+
+        <input accept="image/x-png,image/jpeg" ref="photo" style="width: 1px; opacity: 0; margin-top: -29px; position: absolute; margin: 0 auto; left: 0; bottom: 0;"
+               @change="addPhoto('photo', $event)" type="file" name="photo" required
+               id="addPhotoId"/>
+
       </div>
 
       <div class="form-group">
         <textarea v-model="caption" class="form-control" style="height: 35vh;" name="caption" required
                   placeholder="Enter Caption"/>
-      </div>
-      <div class="preview-photo text-center">
-
-        <input accept="image/x-png,image/jpeg" ref="photo" style="width: 100%; display: none;"
-               @change="addPhoto('photo', $event)" type="file" name="photo"
-               id="addPhotoId"/>
       </div>
 
       <div class="form-group btn-post">
