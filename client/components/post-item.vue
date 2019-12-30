@@ -9,7 +9,7 @@
           <input
             type="text"
             class="form-control input-box"
-            placeholder="Search Post"
+            placeholder="Search Feed"
             v-on:keyup.enter="searchFeed" v-model="search"
           />
         </div>
@@ -50,7 +50,7 @@
               </nuxt-link>
             </swiper-slide>
             <swiper-slide>
-              <nuxt-link :to="`/people/`" style="color: #666; font-weight: bold;">
+              <nuxt-link :to="`/people/`" style="color: #666;">
                 <p style="top: 0; bottom: 0; left: 0; right: 0; margin-top: 45px;">More people</p>
               </nuxt-link>
             </swiper-slide>
@@ -58,7 +58,7 @@
         </div>
       </div>
 
-      <b-modal class="fullscreen" id="post-modal" hide-title="true">
+      <b-modal class="fullscreen" id="post-modal" hide-title="true" no-enforce-focus>
         <post-modal
           :postId="postId" :page_name="page_name"
         />

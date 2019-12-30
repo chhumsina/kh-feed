@@ -13,10 +13,16 @@
           <p>Feed</p>
         </li>
       </nuxt-link>
-      <nuxt-link to="/save">
+<!--      <nuxt-link to="/save">-->
+<!--        <li class="nav-item">-->
+<!--          <i class="fa fa-download" aria-hidden="true"></i>-->
+<!--          <p>Save</p>-->
+<!--        </li>-->
+<!--      </nuxt-link>-->
+      <nuxt-link to="/i-need">
         <li class="nav-item">
-          <i class="fa fa-download" aria-hidden="true"></i>
-          <p>Save</p>
+          <i class="fa fa-smile-o" aria-hidden="true"></i>
+          <p>INeed</p>
         </li>
       </nuxt-link>
       <nuxt-link to="/activity">

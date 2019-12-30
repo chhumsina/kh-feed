@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Models\Comments;
+use App\Models\Ineed;
 use App\Models\PostActivity;
 use App\Models\PostFileDownload;
 use App\Models\Posts;
@@ -222,6 +223,46 @@ class PostController extends Controller
             $msg['status'] = false;
             return response()->json($msg);
         }
+    }
+
+    public function iNeed(Request $input){
+        try{
+            DB::beginTransaction();
+
+            $create = Ineed::createIneed($input);
+
+            if(!$create['status']){
+                throw new \Exception('Could not make INeed, Please try again! '.$create['msg']);
+            }
+
+            DB::commit();
+
+            $msg['msg'] = 'Submit successfully.';
+            $msg['status'] = true;
+            return response()->json($msg);
+
+        }catch (\Exception $e){
+            DB::rollBack();
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+            return response()->json($msg);
+        }
+    }
+
+    public function iNeedList(Request $input)
+    {
+
+        $data = Ineed::iNeedList($input);
+
+        return response()->json($data);
+    }
+
+    public function iNeedRequestList(Request $input)
+    {
+
+        $data = Ineed::iNeedRequestList($input);
+
+        return response()->json($data);
     }
 
 }

@@ -55,12 +55,12 @@ module.exports = {
     {src: '~plugins/infiniteloading', ssr: false },
     {src: '~plugins/timeago', ssr: false },
     {src: '~plugins/sweetalert', ssr: false },
-	{src: '~plugins/swiper', ssr: false },
+    {src: '~plugins/swiper', ssr: false },
     {src: '~plugins/lazyload', ssr: false }
   ],
 
   env: {
-    baseUrl: process.env.BASE_URL || 'https://www.api.khfeed.com/api/',
+    baseUrl: process.env.BASE_URL || 'http://localhost:8000/api/',
   },
 
   auth: {
@@ -110,7 +110,7 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL: 'https://www.api.khfeed.com/api'
+    baseURL: 'http://localhost:8000/api'
   },
 
   /*

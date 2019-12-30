@@ -28,7 +28,7 @@
         </div>
       </nuxt-link>
 
-      <b-modal class="fullscreen" id="post-modal" hide-title="true">
+      <b-modal class="fullscreen" id="post-modal" hide-title="true" no-enforce-focus>
         <post-modal
           :postId="postId" :page_name="page_name"
         />

@@ -56,6 +56,9 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::get('post/reaction-list', 'PostController@reactionList');
     Route::get('post/detail/{id}', 'PostController@detail');
 
+    Route::post('post/i-need', 'PostController@iNeed');
+    Route::get('post/i-need-list/{id}', 'PostController@iNeedList');
+    Route::get('post/i-need-request-list', 'PostController@iNeedRequestList');
     Route::post('post/delete-post', 'PostController@deletePost');
     Route::post('post/recommend-post', 'PostController@recommendPost');
     Route::post('post/save-post', 'PostController@savePost');

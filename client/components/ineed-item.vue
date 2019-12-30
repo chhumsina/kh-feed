@@ -1,7 +1,7 @@
 <template>
   <div class="feed">
 
-    <nav v-if=" this.$route.params.id == undefined && this.$route.name == 'save' "
+    <nav
          class="navbar navbar-expand-lg navbar-light bg-white top-nav">
       <div class="container">
         <div class="has-search" style="width: 100%">
@@ -9,7 +9,7 @@
           <input
             type="text"
             class="form-control input-box"
-            placeholder="Search Saved Post"
+            placeholder="Search INeed"
             v-on:keyup.enter="searchFeed" v-model="search"
           />
         </div>
@@ -19,41 +19,28 @@
 
     <div class="container c_post">
 
-      <nuxt-link to="/create-post" v-if=" this.$route.params.id == undefined && this.$route.name == 'feed' ">
-        <div class="box-footer"
-             style="padding: 25px 10px;display: block; margin-bottom: 10px; border-top: 1px solid #ccc; border-bottom: 1px solid #aaa;">
-          <img style="margin-top: 0px; height: 35px !important; width: 35px !important;"
-               class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
-               alt="Alt Text">
-          <div class="img-push">
-            <input style="border-radius: 25px !important;background: #fafafa;" type="text" class="form-control input-sm input-box"
-                   placeholder="What's you want to share?">
-          </div>
-        </div>
-      </nuxt-link>
-
-
       <b-modal class="fullscreen" id="post-modal" hide-title="true" no-enforce-focus>
         <post-modal
           :postId="postId" :page_name="page_name"
         />
       </b-modal>
-
+      <p class="text-center" style="padding: 5px; color:#bbb;padding-bottom: 0;">List of the book which you request to Contributors</p>
       <div v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1" class="box box-widget">
           <div class="box-header with-border" @click="showPostModal(item.post_id)">
             <div class="user-block">
               <img
-                v-if="item.photo!='no'"
                 class="img-circle"
                 :src="item.photo | getImgUrl('photo','sm_post')"
                 alt="User Image"
               />
-              <span class="username" :class="item.photo!='no' ? '' : 'margin-left-0'">{{item.caption | truncate(35, '...')}}</span>
-              <span class="description" :class="item.photo!='no' ? '' : 'margin-left-0'">
-                {{item.name}}
-                |
-              <timeago :datetime="item.created_at" :auto-update="10"></timeago>
+              <span class="username">{{item.caption | truncate(35, '...')}}</span>
+              <span class="description">
+              <timeago :datetime="item.post_date" :auto-update="10"></timeago>
             </span>
+              <div v-bind:class="item.accept_status" style="float: right; margin-top: -46px; text-align: center">
+                <p style="margin-top: 3px; margin-bottom: -4px;">{{item.accept_status}}</p>
+                <p style="font-size: 11px; color: rgb(156, 156, 156); margin-top: 9px; margin-bottom: 0;"><timeago :datetime="item.created_at" :auto-update="10"></timeago></p>
+              </div>
             </div>
           </div>
       </div>
@@ -118,7 +105,7 @@
                 }
 
                 this.$axios
-                    .get('post/save-list', {
+                    .get('post/i-need-request-list', {
                         params: {
                             page: this.page,
                             id: id,

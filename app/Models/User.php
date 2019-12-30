@@ -152,7 +152,7 @@ class User extends Authenticatable implements JWTSubject
 
         $sql = "
         select count(p.user_id) as num_post, u.avatar, u.id, u.name from posts as p
-            join users as u on (p.user_id=u.id and u.status='active')
+            left join users as u on (p.user_id=u.id and u.status='active')
             where 
             p.status='active'
             $search

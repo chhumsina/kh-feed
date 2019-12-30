@@ -3,17 +3,19 @@
 
     <div class="account">
 
-      <div v-show="loadingAccount==false" class="container">
+      <div class="container">
         <div class="text-center profile">
-          <img :src="user_data.avatar | getImgUrl('avatar','m_avatar')" class="ui-w-100 rounded-circle"
-          />
+          <div v-show="loadingAccount==false">
+            <img :src="user_data.avatar | getImgUrl('avatar','m_avatar')" class="ui-w-100 rounded-circle"
+            />
 
-          <div class="col-md-8 col-lg-6 col-xl-5 p-0 mx-auto">
-            <h4 class="font-weight-bold my-4"> {{user_data.name}}</h4>
+            <div class="col-md-8 col-lg-6 col-xl-5 p-0 mx-auto">
+              <h4 class="font-weight-bold my-4"> {{user_data.name}}</h4>
 
-            <div v-if="user_data.bio" class="text-muted mb-4">
-              <i class="fa fa-quote-left" aria-hidden="true"></i> {{user_data.bio}} <i class="fa fa-quote-right"
-                                                                                       aria-hidden="true"></i>
+              <div v-if="user_data.bio" class="text-muted mb-4">
+                <i class="fa fa-quote-left" aria-hidden="true"></i> {{user_data.bio}} <i class="fa fa-quote-right"
+                                                                                         aria-hidden="true"></i>
+              </div>
             </div>
           </div>
         </div>
@@ -197,6 +199,7 @@
     margin-left: -15px;
     margin-right: -15px;
     padding: 25px;
+    height: 275px;
     border-bottom: 1px solid #ddd;
   }
 
