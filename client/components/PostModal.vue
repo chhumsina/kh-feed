@@ -91,7 +91,7 @@
           </div>
         </nuxt-link>
 
-        <div style="margin-top: 10px; margin-left: 35px; color: #555;">
+        <div style="margin-top: 10px; margin-left: 35px; color: #555;" class="font-13">
           {{item.desc | truncate(35, '...')}} <span v-if="item.desc.length>40" @click="showMoreDesc(item.desc)" style="color: #2f8be0">more</span>
         </div>
       </div>
@@ -123,15 +123,15 @@
               <span v-html="dataModal.caption"></span>
             </p>
 
-            <p v-if="recommendPostLoading==true" @click="recommendPost()"
-               style="text-align: center; background: #00a1ff; color: #fff; border-radius: 3px; padding: 6px;font-weight: 400;">
-              <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Recommend<span
-              v-if="recommendPostLoading==false">...</span>
-            </p>
-            <p v-if="recommendPostLoading==false"
-               style="text-align: center; background: #00a1ff; color: #fff; border-radius: 3px; padding: 6px;font-weight: 400;">
-              <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Recommend...
-            </p>
+<!--            <p v-if="recommendPostLoading==true" @click="recommendPost()"-->
+<!--               style="text-align: center; background: #00a1ff; color: #fff; border-radius: 3px; padding: 6px;font-weight: 400;">-->
+<!--              <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Recommend<span-->
+<!--              v-if="recommendPostLoading==false">...</span>-->
+<!--            </p>-->
+<!--            <p v-if="recommendPostLoading==false"-->
+<!--               style="text-align: center; background: #00a1ff; color: #fff; border-radius: 3px; padding: 6px;font-weight: 400;">-->
+<!--              <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Recommend...-->
+<!--            </p>-->
 
             <div class="c_post">
               <div class="box-comments" style="display: block;">
@@ -314,7 +314,7 @@
                         cancelButtonColor: '#d33',
                         confirmButtonText: 'Go to Account'
                     }).then((result) => {
-                        this.$router.push({path: 'account'})
+                        this.$router.push({path: '/account'})
                     })
                 } else {
                     this.$swal.fire({
@@ -348,7 +348,7 @@
                                     'success',
                                     'success'
                                 )
-                                this.$router.push({path: 'dashboard'})
+                                this.$router.push({path: '/dashboard'})
                             } else {
                                 this.$swal.fire(
                                     result.value.data.msg,

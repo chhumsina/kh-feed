@@ -654,5 +654,11 @@
   .pending{
     color: orange;
   }
+  .open{
+    color: orange;
+  }
 
+  .font-13{
+    font-size: 13px !important;
+  }
 </style>

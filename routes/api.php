@@ -58,6 +58,7 @@ Route::group(['middleware' => 'jwt.auth'], function() {
 
 
     Route::get('post/dashboard', 'PostController@dashboardList');
+    Route::get('post/dashboard-total', 'PostController@dashboardTotal');
 
     Route::post('post/i-need', 'PostController@iNeed');
     Route::get('post/i-need-list/{id}', 'PostController@iNeedList');

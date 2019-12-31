@@ -24,10 +24,14 @@
       />
       <div class="total-book">
         <ul>
-          <li :class="book_filter=='iwant' ? 'menu-active' : ''" @click="dashboardList('iwant','first')">Yes, I want<br/><span>45 book</span></li>
-          <li :class="book_filter=='contributes' ? 'menu-active' : ''"  @click="dashboardList('contributes','first')">Contributes<br/><span>45 book</span><p style="margin: 0 auto; font-size: 12px; color: red; position: absolute; left: 0; right: 0; bottom: 7px;">0 wants now</p></li>
-          <li :class="book_filter=='giving' ? 'menu-active' : ''"  @click="dashboardList('giving','first')">Total Giving<br/><span>45 book</span></li>
-          <li :class="book_filter=='getting' ? 'menu-active' : ''"  @click="dashboardList('getting','first')">Total Getting<br/><span>34 book</span></li>
+          <li :class="book_filter=='iwant' ? 'menu-active' : ''" @click="dashboardList('iwant','first')">Yes, I want<br/><span>{{totalBook.total_want}} book</span>
+            <p style="margin: 0 auto; font-size: 12px; color: orange; position: absolute; left: 0; right: 0; bottom: 7px;">{{totalBook.total_want_other}} wanted</p></li>
+          <li :class="book_filter=='contributes' ? 'menu-active' : ''"  @click="dashboardList('contributes','first')">Contributes<br/><span>{{totalBook.total_contributes}}  book</span>
+            <p style="margin: 0 auto; font-size: 12px; color: orange; position: absolute; left: 0; right: 0; bottom: 7px;">{{totalBook.total_want_now}} wants now</p></li>
+          <li :class="book_filter=='giving' ? 'menu-active' : ''"  @click="dashboardList('giving','first')">Total Giving<br/><span>{{totalBook.total_giving}}  book</span>
+            <p style="margin: 0 auto; font-size: 12px; color: #0d863d; position: absolute; left: 0; right: 0; bottom: 7px;">{{totalBook.total_want_giving}} wanted</p></li>
+          <li :class="book_filter=='getting' ? 'menu-active' : ''"  @click="dashboardList('getting','first')">Total Getting<br/><span>{{totalBook.total_getting}}  book</span>
+            <p style="margin: 0 auto; font-size: 12px; color: #0d863d; position: absolute; left: 0; right: 0; bottom: 7px;">{{totalBook.total_want_getting}} wanted</p></li>
         </ul>
       </div>
   </div>
@@ -71,7 +75,7 @@
               </p>
             </div>
           </div>
-          <div style="margin-top: 10px;">
+          <div style="margin-top: 10px;" class="font-13">
             {{item.desc | truncate(40, '...')}} <span v-if="item.desc.length>40" @click="showMoreDesc(item.desc)"
                                                       style="color: #2f8be0">more</span>
           </div>
@@ -85,7 +89,32 @@
     </div>
 
     <div v-else-if="book_filter=='contributes'">
-      {{book_filter}}
+      <div v-for="(item, $index) in bookItem" :key="$index" :data-num="$index + 1" class="box box-widget">
+        <div class="box-header with-border">
+          <div class="user-block">
+            <img
+              class="img-circle"
+              :src="item.photo | getImgUrl('photo','sm_post')"
+              alt="User Image"
+              @click="showPostModal(item.post_id)"
+            />
+            <span class="username" @click="showPostModal(item.post_id)">{{item.caption | truncate(35, '...')}}</span>
+            <span class="description">
+              <timeago :datetime="item.post_date" :auto-update="10"></timeago>
+            </span>
+            <div class="open" style="float: right; margin-top: -46px; text-align: center">
+              <p style="margin-top: 3px; margin-bottom: -4px;">Open</p>
+              <p style="font-size: 11px; color: rgb(156, 156, 156); margin-top: 9px; margin-bottom: 0;">
+                <timeago :datetime="item.created_at" :auto-update="10"></timeago>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p v-if="bookItemLoading==true" class="btn_load_more" @click="moreDashboardList()">{{load_more_text}}</p>
+      <p v-else class="btn_load_more">
+        <img :src="placeholder_photo.loader"/>
+      </p>
     </div>
 
     <br/>
@@ -114,6 +143,7 @@
                 load_more_text: 'Load more',
                 postId: null,
                 page_name: this.$route.name,
+                totalBook: [],
                 placeholder_photo: {
                     i_want_banner: require('../assets/default/book-banner.jpg'),
                     loader: require('../assets/default/loader.gif')
@@ -136,6 +166,7 @@
         },
         created(){
           this.dashboardList(this.book_filter);
+          this.dashboardTotal();
         },
         methods: {
             getImgUrl(image, type, size) {
@@ -150,6 +181,13 @@
             moreDashboardList(){
                 this.page += 1;
                 this.dashboardList(this.book_filter, 'more')
+            },
+            async dashboardTotal(){
+                this.$axios
+                    .get('post/dashboard-total')
+                    .then(({data}) => {
+                        this.totalBook = data[0]
+                    })
             },
             async dashboardList(type, loading) {
                 this.bookItemLoading = false;

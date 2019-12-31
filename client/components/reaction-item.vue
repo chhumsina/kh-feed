@@ -6,10 +6,10 @@
         <i class="fa fa-arrow-left" aria-hidden="true"></i>
       </div>
       <ul class="reaction-filter">
-        <li :class="filterType == 'comment' ? 'comment' : ''" @click="filterReactionList('comment')">Comm.</li>
+        <li :class="filterType == 'comment' ? 'comment' : ''" @click="filterReactionList('comment')">Comment</li>
         <li :class="filterType == 'profile' ? 'profile' : ''" @click="filterReactionList('profile')">Profile</li>
         <li :class="filterType == 'post' ? 'post' : ''" @click="filterReactionList('post')">Post</li>
-        <li :class="filterType == 'recommend' ? 'recommend' : ''" @click="filterReactionList('recommend')">Recom.</li>
+<!--        <li :class="filterType == 'recommend' ? 'recommend' : ''" @click="filterReactionList('recommend')">Recom.</li>-->
       </ul>
     </div>
 

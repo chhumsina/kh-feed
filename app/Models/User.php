@@ -128,10 +128,10 @@ class User extends Authenticatable implements JWTSubject
 
     public static function userByTopContributionLIst($input){
         $sql = "
-            select count(p.user_id) as num_post, u.avatar, u.id, u.name from posts as p
-            join users as u on (p.user_id=u.id and u.status='active')
+            select count(p.user_id) as num_post, u.avatar, u.id, u.name from users as u
+            left join posts as p on (p.user_id=u.id and p.status='active')
             where 
-            p.status='active'
+            u.status='active'
             group by u.avatar, u.id, u.name
             order by num_post desc
             limit 5
@@ -151,10 +151,10 @@ class User extends Authenticatable implements JWTSubject
         $page = ($input['page'] - 1) * $take;
 
         $sql = "
-        select count(p.user_id) as num_post, u.avatar, u.id, u.name from posts as p
-            left join users as u on (p.user_id=u.id and u.status='active')
+            select count(p.user_id) as num_post, u.avatar, u.id, u.name from users as u
+            left join posts as p on (p.user_id=u.id and p.status='active')
             where 
-            p.status='active'
+            u.status='active'
             $search
             group by u.avatar, u.id, u.name
             order by num_post desc

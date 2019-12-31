@@ -2,7 +2,7 @@
   <div style="margin-top: 67px;">
 
     <no-ssr>
-      <ineed-item/>
+      <dashboard-item/>
     </no-ssr>
 
   </div>
@@ -10,7 +10,7 @@
 
 <script>
 
-    import IneedItem from '../components/ineed-item'
+    import DashboardItem from '../components/dashboard-item'
 
     export default {
         middleware: 'auth',
@@ -20,7 +20,7 @@
             }
         },
         components: {
-            IneedItem
+            DashboardItem
         },
         mounted() {
         },

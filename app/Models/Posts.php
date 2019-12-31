@@ -44,7 +44,6 @@ class Posts extends Model
                 where p.status = 'active'
                 $search
                 $post_by
-                group by p.photo, p.id, p.caption, p.status, u.id, u.avatar, u.name, p.created_at
                 order by p.id desc
                 limit $page,$take
             ";
@@ -154,7 +153,7 @@ class Posts extends Model
         }elseif($input['filter_type'] == 'comment'){
             $sql = $sql_comment;
         }else{
-            $sql = $sql_profile." UNION ".$sql_post." UNION ".$sql_comment." UNION ".$sql_recommend;
+            $sql = $sql_profile." UNION ".$sql_post." UNION ".$sql_comment;
         }
 
         $sqlFinal = "
@@ -259,7 +258,7 @@ class Posts extends Model
         }elseif($input['filter_type'] == 'comment'){
             $sql = $sql_comment;
         }else{
-            $sql = $sql_profile." UNION ".$sql_post." UNION ".$sql_comment." UNION ".$sql_recommend;
+            $sql = $sql_profile." UNION ".$sql_post." UNION ".$sql_comment;
         }
 
         $sqlFinal = "

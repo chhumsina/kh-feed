@@ -3,10 +3,10 @@
 
     <div style="background: rgb(255, 255, 255); height: 56px; margin-bottom: 10px; box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px; padding: 15px; position: fixed; width: 100%; top: 0; z-index: 1;">
       <ul class="activity-filter">
-        <li :class="filterType == 'comment' ? 'comment' : ''" @click="filterReactionList('comment')">Comm.</li>
+        <li :class="filterType == 'comment' ? 'comment' : ''" @click="filterReactionList('comment')">Comment</li>
         <li :class="filterType == 'profile' ? 'profile' : ''" @click="filterReactionList('profile')">Profile</li>
         <li :class="filterType == 'post' ? 'post' : ''" @click="filterReactionList('post')">Post</li>
-        <li :class="filterType == 'recommend' ? 'recommend' : ''" @click="filterReactionList('recommend')">Recom.</li>
+<!--        <li :class="filterType == 'recommend' ? 'recommend' : ''" @click="filterReactionList('recommend')">Recom.</li>-->
       </ul>
     </div>
 

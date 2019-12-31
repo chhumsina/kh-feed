@@ -274,4 +274,11 @@ class PostController extends Controller
         return response()->json($data);
     }
 
+    public function dashboardTotal(Request $input){
+
+        $data = Dashboard::total();
+
+        return response()->json($data);
+    }
+
 }
