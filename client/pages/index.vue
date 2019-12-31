@@ -12,7 +12,7 @@
           <div class="text-center">
             <span class="text">khfeed</span>
           </div>
-          <h6 style="color: #d2d2d2 !important; text-shadow: 0px 2px 3px #555;">a slim social network for Cambodian</h6>
+<!--          <h6 style="color: #d2d2d2 !important; text-shadow: 0px 2px 3px #555;">a slim social network for Cambodian</h6>-->
           <small style="text-shadow: 1px 0px 2px #777;color: #d2d2d2;">We emphasize</small><h4 style="text-shadow: 0px 2px 3px #555;">Book readers</h4>
           <br />
           <br />
@@ -23,7 +23,7 @@
               Login via <b style="text-shadow: 0px 1px 0px #ddd;color: #4285F4">Google<span v-if="loginloading==true">...</span></b>
             </a>
           </div>
-          <a class="term" href="#">Terms & Conditions</a>
+<!--          <a class="term" href="#">Terms & Conditions</a>-->
         </div>
       </div>
     </div>
