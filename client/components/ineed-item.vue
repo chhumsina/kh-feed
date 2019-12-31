@@ -24,15 +24,15 @@
       />
       <div class="total-book">
         <ul>
-          <li @click="dashboardList('iwant','first')">Yes, I want<br/><span>45 book</span></li>
-          <li @click="dashboardList('contributes','first')">Contributes<br/><span>45 book</span><p style="margin: 0; font-size: 12px; color: red;">0 wants now</p></li>
-          <li @click="dashboardList('giving','first')">Total Giving<br/><span>45 book</span></li>
-          <li @click="dashboardList('getting','first')">Total Getting<br/><span>34 book</span></li>
+          <li :class="book_filter=='iwant' ? 'menu-active' : ''" @click="dashboardList('iwant','first')">Yes, I want<br/><span>45 book</span></li>
+          <li :class="book_filter=='contributes' ? 'menu-active' : ''"  @click="dashboardList('contributes','first')">Contributes<br/><span>45 book</span><p style="margin: 0 auto; font-size: 12px; color: red; position: absolute; left: 0; right: 0; bottom: 7px;">0 wants now</p></li>
+          <li :class="book_filter=='giving' ? 'menu-active' : ''"  @click="dashboardList('giving','first')">Total Giving<br/><span>45 book</span></li>
+          <li :class="book_filter=='getting' ? 'menu-active' : ''"  @click="dashboardList('getting','first')">Total Getting<br/><span>34 book</span></li>
         </ul>
       </div>
   </div>
 
-  <div class="container c_post" style="margin-top: 155px;">
+  <div class="container c_post" style="margin-top: 170px;">
 
     <b-modal class="fullscreen" id="post-modal" hide-title="true" no-enforce-focus>
       <post-modal
@@ -194,6 +194,9 @@
 </script>
 
 <style scoped>
+  .menu-active{
+    background: #eaeaea !important;
+  }
   .btn_load_more{
     text-align: center;
     margin-top: 27px;
@@ -208,12 +211,14 @@
   .total-book ul li {
     text-align: center;
     display: inline-grid;
-    padding: 1px 8px 4px 8px;
+    padding: 11px 10px 19px 6px;
     color: #888;
     font-size: 14px;
-    background: #f5f5f512;
+    background: #f7f7f7;
     margin-bottom: 5px;
     border-radius: 4px;
+    position: relative;
+    height: 82px;
   }
 
   .total-book {margin-top: 11px;}
