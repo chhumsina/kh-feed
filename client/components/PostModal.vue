@@ -36,8 +36,8 @@
         </div>
       </div>
       <div v-else>
-        <div v-if="showIneedLIst==false" @click="iNeed()" class="btn-save-post">
-          <i class="fa fa-smile-o" aria-hidden="true"></i> INeed
+        <div v-if="showIneedLIst==false" @click="showIneedLIst=true" class="btn-save-post" style="color: orange;">
+          <i class="fa fa-smile-o" aria-hidden="true"></i> You want this book?
         </div>
         <div v-else @click="showIneedLIst=false" class="btn-save-post">
           <i class="fa fa-picture-o" aria-hidden="true"></i> Show Post
@@ -53,7 +53,7 @@
     </div>
 
     <div v-if="showIneedLIst==true" style="margin-top: 57px;">
-      <p class="text-center" style="padding: 5px; color: #bbb;">Contributor will pick up one or some of INeedors</p>
+      <p class="text-center" style="padding: 5px; color: #000;">List of people who want this book<Br/><span style="color:#bbb">Contributor will pick up one or some of INeedors</span></p>
       <div v-for="(item, $index) in ineedListData" :key="$index" :data-num="$index + 1" class="sina-list-item">
         <nuxt-link :to="`/profile/${item.user_id}`">
           <div class="item-image">
@@ -90,7 +90,18 @@
             </div>
           </div>
         </nuxt-link>
+
+        <div style="margin-top: 10px; margin-left: 35px; color: #555;">
+          {{item.desc | truncate(35, '...')}} <span v-if="item.desc.length>40" @click="showMoreDesc(item.desc)" style="color: #2f8be0">more</span>
+        </div>
       </div>
+
+      <div class="create-comment" style="height: 72px; padding-top: 23px; text-align: center; font-weight: bold;">
+        <span style="background: #ddd; padding: 10px 15px; border-radius: 3px; color: black;" @click="iNeed()">
+            Yes, I want
+        </span>
+      </div>
+
     </div>
     <div v-else>
       <div class="post-modal post-modal-content">
@@ -279,6 +290,12 @@
                     }
                 })
             },
+            showMoreDesc(desc){
+                this.$swal.fire(
+                    'Your description:',
+                    desc
+                )
+            },
             async ineedList() {
                 this.$axios.get('post/i-need-list/' + this.postId).then(({data}) => {
                     if (data) {
@@ -287,10 +304,9 @@
                 })
             },
             iNeed() {
-                this.showIneedLIst = true;
                 if (this.user.phone == '') {
                     this.$swal.fire({
-                        title: '"To Easy to contact"  \n Please update Phone number \n  Then come back to make INeed',
+                        title: '"To Easy to contact"  \n Please update Phone number \n  Then come back to make it again.',
                         text: "Account -> Overview -> Phone",
                         icon: 'warning',
                         showCancelButton: false,
@@ -302,7 +318,7 @@
                     })
                 } else {
                     this.$swal.fire({
-                        title: 'Say something to Contributor \n "You really need this book"',
+                        title: 'Say something to Contributor \n "You really want this book"',
                         input: 'textarea',
                         inputAttributes: {
                             autocapitalize: 'off'
@@ -332,7 +348,7 @@
                                     'success',
                                     'success'
                                 )
-                                this.$router.push({path: 'i-need'})
+                                this.$router.push({path: 'dashboard'})
                             } else {
                                 this.$swal.fire(
                                     result.value.data.msg,

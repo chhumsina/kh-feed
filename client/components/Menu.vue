@@ -19,10 +19,10 @@
 <!--          <p>Save</p>-->
 <!--        </li>-->
 <!--      </nuxt-link>-->
-      <nuxt-link to="/i-need">
+      <nuxt-link to="/dashboard">
         <li class="nav-item">
           <i class="fa fa-smile-o" aria-hidden="true"></i>
-          <p>INeed</p>
+          <p>Dashboard</p>
         </li>
       </nuxt-link>
       <nuxt-link to="/activity">

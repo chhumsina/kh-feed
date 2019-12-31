@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Models\Comments;
+use App\Models\Dashboard;
 use App\Models\Ineed;
 use App\Models\PostActivity;
 use App\Models\PostFileDownload;
@@ -261,6 +262,14 @@ class PostController extends Controller
     {
 
         $data = Ineed::iNeedRequestList($input);
+
+        return response()->json($data);
+    }
+
+    public function dashboardList(Request $input){
+        $type = $input->type;
+        $page = $input->page;
+        $data = Dashboard::list($type,$page);
 
         return response()->json($data);
     }

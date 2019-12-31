@@ -51,7 +51,7 @@
             </swiper-slide>
             <swiper-slide>
               <nuxt-link :to="`/people/`" style="color: #666;">
-                <p style="top: 0; bottom: 0; left: 0; right: 0; margin-top: 45px;">More people</p>
+                <p style="top: 0; bottom: 0; left: 0; right: 0; margin-top: 45px;">view more</p>
               </nuxt-link>
             </swiper-slide>
           </swiper>
