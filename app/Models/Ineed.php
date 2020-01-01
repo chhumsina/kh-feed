@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\In;
+use mysql_xdevapi\Exception;
 
 class Ineed extends Model
 {
@@ -12,7 +14,7 @@ class Ineed extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'post_id','user_id','status','request_status','request_date','accept_status','accept_date','desc'
+        'post_id','user_id','status','request_status','request_date','accept_status','accept_date','desc','accept_desc'
     ];
 
     public static function createIneed($input){
@@ -49,7 +51,7 @@ class Ineed extends Model
     public static function iNeedList($input){
         $post_id = $input->id;
         $sql = "
-            select i.*, u.avatar, u.name, u.id as user_id from ineed as i
+            select i.*, u.avatar, u.name, u.phone, u.id as user_id from ineed as i
             join users as u on (i.user_id=u.id and u.status='active')
             where i.post_id=$post_id
             order by i.created_at ASC
@@ -86,6 +88,42 @@ class Ineed extends Model
 
         return $data;
 
+    }
+
+    public static function createSubmitGiveTo($input){
+        try{
+            $user_id = Auth::user()->id;
+            $post_id = $input->id;
+            $desc = $input->desc;
+            $giveto = $input->giveto;
+
+            $find = Posts::where('user_id', $user_id)
+                    ->whereNull('give_status')
+                    ->where('status','active')
+                    ->where('id', $post_id)->first();
+            if($find){
+                $data['give_status'] = 'active';
+                $data['give_date'] = now();
+                $update = $find->update($data);
+
+                // update ineed
+                $_upIneed['accept_status'] = 'active';
+                $_upIneed['accept_date'] = now();
+                $_upIneed['accept_desc'] = $desc;
+                $ineed = Ineed::where('post_id', $post_id)->where('accept_status','pending')
+                    ->where('request_status','active')->where('status',1)->whereIn('user_id',$giveto)->update($_upIneed);
+
+            }else{
+                throw new \Exception('Cannot find this contributed book!');
+            }
+            $msg['status'] = true;
+        }catch (\Exception $e){
+            DB::rollBack();
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+        }
+
+        return $msg;
     }
 
 }

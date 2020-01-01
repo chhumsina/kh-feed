@@ -54,52 +54,78 @@
 
     <div v-if="showIneedLIst==true" style="margin-top: 57px;">
       <p class="text-center" style="padding: 5px; color: #000;">List of people who want this book<Br/><span style="color:#bbb">Contributor will pick up one or some of INeedors</span></p>
-      <div v-for="(item, $index) in ineedListData" :key="$index" :data-num="$index + 1" class="sina-list-item">
-        <nuxt-link :to="`/profile/${item.user_id}`">
-          <div class="item-image">
-            <div style="
-            width: 30px;
-            float: left;
-            margin-top: 7px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-            background: #ddd;
-            margin-left: -10px;
-            text-align: center;
-            margin-right: 13px;
-            ">
-              {{$index+1}}
-            </div>
-            <img
-              class="img-circle"
-              :src="item.avatar | getImgUrl('avatar','sm_avatar')"
-              alt="User Image"
-            />
-          </div>
-          <div class="item-text">
-              <p class="item-name">
-                {{item.name}}
-              </p>
-              <div class="item-desc">
-                <timeago :datetime="item.created_at" :auto-update="10"></timeago>
-              </div>
-            <div v-bind:class="item.accept_status" style="float: right; margin-top: -46px; text-align: center">
-              <p style="margin-top: 5px; margin-bottom: -8px;">{{item.accept_status}}</p>
-              <p style="font-size: 11px; color: rgb(156, 156, 156); margin-top: 9px; margin-bottom: 0;"><timeago :datetime="item.created_at" :auto-update="10"></timeago></p>
-            </div>
-          </div>
-        </nuxt-link>
 
-        <div style="margin-top: 10px; margin-left: 35px; color: #555;" class="font-13">
-          {{item.desc | truncate(35, '...')}} <span v-if="item.desc.length>40" @click="showMoreDesc(item.desc)" style="color: #2f8be0">more</span>
+      <p class="text-center" v-if="ineedListDataLoading==true"><img :src="placeholder_photo.loader"/></p>
+
+      <div  class="text-center" style="margin-top: 100px;" v-if="ineedListData.length<=0 && ineedListDataLoading==false">
+         <div v-if="dataModal.user_id==user.id">
+           <i class="fa fa-male" style="font-size: 75px; color: #ccc;" aria-hidden="true"></i>
+           <p style="margin-bottom: -5px; font-weight: bold; color: #aaa;">No any people request this contributed book yet</p>
+         </div>
+        <div v-else>
+          <i class="fa fa-male" style="font-size: 75px; color: #ccc;" aria-hidden="true"></i>
+          <p style="margin-bottom: -5px; font-weight: bold; color: #aaa;">No any people want this contributed book yet</p>
+          <small>Be the first to get a chance of having this contributed book</small>
         </div>
       </div>
 
-      <div class="create-comment" style="height: 72px; padding-top: 23px; text-align: center; font-weight: bold;">
-        <span style="background: #ddd; padding: 10px 15px; border-radius: 3px; color: black;" @click="iNeed()">
-            Yes, I want
+      <b-form-checkbox-group v-else id="checkbox-group-2" v-model="giveto" name="flavour-2">
+        <div v-for="(item, $index) in ineedListData" :key="$index" :data-num="$index + 1" class="sina-list-item">
+            <div class="item-image">
+              <div style="
+              width: 30px;
+              float: left;
+              margin-top: 7px;
+              font-size: 16px;
+              font-weight: bold;
+              color: #fff;
+              background: #ddd;
+              margin-left: -10px;
+              text-align: center;
+              margin-right: 13px;
+              ">
+                {{$index+1}}
+              </div>
+              <nuxt-link :to="`/profile/${item.user_id}`">
+              <img
+                class="img-circle"
+                :src="item.avatar | getImgUrl('avatar','sm_avatar')"
+                alt="User Image"
+              />
+              </nuxt-link>
+            </div>
+            <div class="item-text">
+                <p class="item-name">
+                  <nuxt-link :to="`/profile/${item.user_id}`">{{item.name}}</nuxt-link>
+                </p>
+                <div class="item-desc" v-if="dataModal.user_id==user.id">
+                  {{item.phone}}
+                </div>
+              <div class="item-desc" v-else>
+                {{item.phone | truncate(6, 'XXX')}}
+              </div>
+              <div v-bind:class="item.accept_status" style="float: right; margin-top: -46px; text-align: center">
+                <p style="margin-top: 5px; margin-bottom: -8px;">{{item.accept_status}}</p>
+                <p style="font-size: 11px; color: rgb(156, 156, 156); margin-top: 9px; margin-bottom: 0;"><timeago :datetime="item.created_at" :auto-update="10"></timeago></p>
+              </div>
+            </div>
+          <div style="margin-top: 10px; margin-left: 35px; color: #555;" class="font-13">
+            {{item.desc | truncate(35, '...')}} <span v-if="item.desc.length>40" @click="showMoreDesc(item.desc)" style="color: #2f8be0">more</span>
+          </div>
+          <div v-if="dataModal.user_id==user.id" style="margin-top: 10px; text-align: right; color: #555;" class="font-13">
+            Give to <b>{{item.name}}</b> &nbsp;  <b-form-checkbox :value="item.user_id"><span style="visibility: hidden">.</span></b-form-checkbox>
+          </div>
+        </div>
+      </b-form-checkbox-group>
+
+      <div v-if="dataModal.user_id==user.id" class="create-comment" style="height: 72px; padding-top: 23px; text-align: center; font-weight: bold;">
+        You selected <span style="color: green;">{{giveto.length}} person</span> to give&nbsp;
+        <span style="background: #ddd; padding: 10px 15px; border-radius: 3px; color: black;" @click="submitGiveTo()">
+           Click to confirm
         </span>
+      </div>
+      <div v-else @click="iNeed()" style="width: 125px; height: 125px; background: #0043ffa1; text-align: center; margin: 0 auto; line-height: 125px; border-radius: 125px; font-weight: bold; color: #fff5f5; box-shadow: 0 2px 3px #aaa; position: fixed; bottom: 12px; left: 0; right: 0; font-size: 20px; text-shadow: 0 1px 4px #000;">
+          Yes, I want
       </div>
 
     </div>
@@ -197,6 +223,7 @@
     export default {
         middleware: 'auth',
         props: {
+            switch_i_want: false,
             postId: null,
             page_name: null,
             i_need_btn: true
@@ -208,11 +235,15 @@
                     this.listComment(postId);
                     this.getPostDetail(postId);
                     this.ineedList();
+                    if(this.switch_i_want == true){
+                        this.showIneedLIst = true
+                    }
                 }
             }
         },
         data() {
             return {
+                giveto:[],
                 showIneedLIst: false,
                 comment: '',
                 dataModalComment: '',
@@ -226,7 +257,12 @@
                 unSavePostLoading: true,
                 deletePostLoading: true,
                 recommendPostLoading: true,
-                ineedListData: []
+                ineedListData: [],
+                ineedListDataLoading: true,
+                placeholder_photo: {
+                    i_want_banner: require('../assets/default/book-banner.jpg'),
+                    loader: require('../assets/default/loader.gif')
+                }
             }
         },
         methods: {
@@ -297,11 +333,70 @@
                 )
             },
             async ineedList() {
-                this.$axios.get('post/i-need-list/' + this.postId).then(({data}) => {
-                    if (data) {
-                        this.ineedListData = data;
-                    }
+                this.ineedListDataLoading = true;
+                  this.$axios.get('post/i-need-list/' + this.postId).then(({data}) => {
+                  if (data) {
+                      this.ineedListData = data;
+                      this.ineedListDataLoading = false
+                  }
                 })
+            },
+            submitGiveTo(){
+                if (this.giveto.length == 0) {
+                    this.$swal.fire(
+                        'Please select at last one person you will give',
+                        '',
+                        'info'
+                    )
+                } else {
+                    var _label_num = 'these';
+                    var _label_person = 'people';
+                    if(this.giveto.length == 1){
+                        var _label_num = 'this'
+                        var _label_person = 'person';
+                    }
+                    this.$swal.fire({
+                        title: 'Say something to '+_label_num+' '+this.giveto.length+' '+_label_person,
+                        input: 'textarea',
+                        inputAttributes: {
+                            autocapitalize: 'off'
+                        },
+                        showCancelButton: true,
+                        confirmButtonText: 'Submit',
+                        showLoaderOnConfirm: true,
+                        preConfirm: (desc) => {
+                            if (desc) {
+                                return this.$axios.post('post/submit-give-to', {desc: desc, id: this.postId, giveto: this.giveto})
+                                    .then(function (res) {
+                                        return res;
+                                    })
+                                    .catch(error => {
+                                        this.$swal.showValidationMessage(
+                                            `Request failed: ${error}`
+                                        )
+                                    })
+                            }
+                        },
+                        allowOutsideClick: () => !this.$swal.isLoading()
+                    }).then((result) => {
+                        if (result.value) {
+                            if (result.value.data.status == true) {
+                                this.$swal.fire(
+                                    result.value.data.msg,
+                                    'success',
+                                    'success'
+                                );
+                            } else {
+                                this.$swal.fire(
+                                    result.value.data.msg,
+                                    'error',
+                                    'error'
+                                )
+                            }
+                            window.location.href = '/dashboard';
+                        }
+                    })
+                }
             },
             iNeed() {
                 if (this.user.phone == '') {
@@ -348,7 +443,7 @@
                                     'success',
                                     'success'
                                 )
-                                this.$router.push({path: '/dashboard'})
+                                window.location.href = '/dashboard';
                             } else {
                                 this.$swal.fire(
                                     result.value.data.msg,

@@ -14,7 +14,7 @@ class Posts extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'caption', 'photo', 'status', 'user_id'
+        'caption', 'photo', 'status', 'user_id','give_status','give_date'
     ];
 
     public static function listPost($input)

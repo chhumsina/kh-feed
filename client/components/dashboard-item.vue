@@ -24,13 +24,13 @@
       />
       <div class="total-book">
         <ul>
-          <li :class="book_filter=='iwant' ? 'menu-active' : ''" @click="dashboardList('iwant','first')">Yes, I want<br/><span>{{totalBook.total_want}} book</span>
-            <p style="margin: 0 auto; font-size: 12px; color: orange; position: absolute; left: 0; right: 0; bottom: 7px;">{{totalBook.total_want_other}} wanted</p></li>
-          <li :class="book_filter=='contributes' ? 'menu-active' : ''"  @click="dashboardList('contributes','first')">Contributes<br/><span>{{totalBook.total_contributes}}  book</span>
+          <li :class="book_filter=='iwant' ? 'menu-active' : ''" @click="dashboardList('iwant','first')">Yes, I want<br/><span>{{totalBook.total_want}} pending</span>
+            <p style="margin: 0 auto; font-size: 12px; color: orange; position: absolute; left: 0; right: 0; bottom: 7px;">{{totalBook.total_want_other}} wants now</p></li>
+          <li :class="book_filter=='contributes' ? 'menu-active' : ''"  @click="dashboardList('contributes','first')">Contributes<br/><span>{{totalBook.total_contributes}}  open</span>
             <p style="margin: 0 auto; font-size: 12px; color: orange; position: absolute; left: 0; right: 0; bottom: 7px;">{{totalBook.total_want_now}} wants now</p></li>
-          <li :class="book_filter=='giving' ? 'menu-active' : ''"  @click="dashboardList('giving','first')">Total Giving<br/><span>{{totalBook.total_giving}}  book</span>
+          <li :class="book_filter=='giving' ? 'menu-active' : ''"  @click="dashboardList('giving','first')">Total Giving<br/><span>{{totalBook.total_giving}}  closed</span>
             <p style="margin: 0 auto; font-size: 12px; color: #0d863d; position: absolute; left: 0; right: 0; bottom: 7px;">{{totalBook.total_want_giving}} wanted</p></li>
-          <li :class="book_filter=='getting' ? 'menu-active' : ''"  @click="dashboardList('getting','first')">Total Getting<br/><span>{{totalBook.total_getting}}  book</span>
+          <li :class="book_filter=='getting' ? 'menu-active' : ''"  @click="dashboardList('getting','first')">Total Getting<br/><span>{{totalBook.total_getting}}  closed</span>
             <p style="margin: 0 auto; font-size: 12px; color: #0d863d; position: absolute; left: 0; right: 0; bottom: 7px;">{{totalBook.total_want_getting}} wanted</p></li>
         </ul>
       </div>
@@ -40,7 +40,7 @@
 
     <b-modal class="fullscreen" id="post-modal" hide-title="true" no-enforce-focus>
       <post-modal
-        :postId="postId" :page_name="page_name"
+        :postId="postId" :page_name="page_name" :switch_i_want="true"
       />
     </b-modal>
 
@@ -89,16 +89,15 @@
     </div>
 
     <div v-else-if="book_filter=='contributes'">
-      <div v-for="(item, $index) in bookItem" :key="$index" :data-num="$index + 1" class="box box-widget">
+      <div v-for="(item, $index) in bookItem" :key="$index" :data-num="$index + 1" class="box box-widget" @click="showPostModal(item.post_id)">
         <div class="box-header with-border">
           <div class="user-block">
             <img
               class="img-circle"
               :src="item.photo | getImgUrl('photo','sm_post')"
               alt="User Image"
-              @click="showPostModal(item.post_id)"
             />
-            <span class="username" @click="showPostModal(item.post_id)">{{item.caption | truncate(35, '...')}}</span>
+            <span class="username">{{item.caption | truncate(35, '...')}}</span>
             <span class="description">
               <timeago :datetime="item.post_date" :auto-update="10"></timeago>
             </span>
@@ -190,7 +189,11 @@
                     })
             },
             async dashboardList(type, loading) {
+                if(this.bookItemLoading == false){
+                    return false
+                }
                 this.bookItemLoading = false;
+
                 if(loading == 'first'){
                     this.page = 1;
                     this.bookItem = [];

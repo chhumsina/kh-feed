@@ -233,12 +233,36 @@ class PostController extends Controller
             $create = Ineed::createIneed($input);
 
             if(!$create['status']){
-                throw new \Exception('Could not make INeed, Please try again! '.$create['msg']);
+                throw new \Exception('Could not make I want, Please try again! '.$create['msg']);
             }
 
             DB::commit();
 
             $msg['msg'] = 'Submit successfully.';
+            $msg['status'] = true;
+            return response()->json($msg);
+
+        }catch (\Exception $e){
+            DB::rollBack();
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+            return response()->json($msg);
+        }
+    }
+
+    public function submitGiveTo(Request $input){
+        try{
+            DB::beginTransaction();
+
+            $create = Ineed::createSubmitGiveTo($input);
+
+            if(!$create['status']){
+                throw new \Exception('Could not give to, Please try again! '.$create['msg']);
+            }
+
+            DB::commit();
+
+            $msg['msg'] = 'Submit successfully, This contributed book has been closed.';
             $msg['status'] = true;
             return response()->json($msg);
 
