@@ -115,8 +115,8 @@ class Dashboard extends Model
                 where 
                 p.user_id = $user_id
                 and p.give_status is null
-                group by i.user_id,i.post_id , p.id , p.caption, p.photo, p.created_at 
-                order by i.created_at desc
+                group by p.id , p.caption, p.photo, p.created_at 
+                order by p.id desc
                 limit $page,$take
             ";
         $data = DB::select($sql);
