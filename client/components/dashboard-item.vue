@@ -92,26 +92,21 @@
       <div v-for="(item, $index) in bookItem" :key="$index" :data-num="$index + 1" class="box box-widget">
         <div class="box-header with-border">
           <div class="user-block">
-            <img
+            <img @click="showPostModal(item.post_id)"
               class="img-circle"
               :src="item.photo | getImgUrl('photo','sm_post')"
               alt="User Image"
-              @click="showPostModal(item.post_id)"
             />
             <span class="username" @click="showPostModal(item.post_id)">{{item.caption | truncate(35, '...')}}</span>
             <span class="description">
               <timeago :datetime="item.post_date" :auto-update="10"></timeago>
             </span>
-            <div v-bind:class="item.accept_status" style="float: right; margin-top: -46px; text-align: right">
-              <p style="margin-top: 3px; margin-bottom: -4px;">{{item.accept_status}}</p>
+            <div class="open" style="float: right; margin-top: -46px; text-align: right">
+              <p style="margin-top: 3px; margin-bottom: -4px;">Open</p>
               <p style="font-size: 11px; color: rgb(156, 156, 156); margin-top: 9px; margin-bottom: 0;">
-                <timeago :datetime="item.created_at" :auto-update="10"></timeago>
+                <span class="font-weight-bold" style="color: orange">{{item.num_want}}</span> people wanted
               </p>
             </div>
-          </div>
-          <div style="margin-top: 10px;" class="font-13">
-            {{item.desc | truncate(40, '...')}} <span v-if="item.desc.length>40" @click="showMoreDesc(item.desc)"
-                                                      style="color: #2f8be0">more</span>
           </div>
         </div>
       </div>
