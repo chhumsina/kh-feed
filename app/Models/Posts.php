@@ -279,10 +279,9 @@ class Posts extends Model
     {
 
         $sql = "
-               select p.created_at, p.photo, p.caption, p.status, p.id, u.id as user_id, u.avatar, u.name from posts as p
+               select p.created_at, p.photo, p.caption, p.give_status, p.status, p.id, u.id as user_id, u.avatar, u.name from posts as p
                 join users as u on u.id=p.user_id 
                 where p.id = $id
-                group by  p.id, p.photo, p.caption, p.status, u.id, u.avatar, u.name, p.created_at
                 order by p.id desc
                 limit 1
             ";

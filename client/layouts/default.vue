@@ -657,6 +657,9 @@
   .open{
     color: orange;
   }
+  .closed{
+    color: green;
+  }
 
   .font-13{
     font-size: 13px !important;

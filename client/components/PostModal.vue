@@ -36,8 +36,13 @@
         </div>
       </div>
       <div v-else>
-        <div v-if="showIneedLIst==false" @click="showIneedLIst=true" class="btn-save-post" style="color: orange;">
-          <i class="fa fa-smile-o" aria-hidden="true"></i> You want this book?
+        <div v-if="showIneedLIst==false"  class="btn-save-post">
+          <div @click="showIneedLIst=true" v-if="dataModal.give_status=='active'" style="color: green;">
+            <i class="fa fa-smile-o" aria-hidden="true"></i> View who gets this book
+          </div>
+          <div @click="showIneedLIst=true" v-else style="color: orange;">
+            <i class="fa fa-smile-o" aria-hidden="true"></i> You want this book?
+          </div>
         </div>
         <div v-else @click="showIneedLIst=false" class="btn-save-post">
           <i class="fa fa-picture-o" aria-hidden="true"></i> Show Post
@@ -53,9 +58,9 @@
     </div>
 
     <div v-if="showIneedLIst==true" style="margin-top: 57px;">
-      <p class="text-center" style="padding: 5px; color: #000;">List of people who want this book<Br/><span style="color:#bbb">Contributor will pick up one or some of INeedors</span></p>
+      <p v-if="ineedListDataLoading==false" class="text-center" style="padding: 5px; color: #000;">List of people who want this book<Br/><span style="color:#bbb">Contributor will pick up one or some of INeedors</span></p>
 
-      <p class="text-center" v-if="ineedListDataLoading==true"><img :src="placeholder_photo.loader"/></p>
+      <p class="text-center" v-if="ineedListDataLoading==true"><img :src="loader"/></p>
 
       <div  class="text-center" style="margin-top: 100px;" v-if="ineedListData.length<=0 && ineedListDataLoading==false">
          <div v-if="dataModal.user_id==user.id">
@@ -104,30 +109,51 @@
               <div class="item-desc" v-else>
                 {{item.phone | truncate(6, 'XXX')}}
               </div>
-              <div v-bind:class="item.accept_status" style="float: right; margin-top: -46px; text-align: center">
-                <p style="margin-top: 5px; margin-bottom: -8px;">{{item.accept_status}}</p>
-                <p style="font-size: 11px; color: rgb(156, 156, 156); margin-top: 9px; margin-bottom: 0;"><timeago :datetime="item.created_at" :auto-update="10"></timeago></p>
+              <div v-bind:class="item.accept_status" style="float: right; margin-top: -46px; text-align: right">
+                <div v-if="item.accept_status=='active'">
+                  <p style="margin-top: 5px; margin-bottom: -8px;color:green;">picked</p>
+                  <p style="font-size: 11px; color: rgb(156, 156, 156); margin-top: 9px; margin-bottom: 0;"><timeago :datetime="item.accept_date" :auto-update="10"></timeago></p>
+                </div>
+                <div v-else>
+                  <p style="margin-top: 5px; margin-bottom: -8px;">{{item.accept_status}}</p>
+                  <p style="font-size: 11px; color: rgb(156, 156, 156); margin-top: 9px; margin-bottom: 0;"><timeago :datetime="item.created_at" :auto-update="10"></timeago></p>
+                </div>
               </div>
             </div>
           <div style="margin-top: 10px; margin-left: 35px; color: #555;" class="font-13">
-            {{item.desc | truncate(35, '...')}} <span v-if="item.desc.length>40" @click="showMoreDesc(item.desc)" style="color: #2f8be0">more</span>
+            {{item.desc | truncate(20, '...')}} <span v-if="item.desc.length>40" @click="showMoreDesc(item.desc)" style="color: #2f8be0">more</span>
           </div>
-          <div v-if="dataModal.user_id==user.id" style="margin-top: 10px; text-align: right; color: #555;" class="font-13">
-            Give to <b>{{item.name}}</b> &nbsp;  <b-form-checkbox :value="item.user_id"><span style="visibility: hidden">.</span></b-form-checkbox>
+          <div v-if="dataModal.give_status=='active'">
+            <div style="margin-top: 10px; text-align: right; color: #555;" class="font-13">
+              <div style="text-align: right; float: right; margin-top: -35px; padding: 4px 8px; color: green;" v-if="item.accept_status=='active'">
+                <i class="fa fa-check" aria-hidden="true"></i> picked <b>{{item.name|truncate(10, '...')}}</b>
+              </div>
+            </div>
+          </div>
+          <div v-else>
+            <div v-if="dataModal.user_id==user.id" style="margin-top: 10px; text-align: right; color: #555;" class="font-13">
+                pick <b>{{item.name|truncate(10, '...')}}</b> &nbsp;  <b-form-checkbox :value="item.user_id"><span style="visibility: hidden">.</span></b-form-checkbox>
+            </div>
           </div>
         </div>
       </b-form-checkbox-group>
 
-      <div v-if="dataModal.user_id==user.id" class="create-comment" style="height: 72px; padding-top: 23px; text-align: center; font-weight: bold;">
-        You selected <span style="color: green;">{{giveto.length}} person</span> to give&nbsp;
-        <span style="background: #ddd; padding: 10px 15px; border-radius: 3px; color: black;" @click="submitGiveTo()">
-           Click to confirm
-        </span>
-      </div>
-      <div v-else @click="iNeed()" style="width: 125px; height: 125px; background: #0043ffa1; text-align: center; margin: 0 auto; line-height: 125px; border-radius: 125px; font-weight: bold; color: #fff5f5; box-shadow: 0 2px 3px #aaa; position: fixed; bottom: 12px; left: 0; right: 0; font-size: 20px; text-shadow: 0 1px 4px #000;">
-          Yes, I want
-      </div>
+      <div v-if="ineedListDataLoading==false">
+        <div v-if="dataModal.give_status=='active'">
 
+        </div>
+        <div v-else>
+          <div v-if="dataModal.user_id==user.id" class="create-comment" style="height: 72px; padding-top: 23px; text-align: center; font-weight: bold;">
+            You selected <span style="color: green;">{{giveto.length}} person</span> to give&nbsp;
+            <span style="background: #ddd; padding: 10px 15px; border-radius: 3px; color: black;" @click="submitGiveTo()">
+             Click to confirm
+          </span>
+          </div>
+          <div v-else @click="iNeed(dataModal.give_status)" style="width: 125px; height: 125px; background: #4c94ff; text-align: center; margin: 0 auto; line-height: 125px; border-radius: 125px; font-weight: bold; color: #fff5f5; box-shadow: 0 2px 3px #aaa; position: fixed; bottom: 12px; left: 0; right: 0; font-size: 20px; text-shadow: 0 1px 4px #000;">
+            Yes, I want
+          </div>
+        </div>
+      </div>
     </div>
     <div v-else>
       <div class="post-modal post-modal-content">
@@ -171,7 +197,7 @@
                     <img class="img-circle img-sm" :src="item.avatar  | getImgUrl('avatar','sm_avatar')">
                     <div class="comment-text">
                       <small class="username">
-                        {{item.name}}
+                        {{item.name|truncate(10, '...')}}
                         <span class="text-muted pull-right">
             <timeago :datetime="item.created_at" :auto-update="10"></timeago>
           </span>
@@ -259,10 +285,8 @@
                 recommendPostLoading: true,
                 ineedListData: [],
                 ineedListDataLoading: true,
-                placeholder_photo: {
-                    i_want_banner: require('../assets/default/book-banner.jpg'),
-                    loader: require('../assets/default/loader.gif')
-                }
+                i_want_banner: require('../assets/default/book-banner.jpg'),
+                loader: require('../assets/default/loader.gif'),
             }
         },
         methods: {
@@ -398,61 +422,69 @@
                     })
                 }
             },
-            iNeed() {
-                if (this.user.phone == '') {
-                    this.$swal.fire({
-                        title: '"To Easy to contact"  \n Please update Phone number \n  Then come back to make it again.',
-                        text: "Account -> Overview -> Phone",
-                        icon: 'warning',
-                        showCancelButton: false,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Go to Account'
-                    }).then((result) => {
-                        this.$router.push({path: '/account'})
-                    })
-                } else {
-                    this.$swal.fire({
-                        title: 'Say something to Contributor \n "You really want this book"',
-                        input: 'textarea',
-                        inputAttributes: {
-                            autocapitalize: 'off'
-                        },
-                        showCancelButton: true,
-                        confirmButtonText: 'Submit',
-                        showLoaderOnConfirm: true,
-                        preConfirm: (desc) => {
-                            if (desc) {
-                                return this.$axios.post('post/i-need', {desc: desc, id: this.postId})
-                                    .then(function (res) {
-                                        return res;
-                                    })
-                                    .catch(error => {
-                                        this.$swal.showValidationMessage(
-                                            `Request failed: ${error}`
-                                        )
-                                    })
+            iNeed(status) {
+                if(status=='active'){
+                    this.$swal.fire(
+                        'Sorry, this contributed book has been closed!',
+                        '',
+                        'info'
+                    )
+                }else{
+                    if (this.user.phone == '') {
+                        this.$swal.fire({
+                            title: '"To Easy to contact"  \n Please update Phone number \n  Then come back to make it again.',
+                            text: "Account -> Overview -> Phone",
+                            icon: 'warning',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Go to Account'
+                        }).then((result) => {
+                            this.$router.push({path: '/account'})
+                        })
+                    } else {
+                        this.$swal.fire({
+                            title: 'Say something to Contributor \n "You really want this book"',
+                            input: 'textarea',
+                            inputAttributes: {
+                                autocapitalize: 'off'
+                            },
+                            showCancelButton: true,
+                            confirmButtonText: 'Submit',
+                            showLoaderOnConfirm: true,
+                            preConfirm: (desc) => {
+                                if (desc) {
+                                    return this.$axios.post('post/i-need', {desc: desc, id: this.postId})
+                                        .then(function (res) {
+                                            return res;
+                                        })
+                                        .catch(error => {
+                                            this.$swal.showValidationMessage(
+                                                `Request failed: ${error}`
+                                            )
+                                        })
+                                }
+                            },
+                            allowOutsideClick: () => !this.$swal.isLoading()
+                        }).then((result) => {
+                            if (result.value) {
+                                if (result.value.data.status == true) {
+                                    this.$swal.fire(
+                                        result.value.data.msg,
+                                        'success',
+                                        'success'
+                                    )
+                                    window.location.href = '/dashboard';
+                                } else {
+                                    this.$swal.fire(
+                                        result.value.data.msg,
+                                        'error',
+                                        'error'
+                                    )
+                                }
                             }
-                        },
-                        allowOutsideClick: () => !this.$swal.isLoading()
-                    }).then((result) => {
-                        if (result.value) {
-                            if (result.value.data.status == true) {
-                                this.$swal.fire(
-                                    result.value.data.msg,
-                                    'success',
-                                    'success'
-                                )
-                                window.location.href = '/dashboard';
-                            } else {
-                                this.$swal.fire(
-                                    result.value.data.msg,
-                                    'error',
-                                    'error'
-                                )
-                            }
-                        }
-                    })
+                        })
+                    }
                 }
 
             },

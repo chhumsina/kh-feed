@@ -20,7 +20,9 @@
 
           <div class="text-center">
             <a style="background: #fff; color: #806f6f; padding: 10px; border-radius: 5px; border: 1px solid #aaa;" @click="socialLogin('google')" class="social-login-btn google">
-              Login via <b style="text-shadow: 0px 1px 0px #ddd;color: #4285F4">Google<span v-if="loginloading==true">...</span></b>
+              Login via <b style="text-shadow: 0px 1px 0px #ddd;color: #4285F4">Google <span v-if="loginloading==true">
+              <img :src="loader"/>
+            </span></b>
             </a>
           </div>
 <!--          <a class="term" href="#">Terms & Conditions</a>-->
@@ -35,7 +37,8 @@
         data() {
             return {
                 error: this.$route.query.error,
-                loginloading: false
+                loginloading: false,
+                loader: require('../assets/default/loader.gif'),
             }
         },
         methods: {

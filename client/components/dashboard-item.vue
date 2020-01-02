@@ -68,7 +68,7 @@
             <span class="description">
               <timeago :datetime="item.post_date" :auto-update="10"></timeago>
             </span>
-            <div v-bind:class="item.accept_status" style="float: right; margin-top: -46px; text-align: center">
+            <div v-bind:class="item.accept_status" style="float: right; margin-top: -46px; text-align: right">
               <p style="margin-top: 3px; margin-bottom: -4px;">{{item.accept_status}}</p>
               <p style="font-size: 11px; color: rgb(156, 156, 156); margin-top: 9px; margin-bottom: 0;">
                 <timeago :datetime="item.created_at" :auto-update="10"></timeago>
@@ -89,6 +89,34 @@
     </div>
 
     <div v-else-if="book_filter=='contributes'">
+      <div v-for="(item, $index) in bookItem" :key="$index" :data-num="$index + 1" class="box box-widget">
+        <div class="box-header with-border">
+          <div class="user-block">
+            <img @click="showPostModal(item.post_id)"
+              class="img-circle"
+              :src="item.photo | getImgUrl('photo','sm_post')"
+              alt="User Image"
+            />
+            <span class="username" @click="showPostModal(item.post_id)">{{item.caption | truncate(35, '...')}}</span>
+            <span class="description">
+              <timeago :datetime="item.post_date" :auto-update="10"></timeago>
+            </span>
+            <div class="open" style="float: right; margin-top: -46px; text-align: right">
+              <p style="margin-top: 3px; margin-bottom: -4px;">Open</p>
+              <p style="font-size: 11px; color: rgb(156, 156, 156); margin-top: 9px; margin-bottom: 0;">
+                <span class="font-weight-bold" style="color: orange">{{item.num_want}}</span> people wanted
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p v-if="bookItemLoading==true" class="btn_load_more" @click="moreDashboardList()">{{load_more_text}}</p>
+      <p v-else class="btn_load_more">
+        <img :src="placeholder_photo.loader"/>
+      </p>
+    </div>
+
+    <div v-else-if="book_filter=='giving'">
       <div v-for="(item, $index) in bookItem" :key="$index" :data-num="$index + 1" class="box box-widget" @click="showPostModal(item.post_id)">
         <div class="box-header with-border">
           <div class="user-block">
@@ -101,10 +129,10 @@
             <span class="description">
               <timeago :datetime="item.post_date" :auto-update="10"></timeago>
             </span>
-            <div class="open" style="float: right; margin-top: -46px; text-align: center">
-              <p style="margin-top: 3px; margin-bottom: -4px;">Open</p>
+            <div class="closed" style="float: right; margin-top: -46px; text-align: right">
+              <p style="margin-top: 3px; margin-bottom: -4px;">Closed</p>
               <p style="font-size: 11px; color: rgb(156, 156, 156); margin-top: 9px; margin-bottom: 0;">
-                <timeago :datetime="item.created_at" :auto-update="10"></timeago>
+                You gave <span class="font-weight-bold" style="color: green;">{{item.num_active}}</span> among of <span class="font-weight-bold" style="color: orange">{{item.num_want}}</span> people wanted
               </p>
             </div>
           </div>
@@ -114,6 +142,44 @@
       <p v-else class="btn_load_more">
         <img :src="placeholder_photo.loader"/>
       </p>
+    </div>
+
+    <div v-else-if="book_filter=='getting'">
+      <div v-for="(item, $index) in bookItem" :key="$index" :data-num="$index + 1" class="box box-widget">
+        <div class="box-header with-border">
+          <div class="user-block">
+            <img
+              class="img-circle"
+              :src="item.photo | getImgUrl('photo','sm_post')"
+              alt="User Image"
+              @click="showPostModal(item.post_id)"
+            />
+            <span class="username" @click="showPostModal(item.post_id)">{{item.caption | truncate(35, '...')}}</span>
+            <span class="description">
+              <timeago :datetime="item.post_date" :auto-update="10"></timeago>
+            </span>
+            <div class="closed" style="float: right; margin-top: -46px; text-align: right">
+              <p style="margin-top: 3px; margin-bottom: -4px;">Closed</p>
+              <p style="font-size: 11px; color: rgb(156, 156, 156); margin-top: 9px; margin-bottom: 0;">
+                <timeago :datetime="item.created_at" :auto-update="10"></timeago>
+              </p>
+            </div>
+          </div>
+          <div style="margin-top: 10px;" class="font-13">
+            {{item.desc | truncate(40, '...')}} <span v-if="item.desc.length>40" @click="showMoreDesc(item.desc)"
+                                                      style="color: #2f8be0">more</span>
+          </div>
+          <div style="margin-top: 10px;" class="font-13">
+           Contributor said: {{item.accept_desc | truncate(40, '...')}} <span v-if="item.accept_desc.length>40" @click="showMoreDesc(item.accept_desc)"
+                                                      style="color: #2f8be0">more</span>
+          </div>
+        </div>
+      </div>
+      <p v-if="bookItemLoading==true" class="btn_load_more" @click="moreDashboardList()">{{load_more_text}}</p>
+      <p v-else class="btn_load_more">
+        <img :src="placeholder_photo.loader"/>
+      </p>
+
     </div>
 
     <br/>
