@@ -109,7 +109,7 @@ class Dashboard extends Model
         $page = ($page - 1) * $take;
 
         $sql = "
-               select count(p.id) as num_want,
+               select count(i.id) as num_want,
                  p.id as post_id, p.caption, p.photo, p.created_at as post_date from posts as p 
                 left join ineed as i on (i.post_id=p.id and i.status='active' and i.user_id!=$user_id)
                 where 
