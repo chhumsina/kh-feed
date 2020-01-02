@@ -88,7 +88,7 @@
       </div>
 
       <div class="image-preview" v-if="photo==null">
-        <img class="preview" :src="placeholder_photo.photo">
+        <img class="preview" :src="image.photo">
         <div @click="$refs.photo.click()"
              style="position: absolute; right: 1px; bottom: 3px; background: rgba(255,255,255, .6); padding: 3px 5px; font-weight: bold; font-size: 13px; padding-right: 9px; padding-bottom: 7px;">
           Browse <i class="fa fa-picture-o" aria-hidden="true"></i>
@@ -107,7 +107,7 @@
 
       <div class="form-group btn-post">
         <button v-if="createPostLoading==true" type="submit" class="btn btn-secondary btn-block">Submit</button>
-        <button v-else type="button" class="btn btn-secondary btn-block">Submit...</button>
+        <button v-else type="button" class="btn btn-secondary btn-block">Submit <img :src="image.loader"/></button>
       </div>
     </form>
   </div>
@@ -126,7 +126,8 @@
                 caption: '',
                 photo: null,
                 createPostLoading: true,
-                placeholder_photo: {
+                image: {
+                    loader: require('../assets/default/loader.gif'),
                     photo: require('../assets/default/placeholder-300x200.png')
                 }
             }

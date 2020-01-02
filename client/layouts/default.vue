@@ -202,7 +202,7 @@
     right: 10px;
     position: absolute;
     top: 26px;
-    font-size: 17px;
+    font-size: 14px;
   }
 
   .btn-delete-post {
@@ -644,8 +644,8 @@
   }
 
   .sina-list-item .item-desc {
-    margin-top: -19px;
-    font-size: 13px;
+    margin-top: -15px;
+    font-size: 11px;
     color: rgb(156, 156, 156);
   }
   .sina-list-item .item-desc time {

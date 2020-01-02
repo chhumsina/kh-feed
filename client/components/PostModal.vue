@@ -111,7 +111,7 @@
               </div>
               <div v-bind:class="item.accept_status" style="float: right; margin-top: -46px; text-align: right">
                 <div v-if="item.accept_status=='active'">
-                  <p style="margin-top: 5px; margin-bottom: -8px;color:green;">picked</p>
+                  <p style="margin-top: 9px; margin-bottom: -8px;color:green;">picked</p>
                   <p style="font-size: 11px; color: rgb(156, 156, 156); margin-top: 9px; margin-bottom: 0;"><timeago :datetime="item.accept_date" :auto-update="10"></timeago></p>
                 </div>
                 <div v-else>
@@ -143,7 +143,7 @@
 
         </div>
         <div v-else>
-          <div v-if="dataModal.user_id==user.id" class="create-comment" style="height: 72px; padding-top: 23px; text-align: center; font-weight: bold;">
+          <div v-if="dataModal.user_id==user.id" class="create-comment" style="height: 72px; padding-top: 23px; text-align: center;">
             You selected <span style="color: green;">{{giveto.length}} person</span> to give&nbsp;
             <span style="background: #ddd; padding: 10px 15px; border-radius: 3px; color: black;" @click="submitGiveTo()">
              Click to confirm

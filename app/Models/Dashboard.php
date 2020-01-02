@@ -111,7 +111,7 @@ class Dashboard extends Model
         $sql = "
                select count(i.id) as num_want,
                  p.id as post_id, p.caption, p.photo, p.created_at as post_date from posts as p 
-                left join ineed as i on (i.post_id=p.id and i.status='active' and i.user_id!=$user_id)
+                left join ineed as i on (i.post_id=p.id and i.status=1 and i.user_id!=$user_id and i.accept_status='pending')
                 where 
                 p.user_id = $user_id
                 and p.give_status is null
