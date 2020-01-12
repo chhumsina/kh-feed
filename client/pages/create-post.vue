@@ -3,7 +3,8 @@
     <div style="float: left;" @click="$router.go(-1)">
       <i class="fa fa-arrow-left" aria-hidden="true"></i>
     </div>
-    <h4 class="text-center header-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Contribute my book </h4>
+    <h4 class="text-center header-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
+    បរិច្ចាគសៀវភៅ </h4>
     <div v-if="user.status == 'pending'">
       <b-alert show variant="warning">
         <h4 class="alert-heading"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Postponement </h4>
@@ -80,7 +81,7 @@
         <img class="preview" :src="photo">
         <div @click="$refs.photo.click()"
              style="position: absolute; right: 1px; bottom: 3px; background: rgba(255,255,255, .6); padding: 3px 5px; font-weight: bold; font-size: 13px; padding-right: 9px; padding-bottom: 7px;">
-          Change <i class="fa fa-picture-o" aria-hidden="true"></i>
+          ប្តូររូបភាព <i class="fa fa-picture-o" aria-hidden="true"></i>
         </div>
         <input accept="image/x-png,image/jpeg" ref="photo" style="width: 1px; opacity: 0; margin-top: -29px; position: absolute; margin: 0 auto; left: 0; bottom: 0;"
                @change="addPhoto('photo', $event)" type="file" name="photo" required
@@ -91,7 +92,7 @@
         <img class="preview" :src="image.photo">
         <div @click="$refs.photo.click()"
              style="position: absolute; right: 1px; bottom: 3px; background: rgba(255,255,255, .6); padding: 3px 5px; font-weight: bold; font-size: 13px; padding-right: 9px; padding-bottom: 7px;">
-          Browse <i class="fa fa-picture-o" aria-hidden="true"></i>
+          ដាក់រូបភាព <i class="fa fa-picture-o" aria-hidden="true"></i>
         </div>
 
         <input accept="image/x-png,image/jpeg" ref="photo" style="width: 1px; opacity: 0; margin-top: -29px; position: absolute; margin: 0 auto; left: 0; bottom: 0;"
@@ -102,12 +103,12 @@
 
       <div class="form-group">
         <textarea v-model="caption" class="form-control" style="height: 35vh;" name="caption" required
-                  placeholder="Enter Caption"/>
+                  placeholder="ពណ៍រនាអំពីការបរិច្ចាគឬសៀវភៅ..."/>
       </div>
 
       <div class="form-group btn-post">
-        <button v-if="createPostLoading==true" type="submit" class="btn btn-secondary btn-block">Submit</button>
-        <button v-else type="button" class="btn btn-secondary btn-block">Submit <img :src="image.loader"/></button>
+        <button v-if="createPostLoading==true" type="submit" class="btn btn-secondary btn-block">បញ្ចូន</button>
+        <button v-else type="button" class="btn btn-secondary btn-block">បញ្ចូន...</button>
       </div>
     </form>
   </div>

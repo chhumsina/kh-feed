@@ -8,7 +8,7 @@
           <input
             type="text"
             class="form-control input-box"
-            placeholder="Search People"
+            placeholder="ស្វែងរក អ្នកបរិច្ចាគ"
             v-on:keyup.enter="searchFeed" v-model="search"
           />
         </div>

@@ -291,10 +291,10 @@
     position: relative;
     border-radius: 2px;
     background: #ffffff;
-    border-top: 1px solid #dcdcdc;
+    border-top: 1px solid #f7f7f7;
     margin-bottom: 10px;
     width: 100%;
-    border-bottom: 1px solid #dcdcdc;
+    border-bottom: 1px solid #f7f7f7;
   }
 
   .c_post .box-header.with-border {

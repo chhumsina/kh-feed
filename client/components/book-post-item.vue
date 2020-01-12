@@ -8,7 +8,7 @@
           <input
             type="text"
             class="form-control input-box"
-            placeholder="Search Book"
+            placeholder="ស្វែងរក សៀវភៅ"
             v-on:keyup.enter="searchFeed" v-model="search"
           />
         </div>
@@ -17,7 +17,7 @@
 
     <div class="container c_post">
 
-      <div class="book-announce" v-if="show_shop_annoucement==true">
+      <div class="book-announce" v-if="show_shop_annoucement==true && user.level==10"> 
         <div v-if="getShopLoading==true">
           Loading...
         </div>
@@ -63,7 +63,7 @@
         />
       </b-modal>
 
-      <hr>
+      <!-- <hr> -->
       <ul class="list">
         <li v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1"  @click="showPostModal(item.id)">
           <div class="thumbnail">

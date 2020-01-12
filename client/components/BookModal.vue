@@ -130,7 +130,7 @@
 <style scoped>
   .box-modal-desc{
     margin-top: 20px;
-    background: #eee;
+    background: #f9f9f9;
     margin-left: -10px;
     margin-right: -10px;
     padding: 10px;

@@ -9,7 +9,7 @@
           <input
             type="text"
             class="form-control input-box"
-            placeholder="Search Feed"
+            placeholder="ស្វែងរក សៀវភៅបរិច្ចាគ"
             v-on:keyup.enter="searchFeed" v-model="search"
           />
         </div>
@@ -28,7 +28,7 @@
           <div class="img-push">
             <div style="padding-top: 8px;border-radius: 25px !important;background: #fafafa;"
                  class="form-control input-sm input-box">
-             I want to contribute my book...
+             ខ្ញុំចង់បរិច្ចាគសៀវភៅ...
             </div>
           </div>
         </div>
@@ -36,7 +36,7 @@
 
       <div v-if="userTop.length>1 && this.$route.name == 'feed'">
         <h6 style="padding: 15px; padding-bottom: 10px; padding-top: 10px; color: #555;" class="alert-heading"><i
-          class="fa fa-users" aria-hidden="true"></i> Most contributed people </h6>
+          class="fa fa-users" aria-hidden="true"></i> អ្នកបរិច្ចាគសៀវភៅច្រើនបំផុត</h6>
         <div class="slide-profile">
           <swiper :options="swiperOption" :data="userTop">
             <swiper-slide v-for="(item, $index) in userTop" :key="$index">
@@ -51,7 +51,7 @@
             </swiper-slide>
             <swiper-slide>
               <nuxt-link :to="`/people/`" style="color: #666;">
-                <p style="top: 0; bottom: 0; left: 0; right: 0; margin-top: 45px;">view more</p>
+                <p style="top: 0; bottom: 0; left: 0; right: 0; margin-top: 45px;">អ្នកផ្សេងទៀត...</p>
               </nuxt-link>
             </swiper-slide>
           </swiper>
@@ -65,7 +65,7 @@
       </b-modal>
 
       <h6 v-if="feeds.length>0 && this.$route.name == 'feed'" style="padding: 15px; padding-bottom: 10px; padding-top: 10px; color: #555;" class="alert-heading"><i
-        class="fa fa-feed" aria-hidden="true"></i> Recent contributions</h6>
+        class="fa fa-feed" aria-hidden="true"></i> សៀវភៅដែលកំពុងបរិច្ចាគ</h6>
 
 
       <ul class="media-list">

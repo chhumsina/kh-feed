@@ -24,9 +24,9 @@
       />
       <div class="total-book">
         <ul>
-          <li :class="book_filter=='contributes' ? 'menu-active' : ''" @click="dashboardList('contributes','first')">
+          <!-- <li :class="book_filter=='contributes' ? 'menu-active' : ''" @click="dashboardList('contributes','first')">
            កម្មង់សៀវភៅ<br/><span>{{totalBook.total_contributes}} ក្បាល</span>
-            </li>
+            </li> -->
           <li :class="book_filter=='iwant' ? 'menu-active' : ''" @click="dashboardList('iwant','first')">ខ្ញុំចង់បាន<br/><span>{{totalBook.total_want}} ក្បាល</span>
            </li>
           <li :class="book_filter=='giving' ? 'menu-active' : ''" @click="dashboardList('giving','first')">
@@ -47,18 +47,14 @@
         />
       </b-modal>
 
-      <p v-if="book_filter=='iwant'" class="text-center" style="padding: 5px; color:#000;padding-bottom: 0;">List of
-        <span class="font-weight-bold">Yes, I want</span> books
-        been wanting</p>
-      <p v-else-if="book_filter=='contributes'" class="text-center" style="padding: 5px; color:#000;padding-bottom: 0;">
-        List of <span class="font-weight-bold">Contributes</span> books
-        for wanted people</p>
-      <p v-else-if="book_filter=='giving'" class="text-center" style="padding: 5px; color:#000;padding-bottom: 0;">List
-        of <span class="font-weight-bold">Total Giving</span> books
-        that had given</p>
-      <p v-else="book_filter=='getting'" class="text-center" style="padding: 5px; color:#000;padding-bottom: 0;">List of
-        <span class="font-weight-bold">Total Getting</span> books
-        that had gotten</p>
+      <p v-if="book_filter=='iwant'" class="text-center" style="padding: 5px; color:#000;padding-bottom: 0;">បញ្ចីនៃសៀវភៅបរិច្ចាគដែល​ <span class="font-weight-bold">ខ្ញុំចង់បាន</span></p>
+      <!-- <p v-else-if="book_filter=='contributes'" class="text-center" style="padding: 5px; color:#000;padding-bottom: 0;">
+        បញ្ចីនៃ <span class="font-weight-bold">Contributes</span> books
+        for wanted people</p> -->
+      <p v-else-if="book_filter=='giving'" class="text-center" style="padding: 5px; color:#000;padding-bottom: 0;">
+        បញ្ចីនៃសៀវភៅបរិច្ចាគដែល​ ​<span class="font-weight-bold">ផ្តល់បរិច្ចាគ</span>​</p>
+      <p v-else="book_filter=='getting'" class="text-center" style="padding: 5px; color:#000;padding-bottom: 0;">
+        បញ្ចីនៃសៀវភៅបរិច្ចាគដែល​ <span class="font-weight-bold">ទទួលបរិច្ចាគ</span></p>
 
 
       <div v-if="book_filter=='iwant'">
@@ -387,7 +383,9 @@
     border-radius: 4px;
     position: relative;
     height: 82px;
-  }
+    /* width: 23%; */
+    width: 30%;
+}
 
   .total-book {
     margin-top: 11px;

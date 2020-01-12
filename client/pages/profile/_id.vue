@@ -23,10 +23,10 @@
       <no-ssr>
         <div class="account-tabs">
           <b-tabs content-class="mt-3" align="center">
-            <b-tab title="Contribution" active>
+            <b-tab title="បរិច្ចាគសៀវភៅ" active>
               <post-item/>
             </b-tab>
-            <b-tab title="Overview">
+            <b-tab title="ពណ៍រមាន">
               <div class="overview-list">
                   <div class="input-group mb-3">
                     <input disabled v-model="user_data.name" type="text" class="form-control input-text no-border"

@@ -59,7 +59,11 @@
     </div>
 
     <div v-if="showIneedLIst==true" style="margin-top: 57px;">
-      <p v-if="ineedListDataLoading==false" class="text-center" style="padding: 5px; color: #000;">List of people who want this book<Br/><span style="color:#bbb">Contributor will pick up one or some of INeedors</span></p>
+      <p v-if="ineedListDataLoading==false" class="text-center" style="padding: 5px; color: #000;">
+        បញ្ជីឈ្មោះអ្នកដែលចង់បានសៀវភៅបរិច្ចាគមួយនេះ
+        <Br/><span style="color:#bbb">
+         អ្នកបរិច្ចាគនឹងជ្រើសរើសនរណាម្នាក់
+          </span></p>
 
       <p class="text-center" v-if="ineedListDataLoading==true"><img :src="loader"/></p>
 
@@ -145,7 +149,7 @@
         </div>
         <div v-else>
           <div v-if="dataModal.user_id==user.id" class="create-comment" style="height: 90px; padding-top: 23px; text-align: center;">
-            សូមអរគុណចំពោះការបរិច្ចាកសៀវភៅនេះ <br/> ពួកខ្ញុំនឹងផ្តល់អោយអ្នកដែលត្រូវការបំផុត
+            សូមអរគុណចំពោះការបរិច្ចាគសៀវភៅនេះ <br/> ពួកខ្ញុំនឹងផ្តល់អោយអ្នកដែលត្រូវការបំផុត
           </div>
           <div v-else @click="iNeed(dataModal.give_status)" style="width: 125px; height: 125px; background: #4c94ff; text-align: center; margin: 0 auto; line-height: 125px; border-radius: 125px; font-weight: bold; color: #fff5f5; box-shadow: 0 2px 3px #aaa; position: fixed; bottom: 12px; left: 0; right: 0; font-size: 20px; text-shadow: 0 1px 4px #000;">
             ខ្ញុំចង់បាន
@@ -167,7 +171,7 @@
             <div class="post_property">
               <small class="post_view_num text-muted">{{numView}} views · {{lastRead}} last read</small>
               <a href="#comment"><small style="float: right;"
-                                        class="post_view_num">{{numComment}} comments</small></a>
+                                        class="post_view_num">{{numComment}} មត្តិ</small></a>
             </div>
             <p style="white-space: pre-line; word-break: break-all;" class="caption">
               <span v-html="dataModal.caption"></span>
@@ -187,7 +191,7 @@
               <div class="box-comments" style="display: block;">
                 <p style="border-bottom: 1px solid #ddd;padding-bottom: 9px;">
                   <i class="fa fa-comments-o" aria-hidden="true"></i>
-                  Comments
+                  មត្តិ
                 </p>
 
                 <div v-for="(item, $index) in dataModalComment" :key="$index" class="box-comment">
@@ -206,8 +210,8 @@
                 </div>
                 <div class="text-center" v-if="numComment==0">
                   <i class="fa fa-comments-o" style="font-size: 75px; color: #ccc;" aria-hidden="true"></i>
-                  <p style="margin-bottom: -5px; font-weight: bold; color: #aaa;">No any comments yet</p>
-                  <small>Be the first to comment</small>
+                  <p style="margin-bottom: -5px; font-weight: bold; color: #aaa;">មិនទាន់មានមត្តិទេ</p>
+                  <small>បញ្ចេញមត្តិដំបូងគេ</small>
                 </div>
 
                 <div class="box-comment text-center" v-if="loadingModalComment==true">
@@ -230,7 +234,7 @@
               <div class="img-push">
                 <input @click="goto('comment')" required v-model="comment" type="text"
                        class="form-control input-sm input-box"
-                       placeholder="Press enter to post comment">
+                       placeholder="បញ្ចេញមត្តិ...">
                 <input type="hidden" v-model="postId"/>
               </div>
             </form>

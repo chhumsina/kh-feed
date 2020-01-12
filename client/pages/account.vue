@@ -4,13 +4,13 @@
       <div class="d-flex justify-content-between align-items-center py-4">
         <div>
           <nuxt-link to="create-post">
-            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Create Post
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> បរិច្ចាគសៀវភៅ
           </nuxt-link>
         </div>
         <div>
           <div @click.prevent="logout">
             <i class="fa fa-sign-out"/>
-            Logout
+            ចាកចេញ
           </div>
         </div>
       </div>
@@ -24,7 +24,7 @@
           <div
             style="position: absolute; margin: 0 auto; left: 0; right: 0; bottom: -15px; color: #035398; font-size: 11px;"
             @click="$refs.avatar.click()">
-            Change
+            ប្តូររូបភាព
             <input accept="image/x-png,image/jpeg" ref="avatar" style="width: 100%; display: none;"
                    @change="changeAvatar('avatar', $event)" type="file" name="avatar"
                    id="addAvatarId"/>
@@ -44,10 +44,10 @@
     <no-ssr>
       <div class="account-tabs">
         <b-tabs content-class="mt-3" align="center">
-          <b-tab title="Contribution" active>
+          <b-tab title="បរិច្ចាគសៀវភៅ" active>
             <post-item/>
           </b-tab>
-          <b-tab title="Overview">
+          <b-tab title="ពណ៍រមាន">
             <div class="overview-list">
               <form @submit.prevent="overview">
 
@@ -109,7 +109,7 @@
               </form>
             </div>
           </b-tab>
-          <b-tab title="Reaction" @click="listReaction()">
+          <b-tab title="សកម្មភាពលើអ្នក" @click="listReaction()">
 
           </b-tab>
         </b-tabs>
