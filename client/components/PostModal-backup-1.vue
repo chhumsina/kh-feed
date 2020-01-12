@@ -41,12 +41,11 @@
             <i class="fa fa-smile-o" aria-hidden="true"></i> View who gets this book
           </div>
           <div @click="showIneedLIst=true" v-else style="color: orange;">
-            <i class="fa fa-smile-o" aria-hidden="true"></i> 
-            អ្នកចង់បានសៀវភៅនេះ?
+            <i class="fa fa-smile-o" aria-hidden="true"></i> You want this book?
           </div>
         </div>
         <div v-else @click="showIneedLIst=false" class="btn-save-post">
-          <i class="fa fa-picture-o" aria-hidden="true"></i> បង្ហាញ Post
+          <i class="fa fa-picture-o" aria-hidden="true"></i> Show Post
         </div>
 
         <!--        <div @click="savePost()" class="btn-save-post" v-if="savePostLoading==true">-->
@@ -144,11 +143,14 @@
 
         </div>
         <div v-else>
-          <div v-if="dataModal.user_id==user.id" class="create-comment" style="height: 90px; padding-top: 23px; text-align: center;">
-            សូមអរគុណចំពោះការបរិច្ចាកសៀវភៅនេះ <br/> ពួកខ្ញុំនឹងផ្តល់អោយអ្នកដែលត្រូវការបំផុត
+          <div v-if="dataModal.user_id==user.id" class="create-comment" style="height: 72px; padding-top: 23px; text-align: center;">
+            You selected <span style="color: green;">{{giveto.length}} person</span> to give&nbsp;
+            <span style="background: #ddd; padding: 10px 15px; border-radius: 3px; color: black;" @click="submitGiveTo()">
+             Click to confirm
+          </span>
           </div>
           <div v-else @click="iNeed(dataModal.give_status)" style="width: 125px; height: 125px; background: #4c94ff; text-align: center; margin: 0 auto; line-height: 125px; border-radius: 125px; font-weight: bold; color: #fff5f5; box-shadow: 0 2px 3px #aaa; position: fixed; bottom: 12px; left: 0; right: 0; font-size: 20px; text-shadow: 0 1px 4px #000;">
-            ខ្ញុំចង់បាន
+            Yes, I want
           </div>
         </div>
       </div>

@@ -17,24 +17,33 @@
     <!--    </nav>-->
 
     <div
-      style="z-index: 1;top: 68px;position: fixed; background: rgb(255, 255, 255); margin-top: -67px; padding: 15px 0px 1px; text-align: center; margin-bottom: 15px; box-shadow: 0 1px 1px #ddd; width: 100%;">
+      style="z-index: 1;top: 68px;position: fixed; background: rgb(255, 255, 255); margin-top: -67px; padding: 15px 16px 1px; text-align: center; margin-bottom: 15px; box-shadow: 0 1px 1px #ddd; width: 100%;">
       <img
         :src="placeholder_photo.i_want_banner"
         style="width: 80%;"
       />
       <div class="total-book">
         <ul>
+          <li :class="book_filter=='iwant' ? 'menu-active' : ''" @click="dashboardList('iwant','first')">Yes, I
+            want<br/><span>{{totalBook.total_want}} pending</span>
+            <p
+              style="margin: 0 auto; font-size: 12px; color: orange; position: absolute; left: 0; right: 0; bottom: 7px;">
+              {{totalBook.total_want_other}} wants now</p></li>
           <li :class="book_filter=='contributes' ? 'menu-active' : ''" @click="dashboardList('contributes','first')">
-           កម្មង់សៀវភៅ<br/><span>{{totalBook.total_contributes}} ក្បាល</span>
-            </li>
-          <li :class="book_filter=='iwant' ? 'menu-active' : ''" @click="dashboardList('iwant','first')">ខ្ញុំចង់បាន<br/><span>{{totalBook.total_want}} ក្បាល</span>
-           </li>
-          <li :class="book_filter=='giving' ? 'menu-active' : ''" @click="dashboardList('giving','first')">
-            ផ្តល់បរិច្ចាគ<span>{{totalBook.total_giving}}  ក្បាល</span>
-            </li>
-          <li :class="book_filter=='getting' ? 'menu-active' : ''" @click="dashboardList('getting','first')">
-            ទទួលបរិច្ចាគ<br/><span>{{totalBook.total_getting}}  ក្បាល</span>
-            </li>
+            Contributes<br/><span>{{totalBook.total_contributes}}  open</span>
+            <p
+              style="margin: 0 auto; font-size: 12px; color: orange; position: absolute; left: 0; right: 0; bottom: 7px;">
+              {{totalBook.total_want_now}} wants now</p></li>
+          <li :class="book_filter=='giving' ? 'menu-active' : ''" @click="dashboardList('giving','first')">Total
+            Giving<br/><span>{{totalBook.total_giving}}  closed</span>
+            <p
+              style="margin: 0 auto; font-size: 12px; color: #0d863d; position: absolute; left: 0; right: 0; bottom: 7px;">
+              {{totalBook.total_want_giving}} wanted</p></li>
+          <li :class="book_filter=='getting' ? 'menu-active' : ''" @click="dashboardList('getting','first')">Total
+            Getting<br/><span>{{totalBook.total_getting}}  closed</span>
+            <p
+              style="margin: 0 auto; font-size: 12px; color: #0d863d; position: absolute; left: 0; right: 0; bottom: 7px;">
+              {{totalBook.total_want_getting}} wanted</p></li>
         </ul>
       </div>
     </div>

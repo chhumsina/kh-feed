@@ -67,33 +67,51 @@
       <h6 v-if="feeds.length>0 && this.$route.name == 'feed'" style="padding: 15px; padding-bottom: 10px; padding-top: 10px; color: #555;" class="alert-heading"><i
         class="fa fa-feed" aria-hidden="true"></i> Recent contributions</h6>
 
-
-      <ul class="media-list">
-          <li class="media" v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1">
-            <p class="header">    
-              <nuxt-link :to="`/profile/${item.user_id}`">         
+      <div v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1" class="box box-widget">
+        <nuxt-link :to="`/profile/${item.user_id}`">
+          <div class="box-header with-border">
+            <div class="user-block">
               <img
+                class="img-circle"
                 :src="item.avatar  | getImgUrl('avatar','sm_avatar')"
                 alt="User Image"
               />
               <span class="username">{{item.name}}</span>
-              </nuxt-link>
-
-              <span class="text-muted pull-right">
-                                    <small class="text-muted"><timeago :datetime="item.created_at" :auto-update="10"></timeago></small>
-                                </span>
-            </p>
-            <img @click="showPostModal(item.post_id)"
-                 class="post-image"
-                 v-lazy="getImgUrl(item.photo, 'photo', 'sm_post')"
-                 alt="Post Image"
-            />
-            <div class="media-body">
-                              
-              <p @click="showPostModal(item.post_id)">{{item.caption | truncate(90, '...')}}</p>
+              <span class="description">
+              <timeago :datetime="item.created_at" :auto-update="10"></timeago>
+            </span>
             </div>
-          </li>
-        </ul>
+          </div>
+        </nuxt-link>
+        <div class="box-body" @click="showPostModal(item.post_id)">
+          <p v-if="item.photo=='no'" style="margin-bottom: 5px; white-space: unset; word-break: break-all;"
+             class="caption">
+            {{item.caption | truncate(250, '...')}}
+          </p>
+          <p v-else style="margin-bottom: 5px; white-space: unset; word-break: break-all;" class="caption">
+            {{item.caption | truncate(70, '...')}}
+          </p>
+
+          <div class="post-img" v-if="item.photo!='no'">
+            <div class="thumbnail">
+              <img v-lazy="getImgUrl(item.photo, 'photo', 'm_post')"/>
+            </div>
+          </div>
+
+        </div>
+        <div class="box-footer" style="display: block;" @click="showPostModal(item.post_id)">
+
+          <img class="img-responsive img-circle img-sm avatar-comment"
+               :src="user.avatar | getImgUrl('avatar','sm_avatar')"
+               alt="Alt Text">
+          <div class="img-push">
+            <div type="text" class="form-control input-sm input-box">
+              Press enter to post comment
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
     <infinite-loading
       @infinite="onInfinite"
@@ -231,54 +249,6 @@
 </script>
 
 <style scoped>
- ul.media-list {
-    padding: 0;
-  }
-
-  .media {
-    display: -webkit-box;
-    display: grid;
-    -webkit-box-align: start;
-    align-items: flex-start;
-  }
-
-  ul.media-list .media {
-    background: #fff;
-    padding: 13px;
-    margin-bottom: 10px;
-  }
-
-  ul.media-list .media img.post-image {
-    width: 90px;
-    height: 70px;
-    border-radius: 5px;
-    margin-right: 10px;
-    text-shadow: 0 0 black;
-    float: left;
-  }
-
-  .media-body {
-    -webkit-box-flex: 1;
-    flex: 1;
-    float: left;
-    margin-left: 100px;
-    margin-top: -72px;
-  }
-  .media .header{
-    border-bottom: 1px solid #f7f7f7;
-    padding-bottom: 7px;
-    margin-bottom: 10px;
-    color:#929292;
-  }
-  .media .footer {
-    border-top: 1px solid #f7f7f7;
-    margin-top: 14px;
-    padding-top: 5px;
-    margin-bottom: 0;
-  }
-  .media-body p{
-    margin-bottom: 0 !important;
-  }
 
   .feed .top-nav {
     font-weight: 600;
