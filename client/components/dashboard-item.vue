@@ -123,8 +123,7 @@
           <li class="media" v-for="(item, $index) in bookItem" :key="$index" :data-num="$index + 1">
             <p class="header">
               <span>
-                You gave <span class="font-weight-bold" style="color: green;">{{item.num_active}}</span> among of
-                  <span class="font-weight-bold" style="color: orange">{{item.num_want}}</span> people wanted
+              ​បានផ្តល់ <span class="font-weight-bold" style="color: green;">{{item.num_active}}</span> នាក់ ក្នុងចំនោមអ្នកចង់បាន<span class="font-weight-bold" style="color: orange"> {{item.num_want}}​ </span>នាក់
               </span>
               <span class="closed pull-right">
                                     Closed

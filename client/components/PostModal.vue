@@ -38,7 +38,7 @@
       <div v-else>
         <div v-if="showIneedLIst==false"  class="btn-save-post">
           <div @click="showIneedLIst=true" v-if="dataModal.give_status=='active'" style="color: green;">
-            <i class="fa fa-smile-o" aria-hidden="true"></i> View who gets this book
+            <i class="fa fa-smile-o" aria-hidden="true"></i> បង្ហាញអ្នកដែលបានសៀវភៅ
           </div>
           <div @click="showIneedLIst=true" v-else style="color: orange;">
             <i class="fa fa-smile-o" aria-hidden="true"></i> 
@@ -116,7 +116,7 @@
               </div>
               <div v-bind:class="item.accept_status" style="float: right; margin-top: -46px; text-align: right">
                 <div v-if="item.accept_status=='active'">
-                  <p style="margin-top: 9px; margin-bottom: -8px;color:green;">picked</p>
+                  <p style="margin-top: 9px; margin-bottom: -8px;color:green;">selected</p>
                   <p style="font-size: 11px; color: rgb(156, 156, 156); margin-top: 9px; margin-bottom: 0;"><timeago :datetime="item.accept_date" :auto-update="10"></timeago></p>
                 </div>
                 <div v-else>
@@ -131,14 +131,14 @@
           <div v-if="dataModal.give_status=='active'">
             <div style="margin-top: 10px; text-align: right; color: #555;" class="font-13">
               <div style="text-align: right; float: right; margin-top: -35px; padding: 4px 8px; color: green;" v-if="item.accept_status=='active'">
-                <i class="fa fa-check" aria-hidden="true"></i> picked <b>{{item.name|truncate(10, '...')}}</b>
+                <i class="fa fa-check" aria-hidden="true"></i> selected <b>{{item.name|truncate(10, '...')}}</b>
               </div>
             </div>
           </div>
           <div v-else>
-            <div v-if="dataModal.user_id==user.id" style="margin-top: 10px; text-align: right; color: #555;" class="font-13">
+            <!-- <div v-if="dataModal.user_id==user.id" style="margin-top: 10px; text-align: right; color: #555;" class="font-13">
                 pick <b>{{item.name|truncate(10, '...')}}</b> &nbsp;  <b-form-checkbox :value="item.user_id"><span style="visibility: hidden">.</span></b-form-checkbox>
-            </div>
+            </div> -->
           </div>
         </div>
       </b-form-checkbox-group>
@@ -434,16 +434,16 @@
                 }else{
                     if (this.user.phone == '') {
                         this.$swal.fire({
-                            title: '"To Easy to contact"  \n Please update Phone number \n  Then come back to make it again.',
-                            text: "Account -> Overview -> Phone",
+                            title: '"ដើម្បីងាយស្រួលក្នុងការទំនាក់ទំនង"  \nសូមបំពេញលេខទូរសព្ទ \n  ហើយត្រឡប់មកទីនេះម្តងទៀត។',
+                            text: "Account -> ព័ត៌មាន -> លេខទូរសព្ទ",
                             icon: 'warning',
                             showCancelButton: false,
                             confirmButtonColor: '#3085d6',
                             cancelButtonColor: '#d33',
-                            confirmButtonText: 'Go to Account'
+                            confirmButtonText: 'ទៅកាន់ Account'
                         }).then((result) => {
                             this.$router.push({path: '/account'})
-                        })
+                        });
                     } else {
                         this.$swal.fire({
                             title: 'Say something to Contributor \n "You really want this book"',

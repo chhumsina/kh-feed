@@ -58,7 +58,8 @@
     }
 </script>
 
-<style scopped  lang="scss">
+<style>
+
 body{
  background-repeat: no-repeat;
  background-attachment: fixed;
@@ -72,6 +73,8 @@ body{
   font-weight: 400;
  -webkit-font-smoothing: antialiased; 
 }
+</style>
+<style scopped  lang="scss">
 .home-footer ul {
     padding: 0;
     list-style: none;

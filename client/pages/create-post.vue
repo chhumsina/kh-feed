@@ -135,7 +135,25 @@
         },
         mounted() {
         },
+        created(){
+          this.checkPhone();  
+        },
         methods: {
+            checkPhone(){
+                if (this.user.phone == '') {
+                        this.$swal.fire({
+                            title: '"ដើម្បីងាយស្រួលក្នុងការទំនាក់ទំនង"  \nសូមបំពេញលេខទូរសព្ទ \n  ហើយត្រឡប់មកទីនេះម្តងទៀត។',
+                            text: "Account -> ព័ត៌មាន -> លេខទូរសព្ទ",
+                            icon: 'warning',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'ទៅកាន់ Account'
+                        }).then((result) => {
+                            this.$router.push({path: '/account'})
+                        });
+                }
+            },
             addPhoto(fileKey, event) {
                 // this[fileKey] = event.target.files[0];
                 // Reference to the DOM input element

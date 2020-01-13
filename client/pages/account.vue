@@ -47,14 +47,14 @@
           <b-tab title="បរិច្ចាគសៀវភៅ" active>
             <post-item/>
           </b-tab>
-          <b-tab title="ពណ៍រមាន">
+          <b-tab title="ព័ត៌មាន">
             <div class="overview-list">
               <form @submit.prevent="overview">
 
                 <div class="input-group mb-3">
                   <input v-model="form.name" type="text" class="form-control input-text"
                          :class="{ 'is-invalid': errors.name }"
-                         placeholder="Name">
+                         placeholder="ឈ្មោះ">
                   <div class="input-group-prepend">
                     <span class="input-group-text no-border-left" id="basic-addon1"><i class="fa fa-user"
                                                                                        aria-hidden="true"></i></span>
@@ -66,7 +66,7 @@
                 <div class="input-group mb-3">
                   <input v-model="form.email" type="text" class="form-control input-text"
                          :class="{ 'is-invalid': errors.email }"
-                         placeholder="E-mail">
+                         placeholder="អុីម៉ែល">
                   <div class="input-group-prepend">
                   <span class="input-group-text no-border-left" id="basic-addon1"><i class="fa fa-envelope"
                                                                                      aria-hidden="true"></i></span>
@@ -78,7 +78,7 @@
                 <div class="input-group mb-3">
                   <input v-model="form.phone" type="text" class="form-control input-text"
                          :class="{ 'is-invalid': errors.phone }"
-                         placeholder="Phone">
+                         placeholder="លេខទូរសព្ទ">
                   <div class="input-group-prepend">
                     <span class="input-group-text no-border-left" id="basic-addon1"><i class="fa fa-phone"
                                                                                        aria-hidden="true"></i></span>
@@ -90,7 +90,7 @@
                 <div class="input-group mb-3">
                   <input v-model="form.bio" type="text" class="form-control input-text"
                          :class="{ 'is-invalid': errors.bio }"
-                         placeholder="Quote">
+                         placeholder="ពិពណ៌នា">
                   <div class="input-group-prepend">
                 <span class="input-group-text no-border-left" id="basic-addon1"><i class="fa fa-quote-right"
                                                                                    aria-hidden="true"></i></span>
@@ -102,9 +102,9 @@
 
                 <Br/>
                 <div class="form-group">
-                  <button v-if="saveOverViewLoading==true" type="submit" class="btn btn-secondary btn-block">Save
+                  <button v-if="saveOverViewLoading==true" type="submit" class="btn btn-secondary btn-block">រក្សាទុក
                   </button>
-                  <button v-else type="button" class="btn btn-secondary btn-block">Save...</button>
+                  <button v-else type="button" class="btn btn-secondary btn-block">រក្សាទុក...</button>
                 </div>
               </form>
             </div>

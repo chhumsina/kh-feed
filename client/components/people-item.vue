@@ -26,7 +26,7 @@
               alt="User Image"
             />
             <p style="font-size: 15px;margin-bottom: 0;margin-top: 7px;">{{item.name}}</p>
-            <p style="background: #f9f9f9; font-weight: bold; color: #ecb109; margin-top: 13px;">{{item.num_post}} <small>contr.</small></p>
+            <p style="background: #f9f9f9; font-weight: bold; color: #ecb109; margin-top: 13px;">{{item.num_post}} <small>បរិច្ចាគ</small></p>
           </nuxt-link>
         </li>
         <li style="visibility: hidden"></li>
