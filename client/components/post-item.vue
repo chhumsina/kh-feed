@@ -26,7 +26,7 @@
                class="img-responsive img-circle img-sm" :src="user.avatar | getImgUrl('avatar','sm_avatar')"
                alt="Alt Text">
           <div class="img-push">
-            <div style="padding-top: 8px;border-radius: 25px !important;background: #fafafa;"
+            <div style="padding-top: 8px;border-radius: 25px !important;background: #fafafa;color:#bbb;"
                  class="form-control input-sm input-box">
              ខ្ញុំចង់បរិច្ចាគសៀវភៅ...
             </div>
@@ -292,7 +292,8 @@
   .feed .has-search .form-control {
     background: #fafafa;
     padding-left: 2.375rem;
-    border: 1px solid #efefef;
+    border: 1px solid #bbb;
+    color: #bbb;
     border-radius: 20px;
     width: 100%;
   }

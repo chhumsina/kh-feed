@@ -166,6 +166,7 @@
     background: #fafafa;
     padding-left: 2.375rem;
     border: 1px solid #efefef;
+    color: #bbb;
     border-radius: 20px;
     width: 100%;
   }

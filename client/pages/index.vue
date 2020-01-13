@@ -61,7 +61,7 @@
 <style scopped  lang="scss">
 @font-face {
   font-family: "Battambang";
-  src: url("~@/assets/fonts/battambang.woff2") format("woff2");
+  src: url("~assets/fonts/battambang.woff2") format("woff2");
 }
 
 body{
