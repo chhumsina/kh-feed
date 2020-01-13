@@ -21,13 +21,13 @@
 
   </div>
 
-<div class="home-footer">
+<!-- <div class="home-footer">
   <ul>
     <li>មតិ​យោបល់ -</li>
     <li>ការប្រើប្រាស់ -</li>
     <li>អំពី​ khfeed.com</li>
   </ul>
-  </div>
+  </div> -->
 
 </div>
 </template>
@@ -88,7 +88,7 @@ body{
     text-align: center;
     position: relative;
     top: calc(50% - 175px);
-    height: 95vh;
+    height: 100%;
     background: rgba(234, 234, 234, 0.03922);
     border-radius: 2px;
     width: 317px;
