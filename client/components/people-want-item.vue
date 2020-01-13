@@ -206,17 +206,8 @@ ul.media-list {
     padding: 3px 10px;
     font-weight: 400;
   }
-  span.description.recommend, ul.reaction-filter .recommend {
-    color: #1648ff !important;
-  }
-  span.description.comment, ul.reaction-filter .comment {
-    color: #6a9e26 !important;
-  }
-  span.description.post, ul.reaction-filter .post {
-    color: #35bfbd !important;
-  }
-  span.description.profile, ul.reaction-filter .profile {
-    color: #dc3545 !important;
+  ul.reaction-filter li.other-want,ul.reaction-filter li.he-want {
+    color: rgba(0, 119, 255, 0.781)
   }
 
   .c_post .box {
