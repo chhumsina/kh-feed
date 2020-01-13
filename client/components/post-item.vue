@@ -5,7 +5,7 @@
          class="navbar navbar-expand-lg navbar-light bg-white top-nav">
       <div class="container">
         <div class="has-search" style="width: 100%">
-          <span class="fa fa-search form-control-feedback"></span>
+          <i class="fa fa-search form-control-feedback"></i>
           <input
             type="text"
             class="form-control input-box"

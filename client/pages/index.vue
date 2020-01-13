@@ -12,7 +12,7 @@
     </p>
     
     <div class="text-center">
-            <a style="color: #806f6f; padding: 10px; border-radius: 5px; box-shadow: inset 0 0 4px #aaa; }" @click="socialLogin('google')" class="social-login-btn google">
+            <a style="color: #806f6f; padding: 10px; border-radius: 5px; background:#fff; }" @click="socialLogin('google')" class="social-login-btn google">
               ចូលគណនីតាម <b style="text-shadow: 0px 1px 0px #ddd;color: #4285F4">Google <span v-if="loginloading==true">
               <img :src="loader"/>
             </span></b>
@@ -88,6 +88,7 @@ body{
     text-align: center;
     position: relative;
     top: calc(50% - 175px);
+    height: 95vh;
     background: rgba(234, 234, 234, 0.03922);
     border-radius: 2px;
     width: 317px;
@@ -115,8 +116,6 @@ body{
   text-align: center;
   z-index: 1;
 }
-
-
 
 input.user-password{
   width: 120px;
