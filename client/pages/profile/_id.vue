@@ -60,6 +60,9 @@
                   </div>
               </div>
             </b-tab>
+            <b-tab title="អ្នកចង់បានសៀវភៅ" @click="listPeopleWantBook()">
+
+          </b-tab>
           </b-tabs>
         </div>
       </no-ssr>
@@ -118,6 +121,9 @@
             },
             getImgUrl(type, image) {
                 return `${process.env.baseUrl}image/${type}/${image}`;
+            },
+            async listPeopleWantBook(){
+                this.$router.push({ path: '/people-want/'+this.$route.params.id });
             },
             async logout() {
                 await this.$auth.logout()

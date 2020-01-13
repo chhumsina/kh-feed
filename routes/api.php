@@ -71,6 +71,7 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::get('post/detail/{id}', 'PostController@detail');
     Route::get('post/detail-comment/{id}', 'PostController@detailComment');
 
+    Route::get('user/people-want-list', 'UserController@peopleWantList');
     Route::get('user/list', 'UserController@list');
     Route::post('user/change-avatar', 'UserController@changeAvatar');
     Route::post('user/update-overview', 'UserController@updateOverview');

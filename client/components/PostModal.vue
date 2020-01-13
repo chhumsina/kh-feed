@@ -70,12 +70,14 @@
       <div  class="text-center" style="margin-top: 100px;" v-if="ineedListData.length<=0 && ineedListDataLoading==false">
          <div v-if="dataModal.user_id==user.id">
            <i class="fa fa-male" style="font-size: 75px; color: #ccc;" aria-hidden="true"></i>
-           <p style="margin-bottom: -5px; font-weight: bold; color: #aaa;">No any people request this contributed book yet</p>
+           <p style="margin-bottom: -5px; font-weight: bold; color: #aaa;">
+             មិនទាន់មានអ្នកចង់បានសៀវភៅនេះនៅឡើយ 
+           </p>
          </div>
         <div v-else>
           <i class="fa fa-male" style="font-size: 75px; color: #ccc;" aria-hidden="true"></i>
-          <p style="margin-bottom: -5px; font-weight: bold; color: #aaa;">No any people want this contributed book yet</p>
-          <small>Be the first to get a chance of having this contributed book</small>
+          <p style="margin-bottom: -5px; font-weight: bold; color: #aaa;">មិនទាន់មានអ្នកចង់បានសៀវភៅនេះនៅឡើយ</p>
+          <small>ក្លាយជាអ្នកដំបុងគេ ដែលចង់បានសៀវភៅនេះ</small>
         </div>
       </div>
 
@@ -446,7 +448,7 @@
                         });
                     } else {
                         this.$swal.fire({
-                            title: 'Say something to Contributor \n "You really want this book"',
+                            title: 'ពណ៍នានៃការចង់បានសៀវភៅនេះ',
                             input: 'textarea',
                             inputAttributes: {
                                 autocapitalize: 'off'

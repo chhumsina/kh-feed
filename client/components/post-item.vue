@@ -85,12 +85,12 @@
             </p>
             <img @click="showPostModal(item.post_id)"
                  class="post-image"
-                 v-lazy="getImgUrl(item.photo, 'photo', 'sm_post')"
+                 v-lazy="getImgUrl(item.photo, 'photo', 'm_post')"
                  alt="Post Image"
             />
             <div class="media-body">
                               
-              <p @click="showPostModal(item.post_id)">{{item.caption | truncate(90, '...')}}</p>
+              <p @click="showPostModal(item.post_id)">{{item.caption | truncate(150, '...')}}</p>
             </div>
           </li>
         </ul>
@@ -249,8 +249,8 @@
   }
 
   ul.media-list .media img.post-image {
-    width: 90px;
-    height: 70px;
+    width: 100px;
+    height: 120px;
     border-radius: 5px;
     margin-right: 10px;
     text-shadow: 0 0 black;
@@ -261,8 +261,8 @@
     -webkit-box-flex: 1;
     flex: 1;
     float: left;
-    margin-left: 100px;
-    margin-top: -72px;
+    margin-left: 110px;
+    margin-top: -108px;
   }
   .media .header{
     border-bottom: 1px solid #f7f7f7;

@@ -165,4 +165,66 @@ class User extends Authenticatable implements JWTSubject
         return $data;
     }
 
+    public static function listPeopleWant($input){
+        $user_id = $input['id'];
+
+        $take = 15;
+        $page = ($input['page'] - 1) * $take;
+
+        $sql_other = "
+                select 
+                    p.caption,p.created_at as post_date,p.id as post_id,p.photo,
+                    u.id as user_id,u.avatar as user_avatar,u.name as user_name,
+                    i.created_at as want_date, i.accept_status, i.request_status,
+                    i.accept_date, i.request_date,
+                    'other-want' as type
+                from ineed as i
+                join posts as p on (p.id=i.post_id and p.status='active' and p.user_id=$user_id)
+                join users as u on (u.id=i.user_id and u.status='active')
+                where
+                i.user_id!=$user_id
+                and i.status=1
+                order by i.id desc
+                limit $page,$take
+            ";
+
+        $sql_him = "
+                select 
+                p.caption,p.created_at as post_date,p.id as post_id,p.photo,
+                u.id as user_id,u.avatar as user_avatar,u.name as user_name,
+                i.created_at as want_date, i.accept_status, i.request_status,
+                i.accept_date, i.request_date,
+                'he-want' as type
+                from ineed as i
+                join posts as p on (p.id=i.post_id and p.status='active')
+                join users as u on (u.id=i.user_id and u.status='active')
+                where
+                i.user_id=$user_id
+                and i.status=1
+                order by i.id desc
+                limit $page,$take
+             ";
+
+        $sql = null;
+        if($input['filter_type'] == 'other-want'){
+            $sql = $sql_other;
+        }elseif($input['filter_type'] == 'he-want'){
+             $sql = $sql_him;
+        }else{
+            $sql = $sql_other." UNION ".$sql_him;
+        }
+
+        $sqlFinal = "
+            select * from 
+                (
+                    $sql
+                ) as people_want order by want_date DESC
+                limit $page,$take
+        ";
+
+        $data = DB::select($sqlFinal);
+
+        return $data;
+    }
+
 }

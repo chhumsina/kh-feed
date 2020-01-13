@@ -58,7 +58,7 @@
     }
 </script>
 
-<style>
+<style scopped  lang="scss">
 
 body{
  background-repeat: no-repeat;
@@ -73,8 +73,7 @@ body{
   font-weight: 400;
  -webkit-font-smoothing: antialiased; 
 }
-</style>
-<style scopped  lang="scss">
+
 .home-footer ul {
     padding: 0;
     list-style: none;
@@ -91,7 +90,7 @@ body{
     text-align: center;
     position: relative;
     top: calc(50% - 175px);
-    height: 100%;
+    height: 95vh;
     background: rgba(234, 234, 234, 0.03922);
     border-radius: 2px;
     width: 317px;

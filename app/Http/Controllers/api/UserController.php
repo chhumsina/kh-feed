@@ -111,4 +111,12 @@ class UserController extends Controller
         }
     }
 
+    public function peopleWantList(Request $input)
+    {
+
+        $data = User::listPeopleWant($input);
+
+        return response()->json($data);
+    }
+
 }
