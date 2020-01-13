@@ -1,18 +1,18 @@
 <template>
 <div class="blurred-box">
   
-    <p style="margin-top: 40px; color: #000; font-size: 30px;">
-        បរិច្ចាគសៀវភៅដែលអ្នកឈប់អាននៅទីនេះ
+    <p style="margin-top: 40px; color: #333; font-size: 30px;">
+        បរិច្ចាគសៀវភៅរបស់អ្នក<br/>នៅទីនេះ
     </p>
-  <h1 style="color: #fff; margin-top: 66px; text-shadow: 1px 1px 0 #000; font-weight: bold; font-family: cursive;">khfeed.com</h1>
+  <h1 style="color: #fff; margin-top: 66px; text-shadow: 1px 1px 0 #000; font-weight: bold;">khfeed.com</h1>
   <div class="user-login-box">
 
-    <p style="margin-bottom: 50px; margin-top: -37px; color: #828282;">
+    <p style="margin-bottom: 60px; margin-top: -45px; color: #828282;">
         បណ្ដាញ​​សង្គមសម្រាប់បរិច្ចាគសៀវភៅ
     </p>
     
     <div class="text-center">
-            <a style="background: #fff; color: #806f6f; padding: 10px; border-radius: 5px;" @click="socialLogin('google')" class="social-login-btn google">
+            <a style="color: #806f6f; padding: 10px; border-radius: 5px; box-shadow: inset 0 0 4px #aaa; }" @click="socialLogin('google')" class="social-login-btn google">
               ចូលគណនីតាម <b style="text-shadow: 0px 1px 0px #ddd;color: #4285F4">Google <span v-if="loginloading==true">
               <img :src="loader"/>
             </span></b>
@@ -20,6 +20,15 @@
           </div>
 
   </div>
+
+<div class="home-footer">
+  <ul>
+    <li>មតិ​យោបល់ -</li>
+    <li>ការប្រើប្រាស់ -</li>
+    <li>អំពី​ khfeed.com</li>
+  </ul>
+  </div>
+
 </div>
 </template>
 
@@ -50,6 +59,11 @@
 </script>
 
 <style scopped  lang="scss">
+@font-face {
+  font-family: "Battambang";
+  src: url("~@/assets/fonts/battambang.woff2") format("woff2");
+}
+
 body{
  background-repeat: no-repeat;
  background-attachment: fixed;
@@ -58,22 +72,31 @@ body{
  background-image:url(https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80);
  width: 100%;
  height: 100%;
- font-family: Arial, Helvetica;
+ font-family: Battambang,Arial,Helvetica,sans-serif !important;
  letter-spacing: 0.02em;
   font-weight: 400;
  -webkit-font-smoothing: antialiased; 
 }
-
+.home-footer ul {
+    padding: 0;
+    list-style: none;
+    bottom: 0;
+    position: fixed;
+    left: 23px;
+}
+.home-footer ul li {
+    display: inline;
+    color: #316bc3;
+    font-size: 13px;
+}
 .blurred-box {
     text-align: center;
     position: relative;
-    height: 100vh;
     top: calc(50% - 175px);
-    background: rgba(234,234,234,0.03922);
+    background: rgba(234, 234, 234, 0.03922);
     border-radius: 2px;
-    overflow: hidden;
-    width: 259px;
-    margin-left: 40px;
+    width: 317px;
+    margin-left: 12px;
 }
 .blurred-box:after{
  content: ''; 

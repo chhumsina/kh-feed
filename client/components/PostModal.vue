@@ -171,7 +171,7 @@
             <div class="post_property">
               <small class="post_view_num text-muted">{{numView}} views · {{lastRead}} last read</small>
               <a href="#comment"><small style="float: right;"
-                                        class="post_view_num">{{numComment}} មត្តិ</small></a>
+                                        class="post_view_num">{{numComment}} មតិ</small></a>
             </div>
             <p style="white-space: pre-line; word-break: break-all;" class="caption">
               <span v-html="dataModal.caption"></span>
@@ -191,7 +191,7 @@
               <div class="box-comments" style="display: block;">
                 <p style="border-bottom: 1px solid #ddd;padding-bottom: 9px;">
                   <i class="fa fa-comments-o" aria-hidden="true"></i>
-                  មត្តិ
+                  មតិ
                 </p>
 
                 <div v-for="(item, $index) in dataModalComment" :key="$index" class="box-comment">
@@ -210,8 +210,8 @@
                 </div>
                 <div class="text-center" v-if="numComment==0">
                   <i class="fa fa-comments-o" style="font-size: 75px; color: #ccc;" aria-hidden="true"></i>
-                  <p style="margin-bottom: -5px; font-weight: bold; color: #aaa;">មិនទាន់មានមត្តិទេ</p>
-                  <small>បញ្ចេញមត្តិដំបូងគេ</small>
+                  <p style="margin-bottom: -5px; font-weight: bold; color: #aaa;">មិនទាន់មានមតិទេ</p>
+                  <small>បញ្ចេញមតិដំបូងគេ</small>
                 </div>
 
                 <div class="box-comment text-center" v-if="loadingModalComment==true">
@@ -234,7 +234,7 @@
               <div class="img-push">
                 <input @click="goto('comment')" required v-model="comment" type="text"
                        class="form-control input-sm input-box"
-                       placeholder="បញ្ចេញមត្តិ...">
+                       placeholder="បញ្ចេញមតិ...">
                 <input type="hidden" v-model="postId"/>
               </div>
             </form>
