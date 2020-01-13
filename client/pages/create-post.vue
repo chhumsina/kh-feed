@@ -38,11 +38,11 @@
       </b-alert>
 
       <b-alert show variant="info">
-        <h4 class="alert-heading"><i class="fa fa-star" aria-hidden="true"></i> Sharing Culture </h4>
-        <div>
-          We're appreciated for your good deed.
-        </div>
-        <span>Thank you,</span>
+        <h4 class="alert-heading"><i class="fa fa-star" aria-hidden="true"></i> វប្បធម៌នៃការចែករំលែក </h4>
+        <p>
+          ពួកយើងសប្បាយរីករាយក្នុងការពាំនាំសៀវភៅបរិច្ចាគរបស់អ្នក ទៅដល់ដៃមនុស្សដែលកំពុងត្រូវការ។
+        </p>
+        <span>សូមអរគុណ,</span>
       </b-alert>
 
 <!--    <div style="background: #fff; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">-->

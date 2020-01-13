@@ -67,8 +67,8 @@
                                 </span>
             </p>
             <img @click="showPostModal(item.post_id)"
-                 class="img-circle"
-                 :src="item.photo | getImgUrl('photo','sm_post')"
+                 class="post-image"
+                 :src="item.photo | getImgUrl('photo','m_post')"
                  alt="User Image"
             />
             <div class="media-body">
@@ -100,8 +100,8 @@
                                 </span>
             </p>
             <img @click="showPostModal(item.post_id)"
-                 class="img-circle"
-                 :src="item.photo | getImgUrl('photo','sm_post')"
+                 class="post-image"
+                 :src="item.photo | getImgUrl('photo','m_post')"
                  alt="User Image"
             />
             <div class="media-body">
@@ -130,8 +130,8 @@
                                 </span>
             </p>
             <img @click="showPostModal(item.post_id)"
-                 class="img-circle"
-                 :src="item.photo | getImgUrl('photo','sm_post')"
+                 class="post-image"
+                 :src="item.photo | getImgUrl('photo','m_post')"
                  alt="User Image"
             />
             <div class="media-body">
@@ -158,8 +158,8 @@
                                 </span>
             </p>
             <img @click="showPostModal(item.post_id)"
-                 class="img-circle"
-                 :src="item.photo | getImgUrl('photo','sm_post')"
+                 class="post-image"
+                 :src="item.photo | getImgUrl('photo','m_post')"
                  alt="User Image"
             />
             <div class="media-body">
@@ -319,12 +319,12 @@
   ul.media-list .media {
     background: #fff;
     padding: 13px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
 
-  ul.media-list .media img {
-    width: 90px;
-    height: 70px;
+  ul.media-list .media img.post-image {
+    width: 100px;
+    height: 120px;
     border-radius: 5px;
     margin-right: 10px;
     text-shadow: 0 0 black;
@@ -335,8 +335,8 @@
     -webkit-box-flex: 1;
     flex: 1;
     float: left;
-    margin-left: 100px;
-    margin-top: -72px;
+    margin-left: 110px;
+    margin-top: -108px;
   }
   .media .header{
     border-bottom: 1px solid #f7f7f7;

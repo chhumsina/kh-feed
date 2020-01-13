@@ -15,7 +15,7 @@
         data() {
             return {
                 showTopNav: ['recommend', 'feed', 'messages'],
-                hideMenu: ['post-id','create-post','reaction','create-shop','sell-book']
+                hideMenu: ['post-id','create-post','reaction','create-shop','sell-book','people-want-id']
             }
         }
     }
