@@ -21,6 +21,14 @@
     }
 </script>
 <style>
+@font-face {
+  font-family: "Battambang";
+  src: url("~assets/fonts/battambang.woff2") format("woff2");
+}
+
+div, span, p, h1,h2,h3,h4,h5,h6,b,time{
+  font-family: Battambang,Arial,Helvetica,sans-serif !important;
+}
   a:hover, a:visited, a:link, a:active{
     text-decoration: none !important;
   }
