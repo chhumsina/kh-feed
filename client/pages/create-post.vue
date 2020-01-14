@@ -102,7 +102,7 @@
       </div>
 
       <div class="form-group">
-        <textarea v-model="caption" class="form-control" style="height: 35vh;" name="caption" required
+        <textarea v-model="caption" class="form-control" style="height: 35vh;padding: 20px;" name="caption" required
                   placeholder="ពណ៍រនាអំពីការបរិច្ចាគឬសៀវភៅ..."/>
       </div>
 
@@ -221,11 +221,14 @@
                                 this.photo = null;
                                 document.getElementById('addPhotoId').value = null;
                                 this.$swal.fire(
-                                    data.msg
+                                    data.msg,
+                                   '',
+                                   'success'
                                 );
                             } else {
                                 this.$swal.fire(
                                     data.msg,
+                                    '',
                                     'error'
                                 )
                             }

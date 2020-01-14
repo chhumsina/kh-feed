@@ -89,8 +89,8 @@ class PostController extends Controller
             }
 
             DB::commit();
-
-            $msg['msg'] = 'Created successfully.';
+ 
+            $msg['msg'] = 'សៀវភៅបរិច្ចាគត្រូវបានបញ្ចូន ពួកយើងនឹងធ្វើការទំនាក់ទំនងទៅកាន់អ្នកក្នុងពេលឆាប់ៗនេះ​។​';
             $msg['status'] = true;
             return response()->json($msg);
 

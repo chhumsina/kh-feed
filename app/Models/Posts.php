@@ -20,12 +20,9 @@ class Posts extends Model
     public static function listPost($input)
     {
 
-        $list_type = $input['list_type'];
+        $user_id = Auth::user()->id;
 
-        if ($list_type == 'recommend') {
-            $data = Posts::take(6)->get();
-        } else {
-            $search = null;
+        $search = null;
             if (isset($input['search'])) {
                 $search = " and LOWER(p.caption) LIKE '%" . strtolower($input['search']) . "%' ";
             }
@@ -33,22 +30,28 @@ class Posts extends Model
             $take = 10;
             $page = ($input['page'] - 1) * $take;
 
+            $status = "p.status = 'active'";
             $post_by = null;
             if ($input['id']) {
                 $post_by = " and p.user_id = " . $input['id'];
+
+                if($user_id == $input['id']){
+                    $status = "p.status in ('active','pending')";
+                }
             }
+
 
             $sql = "
                select p.id as post_id, p.created_at, p.photo, p.caption, p.status, u.id as user_id, u.avatar, u.name from posts as p
                 join users as u on u.id=p.user_id
-                where p.status = 'active'
+                where 
+                $status
                 $search
                 $post_by
                 order by p.id desc
                 limit $page,$take
             ";
             $data = DB::select($sql);
-        }
 
         return $data;
 
@@ -327,7 +330,7 @@ class Posts extends Model
             $data['caption'] = Self::generateCaption($input_data->caption);
             $data['photo'] = $photo_name;
             $data['user_id'] = $userId;
-            $data['status'] = 'active';
+            $data['status'] = 'pending';
             $data = array_filter($data);
             $create_post = Posts::create($data);
             $post_id = $create_post->id;
