@@ -71,7 +71,7 @@
       <ul class="media-list">
           <li class="media" v-for="(item, $index) in feeds" :key="$index" :data-num="$index + 1">
             <p v-if="item.status=='pending'" class="review-post">
-              <i class="fa fa-exclamation" aria-hidden="true"></i> សុំពេល​ទំនាក់ទំនង មុននឹងបង្ហាញជាសាធារណៈ​</p>
+              <i class="fa fa-exclamation" aria-hidden="true"></i> ពួកយើងសុំពេល​ទំនាក់ទំនង មុននឹងបង្ហាញជាសាធារណៈ​</p>
             <p class="header">    
               <nuxt-link :to="`/profile/${item.user_id}`">         
               <img
@@ -285,8 +285,8 @@
 
   .review-post{
     text-align: center;
-    font-size: 18px;
-    background: #fff;
+    font-size: 15px;    
+    background: #ffebeba6;
     padding: 10px 0px;
     color: #d86d21;
     border-bottom: 1px solid #f7f7f7;

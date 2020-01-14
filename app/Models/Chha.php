@@ -72,6 +72,28 @@ class Chha extends Model
         return $msg;
     }
 
+    public static function postDelete($input){
+        try {
+ 
+            $id = $input->post_id;
+            $status = $input->status;
+            if($status == 'pending'){
+                $status = 'active';
+            }else{
+                $status = 'pending';
+            }
+
+            $update = Posts::where('id', $id)->delete(); 
+            $msg['status'] = true;
+
+        } catch (\Exception $e) {
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+        }
+
+        return $msg;
+    }
+
     public static function isChha(){
         $obj = Auth::user();
         $user_level = $obj->level;

@@ -45,4 +45,33 @@ class ChhaController extends Controller
         }
     }
 
+    public function postDelete(Request $input){
+        try{
+
+            if(!Chha::isChha()){
+                throw new \Exception('Sorry, You are not Chha! :)');
+            }
+
+            DB::beginTransaction();
+
+            $status = Chha::postDelete($input);
+
+            if(!$status['status']){
+                throw new \Exception('Could not delete, Please try again! '.$status['msg']);
+            }
+
+            DB::commit(); 
+            $msg['msg'] = 'Deleted successfully.';
+            $msg['status'] = true;
+            $msg['data'] = null;
+            return response()->json($msg);
+
+        }catch (\Exception $e){
+            DB::rollBack();
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+            return response()->json($msg);
+        }
+    }
+
 }

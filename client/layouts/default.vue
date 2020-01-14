@@ -22,6 +22,14 @@
 </script>
 <style>
 
+  .media-body p {
+    font-size: 15px !important;
+    line-height: 24px !important;
+  }
+  .modal-content .caption {
+    font-size: 15px !important;
+    line-height: 24px;
+}
 div, span, p, h1,h2,h3,h4,h5,h6,b,time{
   font-family: Battambang,Arial,Helvetica,sans-serif !important;
 }
@@ -511,11 +519,13 @@ div, span, p, h1,h2,h3,h4,h5,h6,b,time{
     padding: 6px 15px !important;
   }
   .swal2-title {
-    font-size: 17px !important;
-  }
+    font-size: 16px !important;
+    line-height: 30px !important;
+}
   .modal-footer, .modal-header {
     display: none;
   }
+
   .create-comment {
     display: inline;
     display: initial;

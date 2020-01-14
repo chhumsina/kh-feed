@@ -90,6 +90,7 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     //chha
     Route::post('chha/post', 'ChhaController@filterPost');
     Route::post('chha/post-change-status', 'ChhaController@postChangeStatus');
+    Route::post('chha/post-delete', 'ChhaController@postDelete');
 
 
     Route::get('/auth/logout', 'MeController@logout');

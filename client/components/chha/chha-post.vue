@@ -92,7 +92,7 @@
             <span v-html="detailData.caption"></span>
           </p>
         </div>
-        <hr>
+        <hr />
         <div class="card-body text-center">
           <button
             @click="changeStatus()"
@@ -101,6 +101,14 @@
             :class="detailData.status"
           >
             {{ detailData.status }}
+          </button>
+          |
+          <button
+            @click="changeStatusDelete()"
+            style="border:1px solid #aaa;"
+            class="btn btn-danger"
+          >
+            Delete
           </button>
         </div>
       </div>
@@ -167,13 +175,13 @@ export default {
   },
 
   mounted() {
-    this.canHere()
+    this.canHere();
   },
 
   methods: {
-    canHere(){
-      if(this.user.level != 111){
-        this.$router.push({ path: '/feed' });
+    canHere() {
+      if (this.user.level != 111) {
+        this.$router.push({ path: "/feed" });
       }
     },
     getImgUrl(image, type, size) {
@@ -190,18 +198,62 @@ export default {
       });
     },
     changeStatus() {
-      this.$axios
-        .post("chha/post-change-status", this.detailData)
-        .then(response => {
-          if (response) {
-            if (response.data.status == true) {
-              this.detailShow = false;
-              this.$swal.fire(response.data.msg, "", "success");
-              this.items.splice(this.items.indexOf(this.detailData), 1);
-              this.detailData = null;
-            } else {
-              this.$swal.fire(response.data.msg, "", "error");
-            }
+      this.$swal
+        .fire({
+          title: "Are you sure?",
+          text: "You want to change status!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#aaa",
+          confirmButtonText: "Yes!"
+        })
+        .then(result => {
+          if (result.value) {
+            this.$axios
+              .post("chha/post-change-status", this.detailData)
+              .then(response => {
+                if (response) {
+                  if (response.data.status == true) {
+                    this.detailShow = false;
+                    this.$swal.fire(response.data.msg, "", "success");
+                    this.items.splice(this.items.indexOf(this.detailData), 1);
+                    this.detailData = null;
+                  } else {
+                    this.$swal.fire(response.data.msg, "", "error");
+                  }
+                }
+              });
+          }
+        });
+    },
+    changeStatusDelete() {
+      this.$swal
+        .fire({
+          title: "Are you sure?",
+          text: "You want to delete!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#aaa",
+          confirmButtonText: "Yes, delete it!"
+        })
+        .then(result => {
+          if (result.value) {
+            this.$axios
+              .post("chha/post-delete", this.detailData)
+              .then(response => {
+                if (response) {
+                  if (response.data.status == true) {
+                    this.detailShow = false;
+                    this.$swal.fire(response.data.msg, "", "success");
+                    this.items.splice(this.items.indexOf(this.detailData), 1);
+                    this.detailData = null;
+                  } else {
+                    this.$swal.fire(response.data.msg, "", "error");
+                  }
+                }
+              });
           }
         });
     },
