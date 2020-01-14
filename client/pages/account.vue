@@ -17,6 +17,17 @@
     </div>
     <hr class="m-0"/>
 
+
+      <div style="background: #fff; padding: 10px; margin-bottom: 10px; border-bottom: 1px solid #ccc;" class="container" v-if="this.user.level==111 && this.user.email=='chhumsina@gmail.com'">
+        <nuxt-link to="chha/post">
+             Post
+        </nuxt-link>
+        |
+        <nuxt-link to="chha/user">
+             User
+        </nuxt-link>
+      </div>
+
     <div class="container">
       <div class="text-center profile">
         <div style="position: relative;">

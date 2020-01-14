@@ -1,6 +1,6 @@
 <template>
   <div class="recommend container">
-    <b-modal class="fullscreen" id="post-modal" hide-title="true">
+    <!-- <b-modal class="fullscreen" id="post-modal" hide-title="true">
       <post-modal
         :postId="postId" :page_name="page_name"
       />
@@ -52,71 +52,71 @@
         </swiper-slide>
       </swiper>
 
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-    import PostModal from '../components/PostModal';
+    // import PostModal from '../components/PostModal';
 
     export default {
-        components:{
-            PostModal
-        },
-        middleware: 'auth',
-        data() {
-            return {
-                topRecom: [],
-                topRecomLoading: true,
-                postId: null,
-                page_name: this.$route.name,
-                swiperOption: {
-                    effect: 'coverflow',
-                    grabCursor: true,
-                    centeredSlides: true,
-                    slidesPerView: 'auto',
-                    coverflowEffect: {
-                        rotate: 50,
-                        stretch: 0,
-                        depth: 100,
-                        modifier: 1,
-                        slideShadows : true
-                    },
-                    pagination: {
-                        el: '.swiper-pagination'
-                    }
-                }
-            }
-        },
-        created() {
-            this.topRecommendLIst()
-        },
-        watch: {
-            $route(to, from) {
-                // if the current history index isn't at the last position, use 'back' transition
-                console.log(to.hash);
-                if (to.hash == '' || to.hash=='#post') {
-                    this.$root.$emit('bv::hide::modal', 'post-modal');
-                }
-            }
-        },
-        methods: {
-            async showPostModal(id) {
-                this.postId = id;
-                this.$router.push({ to: this.$route.fullPath, hash: '#post' });
-                this.$root.$emit('bv::show::modal', 'post-modal');
-            },
-            async topRecommendLIst() {
-                this.$axios
-                    .get('post/top-recommend-list')
-                    .then(({data}) => {
-                        if (data.length) {
-                            this.topRecom.push(...data);
-                        }
-                        this.topRecomLoading = false;
-                    });
-            }
-        }
+        // components:{
+        //     PostModal
+        // },
+        // middleware: 'auth',
+        // data() {
+        //     return {
+        //         topRecom: [],
+        //         topRecomLoading: true,
+        //         postId: null,
+        //         page_name: this.$route.name,
+        //         swiperOption: {
+        //             effect: 'coverflow',
+        //             grabCursor: true,
+        //             centeredSlides: true,
+        //             slidesPerView: 'auto',
+        //             coverflowEffect: {
+        //                 rotate: 50,
+        //                 stretch: 0,
+        //                 depth: 100,
+        //                 modifier: 1,
+        //                 slideShadows : true
+        //             },
+        //             pagination: {
+        //                 el: '.swiper-pagination'
+        //             }
+        //         }
+        //     }
+        // },
+        // created() {
+        //     this.topRecommendLIst()
+        // },
+        // watch: {
+        //     $route(to, from) {
+        //         // if the current history index isn't at the last position, use 'back' transition
+        //         console.log(to.hash);
+        //         if (to.hash == '' || to.hash=='#post') {
+        //             this.$root.$emit('bv::hide::modal', 'post-modal');
+        //         }
+        //     }
+        // },
+        // methods: {
+        //     async showPostModal(id) {
+        //         this.postId = id;
+        //         this.$router.push({ to: this.$route.fullPath, hash: '#post' });
+        //         this.$root.$emit('bv::show::modal', 'post-modal');
+        //     },
+        //     async topRecommendLIst() {
+        //         this.$axios
+        //             .get('post/top-recommend-list')
+        //             .then(({data}) => {
+        //                 if (data.length) {
+        //                     this.topRecom.push(...data);
+        //                 }
+        //                 this.topRecomLoading = false;
+        //             });
+        //     }
+        // }
     }
 </script>
 

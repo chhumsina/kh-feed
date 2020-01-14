@@ -12,5 +12,5 @@
 */
 
 Route::get('/', function () {
-    return 'Hello';
+    return Redirect::to('http://khfeed.com.it');
 });

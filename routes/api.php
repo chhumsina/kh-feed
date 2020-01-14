@@ -86,6 +86,12 @@ Route::group(['middleware' => 'jwt.auth'], function() {
 
     Route::get('file/{id}', 'PostController@downloadFile');
 
+
+    //chha
+    Route::post('chha/post', 'ChhaController@filterPost');
+    Route::post('chha/post-change-status', 'ChhaController@postChangeStatus');
+
+
     Route::get('/auth/logout', 'MeController@logout');
 
 });
