@@ -29,11 +29,11 @@
             </li> -->
           <li :class="book_filter=='iwant' ? 'menu-active' : ''" @click="dashboardList('iwant','first')">ខ្ញុំចង់បាន<br/><span>{{totalBook.total_want}} ក្បាល</span>
            </li>
-          <li :class="book_filter=='giving' ? 'menu-active' : ''" @click="dashboardList('giving','first')">
-            ផ្តល់បរិច្ចាគ<span>{{totalBook.total_giving}}  ក្បាល</span>
-            </li>
           <li :class="book_filter=='getting' ? 'menu-active' : ''" @click="dashboardList('getting','first')">
-            ទទួលបរិច្ចាគ<br/><span>{{totalBook.total_getting}}  ក្បាល</span>
+            ខ្ញុំទទួលបាន<br/><span>{{totalBook.total_getting}}  ក្បាល</span>
+            </li>
+          <li :class="book_filter=='giving' ? 'menu-active' : ''" @click="dashboardList('giving','first')">
+            ខ្ញុំបានបរិច្ចាគ<span>{{totalBook.total_giving}}  ក្បាល</span>
             </li>
         </ul>
       </div>
@@ -52,9 +52,9 @@
         បញ្ចីនៃ <span class="font-weight-bold">Contributes</span> books
         for wanted people</p> -->
       <p v-else-if="book_filter=='giving'" class="text-center" style="padding: 5px; color:#000;padding-bottom: 0;">
-        បញ្ចីនៃសៀវភៅបរិច្ចាគដែល​ ​<span class="font-weight-bold">ផ្តល់បរិច្ចាគ</span>​</p>
+        បញ្ចីនៃសៀវភៅបរិច្ចាគដែល​ ​<span class="font-weight-bold">ខ្ញុំបានបរិច្ចាគ</span>​</p>
       <p v-else="book_filter=='getting'" class="text-center" style="padding: 5px; color:#000;padding-bottom: 0;">
-        បញ្ចីនៃសៀវភៅបរិច្ចាគដែល​ <span class="font-weight-bold">ទទួលបរិច្ចាគ</span></p>
+        បញ្ចីនៃសៀវភៅបរិច្ចាគដែល​ <span class="font-weight-bold">ខ្ញុំទទួលបាន</span></p>
 
 
       <div v-if="book_filter=='iwant'">

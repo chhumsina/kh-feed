@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Jobs\SendEmailJob;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class Posts extends Model
@@ -19,7 +21,6 @@ class Posts extends Model
 
     public static function listPost($input)
     {
-
         $user_id = Auth::user()->id;
 
         $search = null;
@@ -335,6 +336,12 @@ class Posts extends Model
             $create_post = Posts::create($data);
             $post_id = $create_post->id;
             $msg['status'] = true;
+
+
+            // send mail
+            $details['username'] = Auth::user()->name;
+            $details['body'] = $input_data->caption;
+            dispatch(new SendEmailJob($details));
 
         } catch (\Exception $e) {
             $msg['msg'] = $e->getMessage().$e->getLine();

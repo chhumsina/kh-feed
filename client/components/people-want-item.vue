@@ -205,9 +205,10 @@ ul.media-list {
     display: inline;
     padding: 3px 10px;
     font-weight: 400;
+    color: rgba(0, 119, 255, 0.781)
   }
   ul.reaction-filter li.other-want,ul.reaction-filter li.he-want {
-    color: rgba(0, 119, 255, 0.781)
+    color: #000;
   }
 
   .c_post .box {
