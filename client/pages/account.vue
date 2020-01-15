@@ -18,13 +18,13 @@
     <hr class="m-0"/>
 
 
-      <div style="background: #fff; padding: 10px; margin-bottom: 10px; border-bottom: 1px solid #ccc;" class="container" v-if="this.user.level==111 && this.user.email=='chhumsina@gmail.com'">
+      <div style="text-align:center;background: #fff; padding: 10px; margin-bottom: 10px; border-bottom: 1px solid #ccc;" class="container" v-if="this.user.level==111 && this.user.email=='chhumsina@gmail.com'">
         <nuxt-link to="chha/post">
              Post
         </nuxt-link>
         |
-        <nuxt-link to="chha/user">
-             User
+        <nuxt-link to="chha/want">
+             Want
         </nuxt-link>
       </div>
 
@@ -99,9 +99,9 @@
                   </div>
                 </div>
                 <div class="input-group mb-3">
-                  <input v-model="form.bio" type="text" class="form-control input-text"
+                  <textarea v-model="form.bio" type="text" class="form-control input-text"
                          :class="{ 'is-invalid': errors.bio }"
-                         placeholder="ពិពណ៌នា">
+                         placeholder="ពណ៌នា"></textarea>
                   <div class="input-group-prepend">
                 <span class="input-group-text no-border-left" id="basic-addon1"><i class="fa fa-quote-right"
                                                                                    aria-hidden="true"></i></span>

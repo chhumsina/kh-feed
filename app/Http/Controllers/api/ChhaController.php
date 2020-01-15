@@ -74,4 +74,47 @@ class ChhaController extends Controller
         }
     }
 
+    public function filterPeopleWant(Request $input)
+    {
+        $data = Chha::filterPeopleWant($input);
+
+        return response()->json($data);
+    }
+
+    public function peopleWantDetail(Request $input)
+    {
+        $data = Chha::peopleWantDetail($input);
+
+        return response()->json($data);
+    }
+
+    public function peopleWantSelect(Request $input){
+        try{
+
+            if(!Chha::isChha()){
+                throw new \Exception('Sorry, You are not Chha! :)');
+            }
+
+            DB::beginTransaction();
+
+            $status = Chha::peopleWantSelect($input);
+
+            if(!$status['status']){
+                throw new \Exception('Could not select, Please try again! '.$status['msg']);
+            }
+
+            DB::commit(); 
+            $msg['msg'] = 'Selected successfully.';
+            $msg['status'] = true;
+            $msg['data'] = null;
+            return response()->json($msg);
+
+        }catch (\Exception $e){
+            DB::rollBack();
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+            return response()->json($msg);
+        }
+    }
+
 }

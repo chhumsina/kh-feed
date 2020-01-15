@@ -1,7 +1,7 @@
 <template>
   <div class="post">
     <div class="filter">
-      <h4 class="text-center">Post</h4>
+      <h4 class="text-center">People Want</h4>
       <hr />
       <form @submit.prevent="filterItems">
         <div class="form-row">
@@ -24,10 +24,12 @@
         </div>
         <div class="form-row">
           <div class="col">
-            <b-form-select
-              v-model="filter.status"
-              :options="statusOpt"
-            ></b-form-select>
+            <input
+              v-model="filter.username"
+              type="text"
+              class="form-control input-text"
+              placeholder="Username"
+            />
           </div>
           <div class="col">
             <b-form-select
@@ -76,40 +78,69 @@
         />
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
-            Created date: {{ detailData.created_at }}
+            Created date: <small class="text-muted"
+                    ><timeago
+                      :datetime="detailData.created_at"
+                      :auto-update="10"
+                    ></timeago
+                  ></small> 
           </li>
           <li class="list-group-item">
-            Updated date: {{ detailData.updated_at }}
+            Updated date: <small class="text-muted"
+                    ><timeago
+                      :datetime="detailData.updated_at"
+                      :auto-update="10"
+                    ></timeago
+                  ></small> 
           </li>
           <li class="list-group-item">
-            Gave status: {{ detailData.give_status }}
+            Gave status: <span :class="detailData.give_status">{{ detailData.give_status }}</span> 
           </li>
-          <li class="list-group-item">Gave date: {{ detailData.give_date }}</li>
+          <li :class="detailData.accept_status" class="list-group-item">Gave date: {{ detailData.give_date }}</li>
           <li class="list-group-item">posted by: {{ detailData.name }}</li>
         </ul>
         <div class="card-body">
           <p class="card-text">
-            <span v-html="detailData.caption"></span>
+            {{ detailData.caption | truncate(150, "...") }}
           </p>
         </div>
         <hr />
-        <div class="card-body text-center">
-          <button
-            @click="changeStatus()"
-            style="border:1px solid #aaa;"
-            class="btn"
-            :class="detailData.status"
-          >
-            {{ detailData.status }}
-          </button>
-          |
-          <button
-            @click="changeStatusDelete()"
-            style="border:1px solid #aaa;"
-            class="btn btn-danger"
-          >
-            Delete
-          </button>
+        <div class="table-responsive-lg">
+          <table class="table table-striped">
+            <tbody>
+              <tr
+                v-for="(item, $index) in detailDataPeople"
+                :key="$index"
+                @click="showDetailInfo(item)"
+              >
+                <th scope="row">{{ $index + 1 }}</th>
+                <td>
+                  <img
+                    :src="item.avatar | getImgUrl('avatar', 'sm_avatar')"
+                    alt="User Image"
+                  />
+                </td>
+                <td>{{ item.name }}</td>
+                <td>
+                  <small class="text-muted"
+                    ><timeago
+                      :datetime="item.created_at"
+                      :auto-update="10"
+                    ></timeago
+                  ></small>
+                </td>
+                <td :class="item.accept_status">{{ item.accept_status }}</td>
+                <td>
+                  <small class="text-muted"
+                    ><timeago
+                      :datetime="item.accept_date"
+                      :auto-update="10"
+                    ></timeago
+                  ></small>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -120,7 +151,7 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Caption</th>
-            <th scope="col">Status</th>
+            <th scope="col">Wants</th>
             <th scope="col">Created</th>
             <th scope="col">Photo</th>
           </tr>
@@ -133,7 +164,7 @@
           >
             <th scope="row">{{ $index + 1 }}</th>
             <td>{{ item.caption | truncate(10, "...") }}</td>
-            <td :class="item.status">{{ item.status }}</td>
+            <td class="font-weight">{{ item.wants }}</td>
             <td>{{ item.created_at }}</td>
             <td>
               <img
@@ -146,7 +177,7 @@
         </tbody>
       </table>
     </div>
-    <br/><br/>
+    <br /><br />
   </div>
 </template>
 
@@ -161,17 +192,17 @@ export default {
         numPage: 20,
         shortBy: "asc",
         orderBy: "created_at",
-        status: "pending",
-        giveStatus: "not-yet-give",
+        username: null,
+        giveStatus: "pending",
         numPage: 20
       },
       shortByOpt: ["asc", "desc"],
-      orderByOpt: ["created_at", "caption", "give_date"],
-      statusOpt: ["pending", "active"],
-      giveStatusOpt: ["not-yet-give", "active"],
+      orderByOpt: ["created_at", "wants", "caption", "give_date"],
+      giveStatusOpt: ["pending","selected", "active"],
       saveFilterItemsLoading: true,
       detailShow: false,
-      detailData: null
+      detailData: null,
+      detailDataPeople: null
     };
   },
 
@@ -191,76 +222,54 @@ export default {
     filterItems() {
       this.detailShow = false;
       this.detailData = null;
+      this.detailDataPeople = null;
       this.saveFilterItemsLoading = false;
       this.items = {};
-      this.$axios.post("chha/post", this.filter).then(response => {
+      this.$axios.post("chha/people-want", this.filter).then(response => {
         this.items = response.data;
         this.saveFilterItemsLoading = true;
       });
     },
-    changeStatus() {
-      this.$swal
-        .fire({
-          title: "Are you sure?",
-          text: "You want to change status!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#d33",
-          cancelButtonColor: "#aaa",
-          confirmButtonText: "Yes!"
-        })
-        .then(result => {
-          if (result.value) {
-            this.$axios
-              .post("chha/post-change-status", this.detailData)
-              .then(response => {
-                if (response) {
-                  if (response.data.status == true) {
-                    this.detailShow = false;
-                    this.$swal.fire(response.data.msg, "", "success");
-                    this.items.splice(this.items.indexOf(this.detailData), 1);
-                    this.detailData = null;
-                  } else {
-                    this.$swal.fire(response.data.msg, "", "error");
-                  }
-                }
-              });
-          }
-        });
-    },
-    changeStatusDelete() {
-      this.$swal
-        .fire({
-          title: "Are you sure?",
-          text: "You want to delete!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#d33",
-          cancelButtonColor: "#aaa",
-          confirmButtonText: "Yes, delete it!"
-        })
-        .then(result => {
-          if (result.value) {
-            this.$axios
-              .post("chha/post-delete", this.detailData)
-              .then(response => {
-                if (response) {
-                  if (response.data.status == true) {
-                    this.detailShow = false;
-                    this.$swal.fire(response.data.msg, "", "success");
-                    this.items.splice(this.items.indexOf(this.detailData), 1);
-                    this.detailData = null;
-                  } else {
-                    this.$swal.fire(response.data.msg, "", "error");
-                  }
-                }
-              });
-          }
-        });
-    },
     showDetail(item) {
       this.detailShow = true;
       this.detailData = item;
+
+      this.$axios
+        .post("chha/people-want-detail", this.detailData)
+        .then(response => {
+          this.detailDataPeople = response.data;
+        });
+    },
+    showDetailInfo(item) {
+      this.$swal
+        .fire({
+          title: item.name,
+          text: item.desc,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "green",
+          cancelButtonColor: "#aaa",
+          confirmButtonText: "Select"
+        })
+        .then(result => {
+          if (result.value) {
+            this.$axios
+              .post("chha/people-want-select", {id:item.want_id})
+              .then(response => {
+                if (response) {
+                  if (response.data.status == true) {
+                    this.detailShow = false;
+                    this.$swal.fire(response.data.msg, "", "success");
+                    this.items.splice(this.items.indexOf(this.detailData), 1);
+                    this.detailData = null;
+                    this.detailDataPeople = null;
+                  } else {
+                    this.$swal.fire(response.data.msg, "", "error");
+                  }
+                }
+              });
+          }
+        });
     }
   }
 };
@@ -283,5 +292,8 @@ export default {
 }
 .active {
   color: green;
+}
+.selected {
+  color: orangered;
 }
 </style>

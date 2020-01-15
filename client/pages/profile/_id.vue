@@ -43,16 +43,16 @@
                                                                       aria-hidden="true"></i></span>
                     </div>
                   </div>
-                  <div class="input-group mb-3">
+                  <!-- <div class="input-group mb-3">
                     <input disabled v-model="user_data.phone" type="text" class="form-control input-text no-border"
                            placeholder="Phone">
                     <div class="input-group-prepend">
                       <span class="input-group-text no-border" id="basic-addon1"><i class="fa fa-phone" aria-hidden="true"></i></span>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="input-group mb-3">
-                    <input disabled v-model="user_data.bio" type="text" class="form-control input-text no-border"
-                           placeholder="Quote">
+                    <textarea disabled v-model="user_data.bio" type="text" class="form-control input-text no-border"
+                           ></textarea>
                     <div class="input-group-prepend">
                 <span class="input-group-text no-border" id="basic-addon1"><i class="fa fa-quote-right"
                                                                     aria-hidden="true"></i></span>
