@@ -27,9 +27,7 @@
 .pending{
   color: orange !important;
 }
-.active{
-  color: green !important;
-}
+
 .dashboard-seleced{
       background: #f3f3f37d;
     margin-left: -15px;

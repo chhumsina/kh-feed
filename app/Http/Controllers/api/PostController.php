@@ -240,7 +240,7 @@ class PostController extends Controller
 
             DB::commit();
 
-            $msg['msg'] = 'ទទួលសៀវភៅបាន ដោយជោគជ័យ។';
+            $msg['msg'] = 'បានទទួលសៀវភៅ ដោយជោគជ័យ។';
             $msg['status'] = true;
             return response()->json($msg);
 

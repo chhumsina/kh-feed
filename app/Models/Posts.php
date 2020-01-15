@@ -373,7 +373,7 @@ class Posts extends Model
     public static function recieveBook($id, $user_id){
         try {
  
-            $desc = "Congratulation, You're selected.";
+            $desc = "Congratulation, You had recieve the book.";
 
             $want = Ineed::where('id',$id)->where('user_id',$user_id)->where('accept_status','selected')
             ->where('request_status','active')->where('status',1)->first();
