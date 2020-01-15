@@ -45,6 +45,9 @@
                                     <small class="text-muted"><timeago :datetime="item.post_date" :auto-update="10"></timeago></small>
                                 </span>
             </div>
+            <div class="got-book" v-if="item.give_status=='active'">
+              <i class="fa fa-check" aria-hidden="true"></i> ​អ្នក​ជ្រើសរើសបានទទួលសៀវភៅហើយ
+            </div>
           </li>
         </ul>
 

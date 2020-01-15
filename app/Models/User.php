@@ -174,6 +174,7 @@ class User extends Authenticatable implements JWTSubject
         $sql_other = "
                 select 
                     p.caption,p.created_at as post_date,p.id as post_id,p.photo,
+                    p.give_status,
                     u.id as user_id,u.avatar as user_avatar,u.name as user_name,
                     i.created_at as want_date, i.accept_status, i.request_status,
                     i.accept_date, i.request_date,

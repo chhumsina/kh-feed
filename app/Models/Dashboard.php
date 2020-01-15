@@ -94,7 +94,7 @@ class Dashboard extends Model
                 join posts as p on (i.post_id=p.id and p.status='active' and p.give_status is null)
                 where 
                 i.user_id = $user_id
-                and i.accept_status='pending'
+                and i.accept_status in ('pending','selected')
                 order by i.created_at desc
                 limit $page,$take
             ";

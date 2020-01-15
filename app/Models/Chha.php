@@ -175,10 +175,12 @@ class Chha extends Model
 
                 $selectedWant = Ineed::where('post_id',$want->post_id)->where('accept_status','selected')
                 ->where('request_status','active')->where('status',1)->first();
-                $_oldIneed['accept_status'] = 'pending';
-                $_oldIneed['accept_date'] = now();
-                $_oldIneed['accept_desc'] = 'Changed!';
-                $selectedWant->update($_oldIneed);
+                if($selectedWant){
+                    $_oldIneed['accept_status'] = 'pending';
+                    $_oldIneed['accept_date'] = now();
+                    $_oldIneed['accept_desc'] = 'Changed!';
+                    $selectedWant->update($_oldIneed);
+                }
 
                 $find = Posts::whereNull('give_status')
                 ->where('status','active')

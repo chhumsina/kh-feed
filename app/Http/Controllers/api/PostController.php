@@ -226,6 +226,32 @@ class PostController extends Controller
         }
     }
 
+    public function recieveBook(Request $input){
+        try{
+            DB::beginTransaction();
+
+            $user_id = auth::user()->id;
+            $id = $input['id'];
+            $create = Posts::recieveBook($id, $user_id);
+
+            if(!$create['status']){
+                throw new \Exception('សុំទោស មិនអាចទទួលសៀវភៅបាន។​ សូមជួយ Feedback! '.$create['msg']);
+            }
+
+            DB::commit();
+
+            $msg['msg'] = 'ទទួលសៀវភៅបាន ដោយជោគជ័យ។';
+            $msg['status'] = true;
+            return response()->json($msg);
+
+        }catch (\Exception $e){
+            DB::rollBack();
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+            return response()->json($msg);
+        }
+    }
+
     public function iNeed(Request $input){
         try{
             DB::beginTransaction();

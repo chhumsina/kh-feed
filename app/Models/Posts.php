@@ -43,7 +43,7 @@ class Posts extends Model
 
 
             $sql = "
-               select p.id as post_id, p.created_at, p.photo, p.caption, p.status, u.id as user_id, u.avatar, u.name from posts as p
+               select p.give_status, p.give_date, p.id as post_id, p.created_at, p.photo, p.caption, p.status, u.id as user_id, u.avatar, u.name from posts as p
                 join users as u on u.id=p.user_id
                 where 
                 $status
@@ -361,6 +361,45 @@ class Posts extends Model
                 $data['status'] = 'delete';
                 $post = $post->update($data);
             }
+            $msg['status'] = true;
+        } catch (\Exception $e) {
+            $msg['msg'] = $e->getMessage();
+            $msg['status'] = false;
+        }
+
+        return $msg;
+    }
+
+    public static function recieveBook($id, $user_id){
+        try {
+ 
+            $desc = "Congratulation, You're selected.";
+
+            $want = Ineed::where('id',$id)->where('user_id',$user_id)->where('accept_status','selected')
+            ->where('request_status','active')->where('status',1)->first();
+            if($want){
+
+                $find = Posts::whereNull('give_status')
+                ->where('status','active')
+                ->where('id', $want->post_id)->first();
+                if($find){
+                    $data['give_status'] = 'active';
+                    $data['give_date'] = now();
+                    $update = $find->update($data);
+    
+                    // update ineed
+                    $_upIneed['accept_status'] = 'active';
+                    $_upIneed['accept_date'] = now();
+                    $_upIneed['accept_desc'] = $desc;
+                    $ineed = $want->update($_upIneed);
+    
+                }else{
+                    throw new \Exception('សុំទោស មិនអាចទទួលសៀវភៅបាន។​ សូមជួយ Feedback!');
+                }
+            }else{
+                throw new \Exception('សុំទោស មិនអាចទទួលសៀវភៅបាន។​ សូមជួយ Feedback!!');
+            }
+            
             $msg['status'] = true;
         } catch (\Exception $e) {
             $msg['msg'] = $e->getMessage();

@@ -94,6 +94,9 @@
                               
               <p @click="showPostModal(item.post_id)">{{item.caption | truncate(150, '...')}}</p>
             </div>
+            <div class="got-book" v-if="item.give_status=='active'">
+              <i class="fa fa-check" aria-hidden="true"></i> ​អ្នក​ជ្រើសរើសបានទទួលសៀវភៅហើយ
+            </div>
           </li>
         </ul>
     </div>
@@ -285,7 +288,7 @@
 
   .review-post{
     text-align: center;
-    font-size: 15px;    
+    font-size: 13px;    
     background: #ffebeba6;
     padding: 10px 0px;
     color: #d86d21;

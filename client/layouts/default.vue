@@ -21,6 +21,39 @@
     }
 </script>
 <style>
+.selected{
+  color: orangered !important;
+}
+.pending{
+  color: orange !important;
+}
+.active{
+  color: green !important;
+}
+.dashboard-seleced{
+      background: #f3f3f37d;
+    margin-left: -15px;
+    margin-right: -15px;
+    padding: 0px 21px;
+    padding-bottom: 20px;
+}
+li.media.item-selected {
+    padding-bottom: 0 !important;
+}
+.get-book {
+    border-top: 1px solid #f7f7f7;
+    margin-top: 17px;
+    padding-top: 10px;
+    text-align: center;
+}
+.got-book {
+    border-top: 1px solid #f7f7f7;
+    margin-top: 12px;
+    padding-top: 13px;
+    font-size: 12px;
+    color: green;
+    text-align: right;
+}
 
   .media-body p {
     font-size: 15px !important;
