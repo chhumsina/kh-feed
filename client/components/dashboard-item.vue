@@ -473,6 +473,7 @@ export default {
               .then(({ data }) => {
                 if (data.status == true) {
                   this.$swal.fire(data.msg, '', "success");
+                  location.href = location.href;
                 } else {
                   this.$swal.fire(data.msg, '', "error");
                 }
