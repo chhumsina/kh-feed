@@ -7,7 +7,7 @@ export default function({ $axios, store }) {
 
         const code = parseInt(error.response && error.response.status)
 
-        if ([401, 403, 429].includes(code)) {
+        if ([401, 403].includes(code)) {
             store.$auth.logout();
         }
         return Promise.reject(error);
