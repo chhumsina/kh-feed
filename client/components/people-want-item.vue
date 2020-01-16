@@ -160,7 +160,10 @@ ul.media-list {
   ul.media-list .media {
     background: #fff;
     padding: 13px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    position: relative;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
   }
 
   ul.media-list .media img.post-image {
