@@ -1,15 +1,10 @@
 export default function({ $axios, store }) {
     $axios.onError(error => {
 
-        if (!error.status) {
-            store.$auth.logout();
+        if (error.response.data.status === 422) {
+            store.dispatch('validation/setErrors', error.response.data.errors);
         }
-
-        const code = parseInt(error.response && error.response.status)
-
-        if ([401].includes(code)) {
-            store.$auth.logout();
-        }
+        
         return Promise.reject(error);
     });
 
