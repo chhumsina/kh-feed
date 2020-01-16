@@ -33,15 +33,20 @@ class SendEmailJob implements ShouldQueue
     public function handle()
     {
 
-            $userName = $this->details['username'];
-            $body = $this->details['body'];
-            $to_name = 'khfeed';
-            $to_email = 'chhumsina@gmail.com';
-            $data = array('name'=>$userName, 'body'=> $body);
-            Mail::send('emails.mail', $data, function($message) use ($to_name, $to_email,$userName) {
-            $message->to($to_email, $to_name)
-            ->subject('Create Post');
-            $message->from('sinachhum.cist@gmail.com',$userName);
-            });
+           // ***** send email
+            // $userName = $this->details['username'];
+            // $body = $this->details['body'];
+            // $to_name = 'khfeed';
+            // $to_email = 'chhumsina@gmail.com';
+            // $data = array('name'=>$userName, 'body'=> $body);
+            // Mail::send('emails.mail', $data, function($message) use ($to_name, $to_email,$userName) {
+            // $message->to($to_email, $to_name)
+            // ->subject('Create Post');
+            // $message->from('sinachhum.cist@gmail.com',$userName);
+            // });
+
+            // **** telegrame
+            
+            $this->details->notify(new \App\Notifications\PostPublished());
     }
 }

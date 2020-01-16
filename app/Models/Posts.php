@@ -9,9 +9,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Notifications\Notifiable;
 
 class Posts extends Model
 {
+    use Notifiable;
+
     protected $table = 'posts';
     protected $primaryKey = 'id';
 
@@ -338,10 +341,8 @@ class Posts extends Model
             $msg['status'] = true;
 
 
-            // send mail
-            $details['username'] = Auth::user()->name;
-            $details['body'] = $input_data->caption;
-            dispatch(new SendEmailJob($details));
+            // send telegram
+            dispatch(new SendEmailJob($create_post));
 
         } catch (\Exception $e) {
             $msg['msg'] = $e->getMessage().$e->getLine();
