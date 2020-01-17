@@ -46,6 +46,7 @@ Route::get('image/{type}/{size}/{img}', function($type,$size,$img)
 Route::group(['prefix' => '/pub', ['middleware' => 'throttle:20,5']], function() {
     Route::get('post/{id}', 'PostController@detail');
     Route::get('post/comment/{id}', 'PostController@detailComment');
+    Route::post('campaign', 'PromotionController@campaign');
 });
 
 Route::group(['middleware' => 'jwt.auth'], function() {

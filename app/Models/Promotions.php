@@ -19,6 +19,15 @@ class Promotions extends Model
         'user_id', 'obj_id', 'status', 'obj_type','type'
     ];
 
+
+    public static function cam100neak(){
+        $data = DB::table('promotions as p')
+                ->join('users as u','u.id','=','p.user_id')->where('p.status',1)->where('p.type','first_users')
+                ->select('u.*','p.created_at as date')
+                ->get();
+        return $data;
+    }
+
     public static function becomePeopleGetBook($input){
         
         try{

@@ -21,6 +21,12 @@ use Laravolt\Avatar\Avatar;
 
 class PromotionController extends Controller
 {
+    public function campaign(Request $input){
+        $type = $input['type'];
+        $callFunc = Promotions::$type();
+        return response()->json($callFunc);
+    }
+
     public function becomePeopleGetBook(Request $input){
         try{
             DB::beginTransaction();
@@ -46,7 +52,7 @@ class PromotionController extends Controller
                         $data['obj_type'] = 'user';
                         $data['type'] = $type;
                         $create = Promotions::becomePeopleGetBook($data);
-                        $msg['msg'] = 'ជោគជ័យ!​​ អ្នកបានដាក់បញ្ចូលក្នុងចំនោមមនុស្ស១០០ដំបូងហើយ​។';
+                        $msg['msg'] = 'ជោគជ័យ!​​ អ្នកបានដាក់បញ្ចូលក្នុងចំណោមមនុស្ស១០០ដំបូងហើយ​។';
         
                         if(!$create['status']){
                             throw new \Exception('សុំទោស មិនអាចទទួលបាន។​ សូមជួយ Feedback។');
