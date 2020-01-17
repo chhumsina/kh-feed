@@ -125,7 +125,7 @@
           name="caption"
           required
           id="caption"
-          placeholder="ពណ៍រនាអំពីការបរិច្ចាគឬសៀវភៅ..."
+          placeholder="ពណ៍រនាអំពីការបរិច្ចាគសៀវភៅ..."
         />
       </div>
 
@@ -278,12 +278,12 @@ export default {
                 this.photo = null;
                 document.getElementById("addPhotoId").value = null;
                 this.$swal.fire(data.msg, "", "success");
+                this.$router.push({ path: "account" });
               } else {
                 this.$swal.fire(data.msg, "", "error");
               }
             }
             this.createPostLoading = true;
-            this.$router.push({ path: "account" });
           });
       } catch (e) {
         this.createPostLoading = true;

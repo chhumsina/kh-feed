@@ -22,6 +22,15 @@ class Comments extends Model
         try {
 
             $input_data = json_decode($input->data);
+
+            if(Helper::hasEmoji($input_data->comment)){
+                throw new \Exception('សុំទោស មិនទាន់អាចមានអក្សរជា emoji នៅឡើយទេ។');
+            }
+            
+            if(strlen($input_data->comment) > 500){
+                throw new \Exception('មតិ គឺសុំមានតួអក្សរតិចជាង៥០០តួ។');
+            }
+            
             $data['description'] = $input_data->comment;
             $data = array_filter($data);
             $create_comment = Comments::create($data);

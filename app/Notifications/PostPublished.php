@@ -53,7 +53,11 @@ class PostPublished extends Notification
     {
         return TelegramFile::create()
             ->to('276265088')
-            ->content($post->caption.' - https://www.khfeed.com/chha/post')
+            ->content($post->caption.' - [View post](https://www.khfeed.com/post/'.$post->id.')')
+            ->button('Active', 'https://www.khfeed.com/chha/post-change/pending/'.$post->id)
+            ->button('Pending', 'https://www.khfeed.com/chha/post-change/active/'.$post->id)
+            ->button('Delete', 'https://www.khfeed.com/chha/post-change-delete/'.$post->id)
+            ->button('View List', 'https://www.khfeed.com/chha/post')
             ->photo('https://www.api.khfeed.com/api/image/photo/m_post/'.$post->photo);
     }
 

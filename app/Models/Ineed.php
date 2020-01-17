@@ -27,6 +27,15 @@ class Ineed extends Model
                 $data['desc'] = $input->desc;
                 $create = $find->update($data);
             }else{
+
+                if(Helper::hasEmoji($input->desc)){
+                    throw new \Exception('សុំទោស មិនទាន់អាចមានអក្សរជា emoji នៅឡើយទេ។');
+                }
+
+                if(strlen($input->desc) > 500){
+                    throw new \Exception('មតិ គឺសុំមានតួអក្សរតិចជាង៥០០តួ។');
+                }
+
                 $data['desc'] = $input->desc;
                 $data['status'] = true;
                 $data['request_status'] = 'active';

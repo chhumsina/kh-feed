@@ -26,7 +26,7 @@
         </h4>
         <div>
           <p>khfeed​ នឹងចេញជាផ្លូវការក្នុងពេលឆាប់ៗនេះ។</p>
-          <hr />
+          <!-- <hr />
           <p class="text-center">
             ចង់ក្លាយជាមនុស្សក្នុងចំណោម១០០នាក់ដំបូងដែលទទួលបានសៀវភៅបរិច្ចាគ នៅពេល
             khfeed ចេញជាផ្លូវការ?
@@ -35,7 +35,7 @@
             <button @click="becomePeopleGetBook()" type="button" class="btn btn-primary">
               បាទ/ចាស យល់ព្រម
             </button>
-          </p>
+          </p> -->
         </div>
       </b-alert>
 

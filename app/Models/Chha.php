@@ -76,13 +76,6 @@ class Chha extends Model
         try {
  
             $id = $input->post_id;
-            $status = $input->status;
-            if($status == 'pending'){
-                $status = 'active';
-            }else{
-                $status = 'pending';
-            }
-
             $update = Posts::where('id', $id)->delete(); 
             $msg['status'] = true;
 

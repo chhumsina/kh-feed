@@ -55,18 +55,40 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public static function updateOverView($input){
-        $userId = Auth::user()->id;
+        try{
+            $userId = Auth::user()->id;
 
-        $data['name'] = $input['name'];
-        $data['email'] = $input['email'];
-        $data['phone'] = $input['phone'];
-        $data['bio'] = $input['bio'];
-        $data = array_filter($data);
+            if(Helper::hasEmoji($input['bio'])){
+                throw new \Exception('សុំទោស មិនទាន់អាចមានអក្សរជា emoji នៅឡើយទេ។');
+            }
 
-        $update = User::where('id',$userId)
-            ->update($data);
+            if(strlen($input['name']) > 500){
+                throw new \Exception('ឈ្មោះ គឺសុំមានតួអក្សរតិចជាង៥០០តួ។');
+            }            
+            if(strlen($input['email']) > 500){
+                throw new \Exception('អ៊ីម៉ែល គឺសុំមានតួអក្សរតិចជាង៥០០តួ។');
+            }
+            if(strlen($input['bio']) > 500){
+                throw new \Exception('ពណ៌នា គឺសុំមានតួអក្សរតិចជាង៥០០តួ។');
+            }
 
-        return $update;
+            $data['name'] = $input['name'];
+            $data['email'] = $input['email'];
+            $data['phone'] = $input['phone'];
+            $data['bio'] = $input['bio'];
+            $data = array_filter($data);
+
+            $update = User::where('id',$userId)
+                ->update($data);
+
+            $msg['status'] = true;
+            
+        } catch (\Exception $e) {
+            $msg['msg'] = $e->getMessage().$e->getLine();
+            $msg['status'] = false;
+        }
+
+        return $msg;
 
     }
 

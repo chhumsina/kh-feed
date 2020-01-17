@@ -85,7 +85,7 @@ class PostController extends Controller
             $create = Posts::createPost($input);
 
             if(!$create['status']){
-                throw new \Exception('Could not create, Please try again! '.$create['msg']);
+                throw new \Exception($create['msg']);
             }
 
             DB::commit();

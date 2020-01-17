@@ -87,7 +87,7 @@
                   </div>
                 </div>
                 <div class="input-group mb-3">
-                  <input v-model="form.phone" type="text" class="form-control input-text"
+                  <input v-model="form.phone" type="number" class="form-control input-text"
                          :class="{ 'is-invalid': errors.phone }"
                          placeholder="លេខទូរសព្ទ">
                   <div class="input-group-prepend">
@@ -224,11 +224,13 @@
                         if (data.status == true) {
                             this.$swal.fire(
                                 data.msg,
+                                '',
                                 'success'
                             );
                         } else {
                             this.$swal.fire(
                                 data.msg,
+                                '',
                                 'error'
                             )
                         }
@@ -243,11 +245,13 @@
                             if (data.status == true) {
                                 this.$swal.fire(
                                     data.msg,
+                                    '',
                                     'success'
                                 );
                             } else {
                                 this.$swal.fire(
                                     data.msg,
+                                    '',
                                     'error'
                                 )
                             }

@@ -331,6 +331,14 @@ class Posts extends Model
                 }
             }
 
+            if(Helper::hasEmoji($input_data->caption)){
+                throw new \Exception('សុំទោស មិនទាន់អាចមានអក្សរជា emoji នៅឡើយទេ។');
+            }
+
+            if(strlen($input_data->caption) > 2500){
+                throw new \Exception('ពណ៍រនាអំពីការបរិច្ចាគសៀវភៅ គឺសុំមានតួអក្សរតិចជាង១០០០តួ។');
+            }
+
             $data['caption'] = Self::generateCaption($input_data->caption);
             $data['photo'] = $photo_name;
             $data['user_id'] = $userId;
@@ -345,7 +353,7 @@ class Posts extends Model
             dispatch(new SendEmailJob($create_post));
 
         } catch (\Exception $e) {
-            $msg['msg'] = $e->getMessage().$e->getLine();
+            $msg['msg'] = $e->getMessage();
             $msg['status'] = false;
         }
 

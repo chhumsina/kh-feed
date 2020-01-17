@@ -69,7 +69,7 @@ class UserController extends Controller
 
             $update = User::updateOverView($input);
 
-            if(!$update){
+            if(!$update['status']){
                 throw new \Exception('Could not update, Please try again!');
             }
 
