@@ -32,16 +32,6 @@
     </div>
 
     <form v-else @submit.prevent="createPost" enctype="multipart/form-data">
-      <b-alert show variant="warning">
-        <h4 class="alert-heading">
-          <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Testing
-          Mode
-        </h4>
-        <div>
-          khfeed is still in developing and testing. Therefore, all the created
-          posts will be deleted after we officially published.
-        </div>
-      </b-alert>
 
       <b-alert show variant="info">
         <h4 class="alert-heading">
@@ -134,6 +124,7 @@
           style="height: 35vh;padding: 20px;"
           name="caption"
           required
+          id="caption"
           placeholder="ពណ៍រនាអំពីការបរិច្ចាគឬសៀវភៅ..."
         />
       </div>
@@ -257,6 +248,7 @@ export default {
 
             //assign it to thumb src
             _this.photo = finalImage;
+            document.getElementById("caption").focus(); 
           };
         };
       } else {
