@@ -100,9 +100,6 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::post('chha/post', 'ChhaController@filterPost');
     Route::post('chha/post-change-status', 'ChhaController@postChangeStatus');
     Route::post('chha/post-delete', 'ChhaController@postDelete');
-    // cha from telegram
-    Route::get('chha/post-change-delete/{post_id}', 'ChhaController@postDelete');
-    Route::get('chha/post-change/{status}/{post_id}', 'ChhaController@postChangeStatus');
     
     Route::post('chha/people-want', 'ChhaController@filterPeopleWant');
     Route::post('chha/people-want-detail', 'ChhaController@peopleWantDetail');
